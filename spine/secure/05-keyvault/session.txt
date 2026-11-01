@@ -1,8 +1,103 @@
 $ export AZURE_STORAGE_ACCOUNT=sttradefindev AZURE_STORAGE_AUTH_MODE=login
 $ az storage blob list -c landing --query "[].name"
+ERROR: The specified container does not exist.
+RequestId:00000000-0000-0000-0000-000000001000
+Time:2026-11-01T09:30:00Z
+ErrorCode:ContainerNotFound
 $ cd infra
 $ terraform apply -var-file=envs/dev.tfvars -auto-approve
+Acquiring state lock. This may take a few moments...
+data.azurerm_client_config.me: Reading...
+data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW50Q29uZmlncy9jbG
+llbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDE7b2JqZWN0SWQ9MDAwMDAwMD
+AtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAyO3N1YnNjcmlwdGlvbklkPTAwMDAwMDAwLTAwMDAtMD
+AwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMD
+AwMDAwYTE=]
+module.storage.data.azurerm_client_config.me: Reading...
+module.storage.data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW5
+0Q29uZmlncy9jbGllbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDE7b2JqZWN
+0SWQ9MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAyO3N1YnNjcmlwdGlvbklkPTAwMDA
+wMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDA
+tMDAwMC0wMDAwMDAwMDAwYTE=]
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+azurerm_user_assigned_identity.pipeline: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.ManagedIdentity/userAssignedIdentities/id-tradefin-pipeline]
+azurerm_monitor_action_group.risk: Refreshing state... [id=/subscriptions/000000
+00-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsof
+t.Insights/actionGroups/ag-trade-risk]
+azurerm_role_assignment.secrets_officer: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001003]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+azurerm_role_assignment.pipeline_reader: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001004]
+azurerm_consumption_budget_resource_group.main: Refreshing state... [id=/subscri
+ptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provi
+ders/Microsoft.Consumption/budgets/budget-tradefin-dev]
+module.storage.azurerm_role_assignment.data: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev/providers/Microsoft.Authorizat
+ion/roleAssignments/00000000-0000-0000-0000-000000001005]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.keyvault.azurerm_key_vault.main will be created
+  + resource "azurerm_key_vault" "main" {
+      + access_policy                 = (known after apply)
+      + id                            = (known after apply)
+      + location                      = "uksouth"
+      + name                          = "kv-tradefin-dev"
+      + public_network_access_enabled = true
+      + purge_protection_enabled      = false
+      + rbac_authorization_enabled    = true
+      + resource_group_name           = "rg-tradefin-dev"
+      + sku_name                      = "standard"
+      + soft_delete_retention_days    = 7
+      + tags                          = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+      + tenant_id                     = "00000000-0000-0000-0000-0000000000a1"
+      + vault_uri                     = (known after apply)
+
+      + network_acls (known after apply)
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+module.keyvault.azurerm_key_vault.main: Creating...
+module.keyvault.azurerm_key_vault.main: Still creating... [00m10s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [00m20s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [00m30s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [00m40s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [00m50s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [01m00s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [01m10s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [01m20s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [01m30s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [01m40s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [01m50s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [02m00s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [02m10s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [02m20s elapsed]
+module.keyvault.azurerm_key_vault.main: Still creating... [02m30s elapsed]
+module.keyvault.azurerm_key_vault.main: Creation complete after 2m38s [id=/subsc
+riptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/pro
+viders/Microsoft.KeyVault/vaults/kv-tradefin-dev]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 $ V=kv-tradefin-dev N=tradebook-password PW=$(openssl rand -base64 24)
 $ az keyvault secret set --vault-name $V -n $N --value "$PW" -o none
 $ unset PW
 $ az keyvault secret list --vault-name $V --query "[].name" -o tsv
+tradebook-password
