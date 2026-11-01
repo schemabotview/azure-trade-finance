@@ -16,8 +16,16 @@ export const bronzeReplay: SceneModel = ideFrame({
   tree: pipelineTree('pipeline/bronze.py', ['session.py', 'bronze.py', 'versions.py', 'gates.py', 'quarantine.py']),
   editor: { file: 'pipeline/bronze.py', code, show: [[lineOf(code, 'def main'), lineOf(code, 'quarantined (G2)")')]], highlight: [lineOf(code, 'if batch in done')] },
   session,
+  keep: ['$ python pipeline/bronze.py', ['batch 43: already', '|LC-2041|1             |2000000.00|ISSUED |44'], '+-------+'],
   side: [
     AZURITE,
+    {
+      type: 'group', id: 'trip', title: 'How batch 44 got here', icon: 'workflow', tone: 'infra', children: [
+        { type: 'item', id: 't-41', title: 'batch 41’s file', sub: 'delivered and taken in Course 5', icon: 'file' },
+        { type: 'item', id: 't-44', title: 're-sent as batch 44', sub: 'a job restarted by hand', icon: 'file', tone: 'infra' },
+        { type: 'item', id: 't-in', title: `G2: every row valid → ${appended} appended`, sub: 'nothing in a row says it is a copy', icon: 'layers', tone: 'store' },
+      ],
+    },
     {
       type: 'table', id: 'lc2041', title: 'LC-2041 in Bronze, now', tone: 'ingest', columns: ['source_version', 'amount', 'batch_id'],
       rows: versions.map((v, i) => ({ id: `v-${i}`, cells: [v[1], v[2], v[4]], tone: v[4] === '44' ? 'infra' as const : undefined })),
@@ -29,6 +37,10 @@ export const bronzeReplay: SceneModel = ideFrame({
         { id: 'w-audit', cells: ['an auditor', '“was batch 44 a re-send?” — yes, here'] },
       ],
     },
-    { type: 'note', id: 'note', tone: 'infra', text: `Batch 44 appended ${appended} rows: batch 41’s file, every row again, under a new delivery. Deduplicating here would erase the evidence that it happened.` },
+    { type: 'note', id: 'note', tone: 'infra', text: 'Deduplicating here would erase the evidence that it happened.' },
+  ],
+  edges: [
+    { from: 't-41', to: 't-44' },
+    { from: 't-44', to: 't-in' },
   ],
 })

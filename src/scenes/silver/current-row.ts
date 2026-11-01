@@ -20,6 +20,13 @@ export const silverCurrentRow: SceneModel = ideFrame({
         { type: 'item', id: 'i-bronze', title: `Bronze: ${rows} rows`, sub: 'every version, every delivery, duplicates too', icon: 'layers' },
         { type: 'item', id: 'i-rule', title: 'per lc_id, the highest source_version', sub: 'what TradeBook says now', icon: 'filter' },
         { type: 'item', id: 'i-silver', title: `Silver: ${lcs} rows`, sub: 'one current row per LC', icon: 'layers', tone: 'store' },
+        { type: 'item', id: 'i-gold', title: 'Gold sums Silver', sub: 'each LC counted once', icon: 'chart', tone: 'store' },
+      ],
+    },
+    {
+      type: 'table', id: 'extra', title: 'Every extra row is one of two kinds', tone: 'infra', columns: ['kind', 'example'], rows: [
+        { id: 'x-old', cells: ['an older version', 'v1, amended since to v2'] },
+        { id: 'x-again', cells: ['a version delivered again', 'batch 44, a re-send of 41'] },
       ],
     },
     { type: 'table', id: 'dist', title: 'Rows per LC in Bronze', tone: 'ingest', columns: ['rows per LC', 'LCs'], rows: dist.map(([n, c]) => ({ id: `d-${n}`, cells: [n, c] })) },
@@ -27,5 +34,6 @@ export const silverCurrentRow: SceneModel = ideFrame({
   edges: [
     { from: 'i-bronze', to: 'i-rule' },
     { from: 'i-rule', to: 'i-silver' },
+    { from: 'i-silver', to: 'i-gold' },
   ],
 })

@@ -26,7 +26,15 @@ export const silverLateOlder: SceneModel = ideFrame({
       type: 'table', id: 'batch44', title: 'Batch 44 into Silver', tone: 'consume', columns: ['rows', 'inserted', 'updated', 'ignored'],
       rows: [{ id: 'b44', cells: [m[1], m[2], m[3], m[4]] }],
     },
+    {
+      type: 'table', id: 'rule', title: 's.source_version > t.source_version', tone: 'infra', columns: ['incoming', 'Silver holds', 'result'], rows: [
+        { id: 'k-newer', cells: ['3', '2', 'updated'], tone: 'store' },
+        { id: 'k-equal', cells: ['2', '2', 'ignored'] },
+        { id: 'k-older', cells: ['1', '2', 'ignored'] },
+      ],
+    },
     { type: 'table', id: 'now', title: 'LC-2041 in Silver, after', tone: 'store', columns: ['source_version', 'amount', 'status'], rows: [{ id: 'n', cells: [lc[1], lc[2], lc[3]] }] },
+    { type: 'note', id: 'note', tone: 'consume', text: 'Without the condition, a late file would roll Silver back to yesterday, and nothing would fail.' },
   ],
   edges: [
     { from: 'r-41', to: 'r-42' },

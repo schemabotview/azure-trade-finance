@@ -17,6 +17,14 @@ export const silverDedupe: SceneModel = ideFrame({
   session,
   side: [
     {
+      type: 'table', id: 'types', title: 'typed on the way: Bronze → Silver', tone: 'infra', columns: ['column', 'Bronze', 'Silver'], rows: [
+        { id: 't-amount', cells: ['amount', 'string', 'decimal(18,2)'] },
+        { id: 't-version', cells: ['source_version', 'string', 'int'] },
+        { id: 't-dates', cells: ['issue_date, expiry_date', 'string', 'date'] },
+        { id: 't-updated', cells: ['updated_at', 'string', 'timestamp'] },
+      ],
+    },
+    {
       type: 'table', id: 'window', title: 'LC-2041 in Bronze, numbered', tone: 'ingest', columns: ['source_version', 'batch_id', 'row_number', 'kept'], rows: [
         { id: 'w-1', cells: ['2', '42', '1', 'yes'], tone: 'store' },
         { id: 'w-2', cells: ['1', '44', '2', 'no'] },
@@ -30,6 +38,7 @@ export const silverDedupe: SceneModel = ideFrame({
         { type: 'item', id: 'f-keep', title: `keep row 1: v${lc[1]}, ${lc[2]}`, sub: `LC-2041, ${lc[3]}`, icon: 'check', tone: 'store' },
       ],
     },
+    { type: 'note', id: 'note', tone: 'infra', text: 'Money is decimal(18,2), never a float: every cent kept exactly.' },
   ],
   edges: [
     { from: 'f-part', to: 'f-order' },

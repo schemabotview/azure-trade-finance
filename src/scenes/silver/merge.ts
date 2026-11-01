@@ -17,20 +17,32 @@ export const silverMerge: SceneModel = ideFrame({
   session,
   side: [
     {
-      type: 'group', id: 'paths', title: 'Each incoming row takes one path', icon: 'workflow', tone: 'ingest', dir: 'grid', cols: 2, children: [
-        { type: 'item', id: 'p-in', title: 'a row from the batch', sub: 'matched on lc_id', icon: 'file', span: 'all' },
-        { type: 'item', id: 'p-new', title: 'not matched → insert', sub: 'an LC Silver has not seen', icon: 'check', tone: 'store' },
-        { type: 'item', id: 'p-upd', title: 'matched, newer → update', sub: 's.source_version > t.source_version', icon: 'settings', tone: 'infra' },
+      type: 'group', id: 'loop', title: 'For each batch, in order', icon: 'clock', tone: 'store', children: [
+        { type: 'item', id: 'l-bronze', title: 'Bronze rows', sub: 'one batch', icon: 'layers' },
+        { type: 'item', id: 'l-dedupe', title: 'deduplicate', sub: 'within it', icon: 'filter' },
+        { type: 'item', id: 'l-merge', title: 'MERGE', sub: 'a Delta commit', icon: 'layers', tone: 'store' },
+        { type: 'item', id: 'l-next', title: 'the next batch', sub: 'against Silver as this one left it', icon: 'clock' },
+      ],
+    },
+    {
+      type: 'group', id: 'paths', title: 'Each incoming row takes one path', icon: 'workflow', tone: 'ingest', dir: 'grid', cols: 3, children: [
+        { type: 'item', id: 'p-in', title: 'a row from the batch', sub: 'matched on lc_id', icon: 'file', span: 'all', fill: true },
+        { type: 'item', id: 'p-new', title: 'not matched', sub: 'insert: a new LC', icon: 'check', tone: 'store' },
+        { type: 'item', id: 'p-upd', title: 'matched, newer', sub: 'update', icon: 'settings', tone: 'infra' },
+        { type: 'item', id: 'p-old', title: 'matched, not newer', sub: 'nothing: §9.4', icon: 'lock' },
       ],
     },
     {
       type: 'table', id: 'counts', title: 'Delta’s own counts, per batch', tone: 'store', columns: ['batch', 'rows', 'inserted', 'updated', 'ignored'],
       rows: batches.map((b) => ({ id: `b-${b[0]}`, cells: b })),
     },
-    { type: 'note', id: 'note', tone: 'ingest', text: 'Matched but NOT newer: nothing happens. That third path is the next section.' },
   ],
   edges: [
+    { from: 'l-bronze', to: 'l-dedupe' },
+    { from: 'l-dedupe', to: 'l-merge' },
+    { from: 'l-merge', to: 'l-next' },
     { from: 'p-in', to: 'p-new' },
     { from: 'p-in', to: 'p-upd' },
+    { from: 'p-in', to: 'p-old' },
   ],
 })

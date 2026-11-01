@@ -18,6 +18,7 @@ export const bronzeBronze: SceneModel = ideFrame({
   editor: { file: 'pipeline/bronze.py', code, show: [[lineOf(code, 'def main'), lineOf(code, 'rows appended")')]],
     highlight: [lineOf(code, 'if batch in done'), ...linesFrom(code, '.withColumn("batch_id"', '.withColumn("ingest_ts"'), lineOf(code, 'mode("append")')] },
   session,
+  keep: [['$ B=', '$ python pipeline/versions.py']],
   side: [
     AZURITE,
     {
