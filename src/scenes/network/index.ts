@@ -4,6 +4,7 @@ import { networkNsg } from './nsg'
 import { networkPublicOff } from './public-off'
 import { networkPrivateEndpoint } from './private-endpoint'
 import { networkOnPrem } from './on-prem'
+import { networkShir } from './shir'
 import { networkVpn } from './vpn'
 
 export const networkScenes: Record<string, SceneModel> = {
@@ -12,5 +13,6 @@ export const networkScenes: Record<string, SceneModel> = {
   'network-public-off': networkPublicOff,
   'network-private-endpoint': networkPrivateEndpoint,
   'network-on-prem': networkOnPrem,
+  'network-shir': networkShir,
   'network-vpn': networkVpn,
 }

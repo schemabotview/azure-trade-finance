@@ -80,7 +80,7 @@ export function pipelineMap(built: string[]): SceneNode {
   const services: Group = { type: 'group', id: 'services', bare: true, children: SERVICES.map(it) }
   const rg: Group = {
     type: 'group', id: 'rg', icon: 'boxes', title: 'rg-tradefin-dev', sub: 'uksouth', dir: 'row', muted: later('rg'),
-    children: [vnet, storage, services],
+    children: [storage, vnet, services], // the lake first: the bank's runtime reaches landing directly
   }
   const controls: Group = { type: 'group', id: 'controls', bare: true, dir: 'grid', cols: CONTROLS.length, span: 'all', children: CONTROLS.map(it) }
   const sub: Group = {

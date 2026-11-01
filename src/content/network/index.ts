@@ -4,12 +4,12 @@ import { networkSecurityGroups } from './02-network-security-groups'
 import { publicAccessOff } from './03-public-access-off'
 import { aPrivateEndpoint } from './04-a-private-endpoint'
 import { tradebookIsOnPremises } from './05-tradebook-is-on-premises'
+import { theSelfHostedIr } from './06-the-self-hosted-ir'
 import { vpnAndExpressroute } from './07-vpn-and-expressroute'
 
-// Course 6 · Private by default. §1–4 recorded on Azure; §5 and §7 doc-cited. §6 (the self-hosted
-// integration runtime) is being built.
+// Course 6 · Private by default. §1–4 and §6 recorded on Azure; §5 and §7 doc-cited.
 export const network: Course = {
   id: 'network',
   title: 'Private by default',
-  sections: [vnetsAndSubnets, networkSecurityGroups, publicAccessOff, aPrivateEndpoint, tradebookIsOnPremises, vpnAndExpressroute],
+  sections: [vnetsAndSubnets, networkSecurityGroups, publicAccessOff, aPrivateEndpoint, tradebookIsOnPremises, theSelfHostedIr, vpnAndExpressroute],
 }
