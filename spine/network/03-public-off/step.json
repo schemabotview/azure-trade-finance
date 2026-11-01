@@ -1,0 +1,1 @@
+{"from": "network/02-nsg", "changes": ["infra/modules/storage/main.tf"], "azure": true, "env": "azure.sh", "setup": ["cd infra && terraform init -input=false >/dev/null"]}

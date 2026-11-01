@@ -74,6 +74,8 @@ step.json (other keys, all optional):
                           `lake:<container>/<blob>` is a blob, read from the lake after the session
   {"volatile": true}      compared with digits, hex and UUIDs masked; or a list: ["uuid"], ["digits"]
   {"columns": 80}         the pane's width (default 80): output wider than it wraps, as a terminal does
+  {"restore": true}       an Azure step recorded after a teardown: first put the subscription back as
+                          its parent left it (restore_azure: the parent's infra/, applied silently)
 """
 from __future__ import annotations
 
@@ -667,7 +669,6 @@ def record(step: Path) -> int:
     for parent in lineage_of(step)[:-1]:
         if config_of(parent).get('azure') and not recorded_ok(parent)[0]:
             sys.exit(f'✗ {name_of(parent)} is not recorded and current: record the course in order')
-    lay(step)
     env = {**environment(), 'AZURE_CONFIG_DIR': str(SPINE_ROOT / 'azure-record')}
     run(['chown', '-R', f'{USER}:{USER}', str(SPINE_ROOT)])
     login = (f'az login --service-principal -u "{os.environ["AZURE_CLIENT_ID"]}" -p "$AZ_SECRET" --tenant "{os.environ["AZURE_TENANT_ID"]}" -o none'
@@ -690,6 +691,9 @@ def record(step: Path) -> int:
     if sub_name and sub_name != 'sub-tradefin-dev':
         names[sub_name] = 'sub-tradefin-dev'
     norm = Normaliser(real, names)
+    if config.get('restore'):
+        restore_azure(lineage_of(step)[-2], env)
+    lay(step)
     transcript, captured, _ = session_of(step, env, normalise=norm.output)
     leaks = norm.refuse(transcript + '\n'.join(captured.values()))
     # A dropped connection is the network's, not the lesson's: record the step again
@@ -709,6 +713,30 @@ def record(step: Path) -> int:
                                                     'azure_cli': az}, indent=2) + '\n')
     print(f'✓ recorded {name_of(step)}')
     return 0
+
+
+def restore_azure(parent: Path, env: dict) -> None:
+    """{"restore": true}: put the subscription back as the PARENT step left it, silently, by applying
+    the parent's own infra/ (every resource is Terraform, so its code IS its state): the state backend
+    first, then apply until plan says No changes. A just re-created name can answer 404 for a while:
+    on an error, wait, untaint, apply again."""
+    lay(parent)
+    run(['chown', '-R', f'{USER}:{USER}', str(SPINE_ROOT)])
+    r = as_ana('bash infra/bootstrap.sh >/dev/null 2>&1', env)
+    if r.returncode:
+        sys.exit(f'✗ restoring {name_of(parent)}: the state backend could not be made')
+    apply = 'cd infra && terraform init -input=false >/dev/null 2>&1 && terraform apply -var-file=envs/dev.tfvars -auto-approve -input=false -no-color 2>&1'
+    for attempt in range(6):
+        r = as_ana(apply, env)
+        plan = as_ana('cd infra && terraform plan -var-file=envs/dev.tfvars -input=false -no-color -detailed-exitcode >/dev/null 2>&1', env)
+        if plan.returncode == 0:
+            print(f'· restored {name_of(parent)}\'s Azure state')
+            time.sleep(120)  # let new role assignments reach the data plane before the step runs
+            return
+        time.sleep(90)
+        for res in re.findall(r'^\s*# (\S+) is tainted', as_ana('cd infra && terraform plan -var-file=envs/dev.tfvars -input=false -no-color 2>&1', env).stdout, re.M):
+            as_ana(f'cd infra && terraform untaint {res} >/dev/null 2>&1', env)
+    sys.exit(f'✗ could not restore {name_of(parent)}\'s Azure state (plan never settled)')
 
 
 def recorded_ok(step: Path) -> tuple[bool, str]:

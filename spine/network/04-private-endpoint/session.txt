@@ -1,0 +1,6 @@
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+$ Z="-g rg-tradefin-dev -z privatelink.blob.core.windows.net"
+$ Q="[].[name, aRecords[0].ipv4Address]"
+$ az network private-dns record-set a list $Z --query "$Q" -o tsv
+$ az network private-endpoint list -g rg-tradefin-dev --query "[].name" -o tsv

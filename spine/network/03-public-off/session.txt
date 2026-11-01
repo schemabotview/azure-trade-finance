@@ -1,0 +1,5 @@
+$ az storage fs list --query "[].name" -o tsv
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+$ az storage account show -n sttradefindev --query publicNetworkAccess -o tsv
+$ az storage fs list --query "[].name" -o tsv

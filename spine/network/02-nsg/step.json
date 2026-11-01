@@ -1,0 +1,1 @@
+{"from": "network/01-vnet", "changes": ["infra/modules/network/main.tf"], "azure": true, "setup": ["cd infra && terraform init -input=false >/dev/null"]}

@@ -1,0 +1,4 @@
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+$ V="-g rg-tradefin-dev --vnet-name vnet-tradefin-dev"
+$ az network vnet subnet list $V --query "[].[name, addressPrefix]" -o tsv

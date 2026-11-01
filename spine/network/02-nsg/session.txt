@@ -1,0 +1,5 @@
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+$ N="-g rg-tradefin-dev --nsg-name nsg-tradefin-shir --include-default"
+$ Q="sort_by([], &priority)[].[priority, direction, access, name]"
+$ az network nsg rule list $N --query "$Q" -o tsv
