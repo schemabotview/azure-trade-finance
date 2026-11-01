@@ -577,6 +577,12 @@ TRANSPORT = ('HTTP response was nil', 'connection may have been reset', 'connect
 SECRETS = ('AZURE_TENANT_ID', 'AZURE_SUBSCRIPTION_ID', 'AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET')
 
 
+# The last moment in TradeBook's data (tradebook_gen's LATE_AT, §5.6's race): every timestamp at or before
+# it is the business's own and is never shifted; a recording happens after it.
+from datetime import datetime as _dt
+BUSINESS_END = _dt(2026, 11, 1, 2, 0, 7)
+
+
 class Normaliser:
     """Real ids, hosts, emails and timestamps → the values in COURSE-PLAN.md, "Facts". Every other GUID
     becomes a stable placeholder in order of first appearance; timestamps keep their spacing from a
@@ -648,6 +654,8 @@ class Normaliser:
         def stamp(m: re.Match) -> str:
             raw = m.group(0)
             t = datetime.fromisoformat(raw.replace('Z', '+00:00')).replace(tzinfo=None)
+            if t <= BUSINESS_END:  # TradeBook's own time (a window end, a watermark): data, not a clock
+                return raw
             self.t0 = self.t0 or t
             shown = datetime.fromisoformat(self.CLOCK) + (t - self.t0)
             return shown.isoformat(timespec='seconds') + ('Z' if raw.endswith('Z') else '+00:00' if '+' in raw[10:] else '')

@@ -1,0 +1,7 @@
+$ Q="value[].[name, properties.type]"
+$ bash adf/adf.sh get integrationRuntimes --query "$Q" -o tsv
+ir-tradebook-shir	SelfHosted
+$ bash adf/adf.sh status ir-tradebook-shir
+Online
+vm-bank-shir
+5.62.9520.4

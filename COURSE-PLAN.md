@@ -306,12 +306,12 @@ and writes to the emulated lake, so the frame carries the emulated label.
 | --- | --- | --- | --- | --- |
 | 1 | Data Factory's parts | `adf-tradefin-dev` deployed by Terraform | pipeline → activities; linked service → dataset | A |
 | 2 | Integration runtimes | Azure IR vs `ir-tradebook-shir` | which IR runs which activity | A |
-| 3 | A linked service to TradeBook | through the SHIR, password from Key Vault | ADF → SHIR → TradeBook; vault in the side | A |
+| 3 | A linked service to TradeBook | through the SHIR, password from Key Vault; TradeBook stands in as a PostgreSQL VM in the bank network, peered to the lake's VNet (the VPN's stand-in) | ADF → SHIR → TradeBook; vault in the side | A |
 | 4 | The Copy activity | one table to `landing/` | source query → sink folder | A |
 | 5 | The watermark pipeline | Lookup → Copy → G1 → commit watermark | the activity chain, success paths | A |
 | 6 | Parameters and expressions | `batch_id`, the window | `@pipeline().parameters` → the paths | A |
 | 7 | Triggers | `tr_nightly_0200`; tumbling window vs schedule | windows on a timeline | A |
-| 8 | Monitoring a run | a failed G1, rerun from the failed activity | run → activity runs, one red | A |
+| 8 | Monitoring a run | the runtime offline mid-night: a failed run, its activity runs, a rerun from the failed activity (a gate's FAIL is data, and is never fixed by a rerun: §5.6) | run → activity runs, one red | A |
 
 **8. `bronze` · Azure Databricks: raw and complete · 8**
 

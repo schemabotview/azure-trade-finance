@@ -1,0 +1,1 @@
+{"from": "network/06-shir", "changes": ["adf/adf.sh", "infra/adf-links.tf"], "azure": true, "restore": true, "setup": ["cd infra && terraform init -input=false >/dev/null"]}

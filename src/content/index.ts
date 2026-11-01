@@ -4,6 +4,7 @@ import { start } from './start'
 import { secure } from './secure'
 import { land } from './land'
 import { network } from './network'
+import { extract } from './extract'
 import { bronzeCourse } from './bronze'
 import { silver } from './silver'
 import { gold } from './gold'
@@ -20,6 +21,7 @@ export const COURSES: Record<string, Course> = {
   [secure.id]: secure,
   [land.id]: land,
   [network.id]: network,
+  [extract.id]: extract,
   [bronzeCourse.id]: bronzeCourse,
   [silver.id]: silver,
   [gold.id]: gold,

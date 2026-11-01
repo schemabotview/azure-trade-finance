@@ -1,0 +1,538 @@
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+Acquiring state lock. This may take a few moments...
+random_password.tradebook: Refreshing state... [id=none]
+random_password.tradebook_admin: Refreshing state... [id=none]
+random_password.shir: Refreshing state... [id=none]
+module.storage.data.azurerm_client_config.me: Reading...
+module.storage.data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW5
+0Q29uZmlncy9jbGllbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN
+0SWQ9MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDA
+wMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDA
+tMDAwMC0wMDAwMDAwMDAwYTE=]
+data.azurerm_policy_definition.tag: Reading...
+data.azurerm_policy_definition.tag: Read complete after 6s [id=/providers/Micros
+oft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001002]
+data.azurerm_policy_definition.locations: Reading...
+data.azurerm_policy_definition.locations: Read complete after 5s [id=/providers/
+Microsoft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001003]
+data.azurerm_client_config.me: Reading...
+data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW50Q29uZmlncy9jbG
+llbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN0SWQ9MDAwMDAwMD
+AtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDAwMDAwLTAwMDAtMD
+AwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMD
+AwMDAwYTE=]
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+azurerm_public_ip.nat: Refreshing state... [id=/subscriptions/00000000-0000-0000
+-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/pu
+blicIPAddresses/pip-bank-nat]
+azurerm_virtual_network.bank: Refreshing state... [id=/subscriptions/00000000-00
+00-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Net
+work/virtualNetworks/vnet-bank-onprem]
+azurerm_role_assignment.secrets_officer: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001004]
+azurerm_monitor_action_group.risk: Refreshing state... [id=/subscriptions/000000
+00-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsof
+t.Insights/actionGroups/ag-trade-risk]
+azurerm_nat_gateway.bank: Refreshing state... [id=/subscriptions/00000000-0000-0
+000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network
+/natGateways/ng-bank-out]
+azurerm_resource_group_policy_assignment.locations: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Authorization/policyAssignments/allowed-locations]
+azurerm_private_dns_zone.lake["dfs"]: Refreshing state... [id=/subscriptions/000
+00000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micro
+soft.Network/privateDnsZones/privatelink.dfs.core.windows.net]
+azurerm_resource_group_policy_assignment.owner_tag: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Authorization/policyAssignments/require-owner-tag]
+azurerm_private_dns_zone.lake["blob"]: Refreshing state... [id=/subscriptions/00
+000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micr
+osoft.Network/privateDnsZones/privatelink.blob.core.windows.net]
+azurerm_user_assigned_identity.pipeline: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.ManagedIdentity/userAssignedIdentities/id-tradefin-pipeline]
+azurerm_network_security_group.bank: Refreshing state... [id=/subscriptions/0000
+0000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micros
+oft.Network/networkSecurityGroups/nsg-bank-firewall]
+module.keyvault.azurerm_key_vault.main: Refreshing state... [id=/subscriptions/0
+0000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mic
+rosoft.KeyVault/vaults/kv-tradefin-dev]
+azurerm_subnet.bank: Refreshing state... [id=/subscriptions/00000000-0000-0000-0
+000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/virt
+ualNetworks/vnet-bank-onprem/subnets/snet-bank-servers]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+module.network.azurerm_network_security_group.shir: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Network/networkSecurityGroups/nsg-tradefin-shir]
+module.network.azurerm_virtual_network.main: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Network/virtualNetworks/vnet-tradefin-dev]
+azurerm_consumption_budget_resource_group.main: Refreshing state... [id=/subscri
+ptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provi
+ders/Microsoft.Consumption/budgets/budget-tradefin-dev]
+azurerm_nat_gateway_public_ip_association.bank: Refreshing state... [id=/subscri
+ptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provi
+ders/Microsoft.Network/natGateways/ng-bank-out|/subscriptions/00000000-0000-0000
+-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/pu
+blicIPAddresses/pip-bank-nat]
+azurerm_private_dns_zone_virtual_network_link.bank["blob"]: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows
+.net/virtualNetworkLinks/link-bank-blob]
+azurerm_private_dns_zone_virtual_network_link.bank["dfs"]: Refreshing state... [
+id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefi
+n-dev/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.n
+et/virtualNetworkLinks/link-bank-dfs]
+azurerm_data_factory.main: Refreshing state... [id=/subscriptions/00000000-0000-
+0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.DataFa
+ctory/factories/adf-tradefin-dev]
+azurerm_role_assignment.pipeline_reader: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001005]
+azurerm_subnet_network_security_group_association.bank: Refreshing state... [id=
+/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-d
+ev/providers/Microsoft.Network/virtualNetworks/vnet-bank-onprem/subnets/snet-ban
+k-servers]
+azurerm_network_interface.shir: Refreshing state... [id=/subscriptions/00000000-
+0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.N
+etwork/networkInterfaces/nic-bank-shir]
+azurerm_network_interface.tradebook: Refreshing state... [id=/subscriptions/0000
+0000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micros
+oft.Network/networkInterfaces/nic-bank-tradebook]
+azurerm_subnet_nat_gateway_association.bank: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Network/virtualNetworks/vnet-bank-onprem/subnets/snet-bank-servers]
+module.storage.azurerm_storage_management_policy.lifecycle: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/managementPolic
+ies/default]
+module.storage.azurerm_role_assignment.data: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev/providers/Microsoft.Authorizat
+ion/roleAssignments/00000000-0000-0000-0000-000000001006]
+module.storage.azurerm_storage_container.zone["bronze"]: Refreshing state... [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defau
+lt/containers/bronze]
+module.storage.azurerm_storage_container.zone["reference"]: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/de
+fault/containers/reference]
+module.storage.azurerm_storage_container.zone["silver"]: Refreshing state... [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defau
+lt/containers/silver]
+module.storage.azurerm_storage_container.zone["landing"]: Refreshing state... [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defa
+ult/containers/landing]
+module.storage.azurerm_storage_container.zone["gold"]: Refreshing state... [id=/
+subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-de
+v/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/default
+/containers/gold]
+module.network.azurerm_subnet.main["snet-shir"]: Refreshing state... [id=/subscr
+iptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/prov
+iders/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-shir]
+module.network.azurerm_subnet.main["snet-dbx-container"]: Refreshing state... [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-
+dbx-container]
+module.network.azurerm_subnet.main["snet-dbx-host"]: Refreshing state... [id=/su
+bscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/
+providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-dbx-h
+ost]
+module.network.azurerm_subnet.main["snet-pe"]: Refreshing state... [id=/subscrip
+tions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provid
+ers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-pe]
+azurerm_data_factory_integration_runtime_self_hosted.tradebook: Refreshing state
+... [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tr
+adefin-dev/providers/Microsoft.DataFactory/factories/adf-tradefin-dev/integratio
+nRuntimes/ir-tradebook-shir]
+azurerm_role_assignment.pipeline_secrets: Refreshing state... [id=/subscriptions
+/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/M
+icrosoft.KeyVault/vaults/kv-tradefin-dev/providers/Microsoft.Authorization/roleA
+ssignments/00000000-0000-0000-0000-000000001007]
+azurerm_key_vault_secret.tradebook: Refreshing state... [id=https://kv-tradefin-
+dev.vault.azure.net/secrets/tradebook-adf-password/0371b8e0e5ec4cefaf2b46f05bc74
+f93]
+azurerm_windows_virtual_machine.shir: Refreshing state... [id=/subscriptions/000
+00000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micro
+soft.Compute/virtualMachines/vm-bank-shir]
+azurerm_linux_virtual_machine.tradebook: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Compute/virtualMachines/vm-bank-tradebook]
+azurerm_virtual_network_peering.bank_to_tradefin: Refreshing state... [id=/subsc
+riptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/pro
+viders/Microsoft.Network/virtualNetworks/vnet-bank-onprem/virtualNetworkPeerings
+/peer-bank-to-tradefin]
+azurerm_private_dns_zone_virtual_network_link.lake["dfs"]: Refreshing state... [
+id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefi
+n-dev/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.n
+et/virtualNetworkLinks/link-dfs]
+azurerm_private_dns_zone_virtual_network_link.lake["blob"]: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows
+.net/virtualNetworkLinks/link-blob]
+module.network.azurerm_subnet_network_security_group_association.shir: Refreshin
+g state... [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroup
+s/rg-tradefin-dev/providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/
+subnets/snet-shir]
+azurerm_data_factory_credential_user_managed_identity.pipeline: Refreshing state
+... [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tr
+adefin-dev/providers/Microsoft.DataFactory/factories/adf-tradefin-dev/credential
+s/cred-pipeline]
+azurerm_role_assignment.pipeline_landing: Refreshing state... [id=/subscriptions
+/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/M
+icrosoft.Storage/storageAccounts/sttradefindev/blobServices/default/containers/l
+anding/providers/Microsoft.Authorization/roleAssignments/00000000-0000-0000-0000
+-000000001008]
+azurerm_private_endpoint.lake["dfs"]: Refreshing state... [id=/subscriptions/000
+00000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micro
+soft.Network/privateEndpoints/pe-sttradefindev-dfs]
+azurerm_private_endpoint.lake["blob"]: Refreshing state... [id=/subscriptions/00
+000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micr
+osoft.Network/privateEndpoints/pe-sttradefindev-blob]
+azurerm_virtual_machine_extension.shir: Refreshing state... [id=/subscriptions/0
+0000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mic
+rosoft.Compute/virtualMachines/vm-bank-shir/extensions/install-shir]
+azurerm_virtual_network_peering.tradefin_to_bank: Refreshing state... [id=/subsc
+riptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/pro
+viders/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/virtualNetworkPeering
+s/peer-tradefin-to-bank]
+azurerm_data_factory_linked_custom_service.vault: Refreshing state... [id=/subsc
+riptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/pro
+viders/Microsoft.DataFactory/factories/adf-tradefin-dev/linkedservices/ls_keyvau
+lt]
+azurerm_data_factory_linked_custom_service.lake: Refreshing state... [id=/subscr
+iptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/prov
+iders/Microsoft.DataFactory/factories/adf-tradefin-dev/linkedservices/ls_lake]
+azurerm_resource_group_template_deployment.tradebook: Refreshing state... [id=/s
+ubscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev
+/providers/Microsoft.Resources/deployments/ls-tradebook]
+azurerm_data_factory_custom_dataset.landing["csv"]: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.DataFactory/factories/adf-tradefin-dev/datasets/ds_landing_cs
+v]
+azurerm_data_factory_custom_dataset.landing["text"]: Refreshing state... [id=/su
+bscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/
+providers/Microsoft.DataFactory/factories/adf-tradefin-dev/datasets/ds_landing_t
+ext]
+azurerm_data_factory_custom_dataset.tradebook: Refreshing state... [id=/subscrip
+tions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provid
+ers/Microsoft.DataFactory/factories/adf-tradefin-dev/datasets/ds_tradebook]
+azurerm_data_factory_pipeline.main["pl_full_load"]: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.DataFactory/factories/adf-tradefin-dev/pipelines/pl_full_load
+]
+azurerm_data_factory_pipeline.main["pl_tradebook_ping"]: Refreshing state... [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.DataFactory/factories/adf-tradefin-dev/pipelines/pl_trad
+ebook_ping]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_data_factory_pipeline.main["pl_extract"] will be created
+  + resource "azurerm_data_factory_pipeline" "main" {
+      + activities_json = jsonencode(
+            [
+              + {
+                  + name           = "lookup_watermark"
+                  + policy         = {
+                      + retry   = 0
+                      + timeout = "0.00:05:00"
+                    }
+                  + type           = "Lookup"
+                  + typeProperties = {
+                      + dataset      = {
+                          + parameters    = {
+                              + file   = "lc_deals.watermark"
+                              + folder = "_control"
+                            }
+                          + referenceName = "ds_landing_text"
+                          + type          = "DatasetReference"
+                        }
+                      + firstRowOnly = true
+                      + source       = {
+                          + formatSettings = {
+                              + compressionProperties = null
+                              + type                  = "DelimitedTextReadSettin
+gs"
+                            }
+                          + storeSettings  = {
+                              + type = "AzureBlobFSReadSettings"
+                            }
+                          + type           = "DelimitedTextSource"
+                        }
+                    }
+                },
+              + {
+                  + dependsOn      = [
+                      + {
+                          + activity             = "lookup_watermark"
+                          + dependencyConditions = [
+                              + "Succeeded",
+                            ]
+                        },
+                    ]
+                  + name           = "count_window"
+                  + policy         = {
+                      + retry   = 0
+                      + timeout = "0.00:05:00"
+                    }
+                  + type           = "Lookup"
+                  + typeProperties = {
+                      + dataset      = {
+                          + referenceName = "ds_tradebook"
+                          + type          = "DatasetReference"
+                        }
+                      + firstRowOnly = true
+                      + source       = {
+                          + query = {
+                              + type  = "Expression"
+                              + value = "SELECT count(*) AS n FROM lc_deals WHER
+E updated_at > '@{activity('lookup_watermark').output.firstRow.Prop_0}' AND upda
+ted_at <= '@{pipeline().parameters.window_end}'"
+                            }
+                          + type  = "PostgreSqlV2Source"
+                        }
+                    }
+                },
+              + {
+                  + dependsOn      = [
+                      + {
+                          + activity             = "count_window"
+                          + dependencyConditions = [
+                              + "Succeeded",
+                            ]
+                        },
+                    ]
+                  + inputs         = [
+                      + {
+                          + referenceName = "ds_tradebook"
+                          + type          = "DatasetReference"
+                        },
+                    ]
+                  + name           = "copy_window"
+                  + outputs        = [
+                      + {
+                          + parameters    = {
+                              + file   = "part-00000.csv"
+                              + folder = {
+                                  + type  = "Expression"
+                                  + value = "lc_deals/batch_id=@{pipeline().para
+meters.batch_id}"
+                                }
+                            }
+                          + referenceName = "ds_landing_csv"
+                          + type          = "DatasetReference"
+                        },
+                    ]
+                  + policy         = {
+                      + retry   = 0
+                      + timeout = "0.00:05:00"
+                    }
+                  + type           = "Copy"
+                  + typeProperties = {
+                      + sink   = {
+                          + formatSettings = {
+                              + fileExtension = ".csv"
+                              + type          = "DelimitedTextWriteSettings"
+                            }
+                          + storeSettings  = {
+                              + type = "AzureBlobFSWriteSettings"
+                            }
+                          + type           = "DelimitedTextSink"
+                        }
+                      + source = {
+                          + query = {
+                              + type  = "Expression"
+                              + value = "SELECT * FROM lc_deals WHERE updated_at
+ > '@{activity('lookup_watermark').output.firstRow.Prop_0}' AND updated_at <= '@
+{pipeline().parameters.window_end}' ORDER BY lc_id"
+                            }
+                          + type  = "PostgreSqlV2Source"
+                        }
+                    }
+                },
+              + {
+                  + dependsOn      = [
+                      + {
+                          + activity             = "copy_window"
+                          + dependencyConditions = [
+                              + "Succeeded",
+                            ]
+                        },
+                    ]
+                  + name           = "g1"
+                  + type           = "IfCondition"
+                  + typeProperties = {
+                      + expression        = {
+                          + type  = "Expression"
+                          + value = "@equals(int(activity('count_window').output
+.firstRow.n), activity('copy_window').output.rowsCopied)"
+                        }
+                      + ifFalseActivities = [
+                          + {
+                              + name           = "g1_fail"
+                              + type           = "Fail"
+                              + typeProperties = {
+                                  + errorCode = "G1"
+                                  + message   = {
+                                      + type  = "Expression"
+                                      + value = "G1 FAIL: batch @{pipeline().par
+ameters.batch_id}: @{activity('count_window').output.firstRow.n} rows in the win
+dow, @{activity('copy_window').output.rowsCopied} landed"
+                                    }
+                                }
+                            },
+                        ]
+                      + ifTrueActivities  = [
+                          + {
+                              + dependsOn      = []
+                              + inputs         = [
+                                  + {
+                                      + referenceName = "ds_tradebook"
+                                      + type          = "DatasetReference"
+                                    },
+                                ]
+                              + name           = "seal"
+                              + outputs        = [
+                                  + {
+                                      + parameters    = {
+                                          + file   = "_SUCCESS"
+                                          + folder = {
+                                              + type  = "Expression"
+                                              + value = "lc_deals/batch_id=@{pip
+eline().parameters.batch_id}"
+                                            }
+                                        }
+                                      + referenceName = "ds_landing_text"
+                                      + type          = "DatasetReference"
+                                    },
+                                ]
+                              + policy         = {
+                                  + retry   = 0
+                                  + timeout = "0.00:05:00"
+                                }
+                              + type           = "Copy"
+                              + typeProperties = {
+                                  + sink   = {
+                                      + formatSettings = {
+                                          + fileExtension = ".csv"
+                                          + type          = "DelimitedTextWriteS
+ettings"
+                                        }
+                                      + storeSettings  = {
+                                          + type = "AzureBlobFSWriteSettings"
+                                        }
+                                      + type           = "DelimitedTextSink"
+                                    }
+                                  + source = {
+                                      + query = {
+                                          + type  = "Expression"
+                                          + value = "SELECT 1 AS sealed WHERE fa
+lse"
+                                        }
+                                      + type  = "PostgreSqlV2Source"
+                                    }
+                                }
+                            },
+                          + {
+                              + dependsOn      = [
+                                  + {
+                                      + activity             = "seal"
+                                      + dependencyConditions = [
+                                          + "Succeeded",
+                                        ]
+                                    },
+                                ]
+                              + inputs         = [
+                                  + {
+                                      + referenceName = "ds_tradebook"
+                                      + type          = "DatasetReference"
+                                    },
+                                ]
+                              + name           = "commit_watermark"
+                              + outputs        = [
+                                  + {
+                                      + parameters    = {
+                                          + file   = "lc_deals.watermark"
+                                          + folder = "_control"
+                                        }
+                                      + referenceName = "ds_landing_text"
+                                      + type          = "DatasetReference"
+                                    },
+                                ]
+                              + policy         = {
+                                  + retry   = 0
+                                  + timeout = "0.00:05:00"
+                                }
+                              + type           = "Copy"
+                              + typeProperties = {
+                                  + sink   = {
+                                      + formatSettings = {
+                                          + fileExtension = ".csv"
+                                          + type          = "DelimitedTextWriteS
+ettings"
+                                        }
+                                      + storeSettings  = {
+                                          + type = "AzureBlobFSWriteSettings"
+                                        }
+                                      + type           = "DelimitedTextSink"
+                                    }
+                                  + source = {
+                                      + query = {
+                                          + type  = "Expression"
+                                          + value = "SELECT '@{pipeline().parame
+ters.window_end}' AS watermark"
+                                        }
+                                      + type  = "PostgreSqlV2Source"
+                                    }
+                                }
+                            },
+                        ]
+                    }
+                },
+            ]
+        )
+      + data_factory_id = "/subscriptions/00000000-0000-0000-0000-0000000000d1/r
+esourceGroups/rg-tradefin-dev/providers/Microsoft.DataFactory/factories/adf-trad
+efin-dev"
+      + id              = (known after apply)
+      + name            = "pl_extract"
+      + parameters      = {
+          + "batch_id"   = null
+          + "window_end" = null
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+azurerm_data_factory_pipeline.main["pl_extract"]: Creating...
+azurerm_data_factory_pipeline.main["pl_extract"]: Creation complete after 3s [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.DataFactory/factories/adf-tradefin-dev/pipelines/pl_extr
+act]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+$ cd ..
+$ W=window_end=2026-11-01T02:00:00Z
+$ R=$(bash adf/adf.sh run pl_extract batch_id=42 $W)
+$ bash adf/adf.sh wait $R
+Succeeded
+$ bash adf/adf.sh activities $R
+lookup_watermark	Succeeded	{"Prop_0":"2026-10-31T02:00:00Z"}
+count_window	Succeeded	{"n":120}
+copy_window	Succeeded	120
+g1	Succeeded
+seal	Succeeded	0
+commit_watermark	Succeeded	1

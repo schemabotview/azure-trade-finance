@@ -1,1 +1,1 @@
-{"from": "network/06-shir", "changes": ["requirements.txt", "jars.txt", "conf/", "pipeline/"], "env": true, "venv": true}
+{"from": "extract/08-monitor", "changes": ["requirements.txt", "jars.txt", "conf/", "pipeline/"], "env": true, "venv": true}

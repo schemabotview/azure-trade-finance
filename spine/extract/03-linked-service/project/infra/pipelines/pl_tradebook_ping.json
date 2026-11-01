@@ -1,0 +1,28 @@
+{
+  "parameters": [],
+  "activities": [
+    {
+      "name": "count_lcs",
+      "type": "Lookup",
+      "dependsOn": [],
+      "policy": {
+        "timeout": "0.00:05:00",
+        "retry": 0
+      },
+      "typeProperties": {
+        "source": {
+          "type": "PostgreSqlV2Source",
+          "query": {
+            "value": "SELECT count(*) AS lcs, max(updated_at)::text AS last_change FROM lc_deals",
+            "type": "Expression"
+          }
+        },
+        "dataset": {
+          "referenceName": "ds_tradebook",
+          "type": "DatasetReference"
+        },
+        "firstRowOnly": true
+      }
+    }
+  ]
+}

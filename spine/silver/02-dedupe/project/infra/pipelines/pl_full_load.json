@@ -1,0 +1,106 @@
+{
+  "parameters": [
+    "batch_id",
+    "window_end"
+  ],
+  "activities": [
+    {
+      "name": "copy_lc_deals",
+      "type": "Copy",
+      "dependsOn": [],
+      "policy": {
+        "timeout": "0.00:05:00",
+        "retry": 0
+      },
+      "typeProperties": {
+        "source": {
+          "type": "PostgreSqlV2Source",
+          "query": {
+            "value": "SELECT * FROM lc_deals ORDER BY lc_id",
+            "type": "Expression"
+          }
+        },
+        "sink": {
+          "type": "DelimitedTextSink",
+          "storeSettings": {
+            "type": "AzureBlobFSWriteSettings"
+          },
+          "formatSettings": {
+            "type": "DelimitedTextWriteSettings",
+            "fileExtension": ".csv"
+          }
+        }
+      },
+      "inputs": [
+        {
+          "referenceName": "ds_tradebook",
+          "type": "DatasetReference"
+        }
+      ],
+      "outputs": [
+        {
+          "referenceName": "ds_landing_csv",
+          "type": "DatasetReference",
+          "parameters": {
+            "folder": {
+              "value": "lc_deals/batch_id=@{pipeline().parameters.batch_id}",
+              "type": "Expression"
+            },
+            "file": "part-00000.csv"
+          }
+        }
+      ]
+    },
+    {
+      "name": "commit_watermark",
+      "type": "Copy",
+      "dependsOn": [
+        {
+          "activity": "copy_lc_deals",
+          "dependencyConditions": [
+            "Succeeded"
+          ]
+        }
+      ],
+      "policy": {
+        "timeout": "0.00:05:00",
+        "retry": 0
+      },
+      "typeProperties": {
+        "source": {
+          "type": "PostgreSqlV2Source",
+          "query": {
+            "value": "SELECT '@{pipeline().parameters.window_end}' AS watermark",
+            "type": "Expression"
+          }
+        },
+        "sink": {
+          "type": "DelimitedTextSink",
+          "storeSettings": {
+            "type": "AzureBlobFSWriteSettings"
+          },
+          "formatSettings": {
+            "type": "DelimitedTextWriteSettings",
+            "fileExtension": ".csv"
+          }
+        }
+      },
+      "inputs": [
+        {
+          "referenceName": "ds_tradebook",
+          "type": "DatasetReference"
+        }
+      ],
+      "outputs": [
+        {
+          "referenceName": "ds_landing_text",
+          "type": "DatasetReference",
+          "parameters": {
+            "folder": "_control",
+            "file": "lc_deals.watermark"
+          }
+        }
+      ]
+    }
+  ]
+}

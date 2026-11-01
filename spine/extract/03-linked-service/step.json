@@ -1,0 +1,1 @@
+{"from": "extract/02-runtimes", "changes": ["infra/adf-tradebook.tf", "infra/pipelines.tf", "infra/pipelines/pl_tradebook_ping.json", "infra/tradebook-init.yaml", "infra/tradebook.tf"], "azure": true, "setup": ["cd infra && terraform init -input=false >/dev/null"], "generated": ["tradebook"]}

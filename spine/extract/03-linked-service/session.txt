@@ -1,0 +1,594 @@
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+Acquiring state lock. This may take a few moments...
+random_password.shir: Refreshing state... [id=none]
+module.storage.data.azurerm_client_config.me: Reading...
+module.storage.data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW5
+0Q29uZmlncy9jbGllbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN
+0SWQ9MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDA
+wMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDA
+tMDAwMC0wMDAwMDAwMDAwYTE=]
+data.azurerm_policy_definition.locations: Reading...
+data.azurerm_policy_definition.locations: Read complete after 3s [id=/providers/
+Microsoft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001002]
+data.azurerm_client_config.me: Reading...
+data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW50Q29uZmlncy9jbG
+llbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN0SWQ9MDAwMDAwMD
+AtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDAwMDAwLTAwMDAtMD
+AwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMD
+AwMDAwYTE=]
+data.azurerm_policy_definition.tag: Reading...
+data.azurerm_policy_definition.tag: Read complete after 3s [id=/providers/Micros
+oft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001003]
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+azurerm_resource_group_policy_assignment.locations: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Authorization/policyAssignments/allowed-locations]
+azurerm_monitor_action_group.risk: Refreshing state... [id=/subscriptions/000000
+00-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsof
+t.Insights/actionGroups/ag-trade-risk]
+azurerm_virtual_network.bank: Refreshing state... [id=/subscriptions/00000000-00
+00-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Net
+work/virtualNetworks/vnet-bank-onprem]
+azurerm_network_security_group.bank: Refreshing state... [id=/subscriptions/0000
+0000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micros
+oft.Network/networkSecurityGroups/nsg-bank-firewall]
+azurerm_resource_group_policy_assignment.owner_tag: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Authorization/policyAssignments/require-owner-tag]
+azurerm_user_assigned_identity.pipeline: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.ManagedIdentity/userAssignedIdentities/id-tradefin-pipeline]
+azurerm_public_ip.nat: Refreshing state... [id=/subscriptions/00000000-0000-0000
+-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/pu
+blicIPAddresses/pip-bank-nat]
+azurerm_role_assignment.secrets_officer: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001004]
+azurerm_private_dns_zone.lake["blob"]: Refreshing state... [id=/subscriptions/00
+000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micr
+osoft.Network/privateDnsZones/privatelink.blob.core.windows.net]
+azurerm_private_dns_zone.lake["dfs"]: Refreshing state... [id=/subscriptions/000
+00000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micro
+soft.Network/privateDnsZones/privatelink.dfs.core.windows.net]
+module.keyvault.azurerm_key_vault.main: Refreshing state... [id=/subscriptions/0
+0000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mic
+rosoft.KeyVault/vaults/kv-tradefin-dev]
+azurerm_nat_gateway.bank: Refreshing state... [id=/subscriptions/00000000-0000-0
+000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network
+/natGateways/ng-bank-out]
+azurerm_consumption_budget_resource_group.main: Refreshing state... [id=/subscri
+ptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provi
+ders/Microsoft.Consumption/budgets/budget-tradefin-dev]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+module.network.azurerm_network_security_group.shir: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Network/networkSecurityGroups/nsg-tradefin-shir]
+module.network.azurerm_virtual_network.main: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Network/virtualNetworks/vnet-tradefin-dev]
+azurerm_subnet.bank: Refreshing state... [id=/subscriptions/00000000-0000-0000-0
+000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/virt
+ualNetworks/vnet-bank-onprem/subnets/snet-bank-servers]
+azurerm_role_assignment.pipeline_reader: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001005]
+azurerm_data_factory.main: Refreshing state... [id=/subscriptions/00000000-0000-
+0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.DataFa
+ctory/factories/adf-tradefin-dev]
+azurerm_nat_gateway_public_ip_association.bank: Refreshing state... [id=/subscri
+ptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provi
+ders/Microsoft.Network/natGateways/ng-bank-out|/subscriptions/00000000-0000-0000
+-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/pu
+blicIPAddresses/pip-bank-nat]
+module.storage.azurerm_role_assignment.data: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev/providers/Microsoft.Authorizat
+ion/roleAssignments/00000000-0000-0000-0000-000000001006]
+module.storage.azurerm_storage_management_policy.lifecycle: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/managementPolic
+ies/default]
+module.storage.azurerm_storage_container.zone["landing"]: Refreshing state... [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defa
+ult/containers/landing]
+module.storage.azurerm_storage_container.zone["bronze"]: Refreshing state... [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defau
+lt/containers/bronze]
+module.storage.azurerm_storage_container.zone["silver"]: Refreshing state... [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defau
+lt/containers/silver]
+module.storage.azurerm_storage_container.zone["gold"]: Refreshing state... [id=/
+subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-de
+v/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/default
+/containers/gold]
+module.storage.azurerm_storage_container.zone["reference"]: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/de
+fault/containers/reference]
+module.network.azurerm_subnet.main["snet-shir"]: Refreshing state... [id=/subscr
+iptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/prov
+iders/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-shir]
+module.network.azurerm_subnet.main["snet-pe"]: Refreshing state... [id=/subscrip
+tions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provid
+ers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-pe]
+module.network.azurerm_subnet.main["snet-dbx-container"]: Refreshing state... [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-
+dbx-container]
+module.network.azurerm_subnet.main["snet-dbx-host"]: Refreshing state... [id=/su
+bscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/
+providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-dbx-h
+ost]
+azurerm_subnet_nat_gateway_association.bank: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Network/virtualNetworks/vnet-bank-onprem/subnets/snet-bank-servers]
+azurerm_network_interface.shir: Refreshing state... [id=/subscriptions/00000000-
+0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.N
+etwork/networkInterfaces/nic-bank-shir]
+azurerm_subnet_network_security_group_association.bank: Refreshing state... [id=
+/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-d
+ev/providers/Microsoft.Network/virtualNetworks/vnet-bank-onprem/subnets/snet-ban
+k-servers]
+azurerm_data_factory_integration_runtime_self_hosted.tradebook: Refreshing state
+... [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tr
+adefin-dev/providers/Microsoft.DataFactory/factories/adf-tradefin-dev/integratio
+nRuntimes/ir-tradebook-shir]
+azurerm_role_assignment.pipeline_secrets: Refreshing state... [id=/subscriptions
+/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/M
+icrosoft.KeyVault/vaults/kv-tradefin-dev/providers/Microsoft.Authorization/roleA
+ssignments/00000000-0000-0000-0000-000000001007]
+azurerm_private_dns_zone_virtual_network_link.lake["blob"]: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows
+.net/virtualNetworkLinks/link-blob]
+azurerm_private_dns_zone_virtual_network_link.lake["dfs"]: Refreshing state... [
+id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefi
+n-dev/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.n
+et/virtualNetworkLinks/link-dfs]
+module.network.azurerm_subnet_network_security_group_association.shir: Refreshin
+g state... [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroup
+s/rg-tradefin-dev/providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/
+subnets/snet-shir]
+azurerm_windows_virtual_machine.shir: Refreshing state... [id=/subscriptions/000
+00000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micro
+soft.Compute/virtualMachines/vm-bank-shir]
+azurerm_data_factory_credential_user_managed_identity.pipeline: Refreshing state
+... [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tr
+adefin-dev/providers/Microsoft.DataFactory/factories/adf-tradefin-dev/credential
+s/cred-pipeline]
+azurerm_role_assignment.pipeline_landing: Refreshing state... [id=/subscriptions
+/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/M
+icrosoft.Storage/storageAccounts/sttradefindev/blobServices/default/containers/l
+anding/providers/Microsoft.Authorization/roleAssignments/00000000-0000-0000-0000
+-000000001008]
+azurerm_private_endpoint.lake["blob"]: Refreshing state... [id=/subscriptions/00
+000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micr
+osoft.Network/privateEndpoints/pe-sttradefindev-blob]
+azurerm_private_endpoint.lake["dfs"]: Refreshing state... [id=/subscriptions/000
+00000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micro
+soft.Network/privateEndpoints/pe-sttradefindev-dfs]
+azurerm_virtual_machine_extension.shir: Refreshing state... [id=/subscriptions/0
+0000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mic
+rosoft.Compute/virtualMachines/vm-bank-shir/extensions/install-shir]
+azurerm_data_factory_linked_custom_service.lake: Refreshing state... [id=/subscr
+iptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/prov
+iders/Microsoft.DataFactory/factories/adf-tradefin-dev/linkedservices/ls_lake]
+azurerm_data_factory_linked_custom_service.vault: Refreshing state... [id=/subsc
+riptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/pro
+viders/Microsoft.DataFactory/factories/adf-tradefin-dev/linkedservices/ls_keyvau
+lt]
+azurerm_data_factory_custom_dataset.landing["csv"]: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.DataFactory/factories/adf-tradefin-dev/datasets/ds_landing_cs
+v]
+azurerm_data_factory_custom_dataset.landing["text"]: Refreshing state... [id=/su
+bscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/
+providers/Microsoft.DataFactory/factories/adf-tradefin-dev/datasets/ds_landing_t
+ext]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_data_factory_custom_dataset.tradebook will be created
+  + resource "azurerm_data_factory_custom_dataset" "tradebook" {
+      + data_factory_id      = "/subscriptions/00000000-0000-0000-0000-000000000
+0d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.DataFactory/factories/adf
+-tradefin-dev"
+      + id                   = (known after apply)
+      + name                 = "ds_tradebook"
+      + type                 = "PostgreSqlV2Table"
+      + type_properties_json = jsonencode({})
+
+      + linked_service {
+          + name = "ls_tradebook"
+        }
+    }
+
+  # azurerm_data_factory_pipeline.main["pl_tradebook_ping"] will be created
+  + resource "azurerm_data_factory_pipeline" "main" {
+      + activities_json = jsonencode(
+            [
+              + {
+                  + dependsOn      = []
+                  + name           = "count_lcs"
+                  + policy         = {
+                      + retry   = 0
+                      + timeout = "0.00:05:00"
+                    }
+                  + type           = "Lookup"
+                  + typeProperties = {
+                      + dataset      = {
+                          + referenceName = "ds_tradebook"
+                          + type          = "DatasetReference"
+                        }
+                      + firstRowOnly = true
+                      + source       = {
+                          + query = {
+                              + type  = "Expression"
+                              + value = "SELECT count(*) AS lcs, max(updated_at)
+::text AS last_change FROM lc_deals"
+                            }
+                          + type  = "PostgreSqlV2Source"
+                        }
+                    }
+                },
+            ]
+        )
+      + data_factory_id = "/subscriptions/00000000-0000-0000-0000-0000000000d1/r
+esourceGroups/rg-tradefin-dev/providers/Microsoft.DataFactory/factories/adf-trad
+efin-dev"
+      + id              = (known after apply)
+      + name            = "pl_tradebook_ping"
+    }
+
+  # azurerm_key_vault_secret.tradebook will be created
+  + resource "azurerm_key_vault_secret" "tradebook" {
+      + id                      = (known after apply)
+      + key_vault_id            = "/subscriptions/00000000-0000-0000-0000-000000
+0000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.KeyVault/vaults/kv-tra
+defin-dev"
+      + name                    = "tradebook-adf-password"
+      + resource_id             = (known after apply)
+      + resource_versionless_id = (known after apply)
+      + value                   = (sensitive value)
+      + value_wo                = (write-only attribute)
+      + version                 = (known after apply)
+      + versionless_id          = (known after apply)
+    }
+
+  # azurerm_linux_virtual_machine.tradebook will be created
+  + resource "azurerm_linux_virtual_machine" "tradebook" {
+      + admin_password                                         = (sensitive valu
+e)
+      + admin_username                                         = "dbadmin"
+      + allow_extension_operations                             = (known after ap
+ply)
+      + bypass_platform_safety_checks_on_user_schedule_enabled = false
+      + computer_name                                          = (known after ap
+ply)
+      + custom_data                                            = (sensitive valu
+e)
+      + disable_password_authentication                        = false
+      + disk_controller_type                                   = "NVMe"
+      + extensions_time_budget                                 = "PT1H30M"
+      + id                                                     = (known after ap
+ply)
+      + location                                               = "ukwest"
+      + max_bid_price                                          = -1
+      + name                                                   = "vm-bank-tradeb
+ook"
+      + network_interface_ids                                  = (known after ap
+ply)
+      + os_managed_disk_id                                     = (known after ap
+ply)
+      + patch_assessment_mode                                  = (known after ap
+ply)
+      + patch_mode                                             = (known after ap
+ply)
+      + platform_fault_domain                                  = -1
+      + priority                                               = "Regular"
+      + private_ip_address                                     = (known after ap
+ply)
+      + private_ip_addresses                                   = (known after ap
+ply)
+      + provision_vm_agent                                     = (known after ap
+ply)
+      + public_ip_address                                      = (known after ap
+ply)
+      + public_ip_addresses                                    = (known after ap
+ply)
+      + resource_group_name                                    = "rg-tradefin-de
+v"
+      + size                                                   = "Standard_D2als
+_v7"
+      + tags                                                   = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+      + virtual_machine_id                                     = (known after ap
+ply)
+      + vm_agent_platform_updates_enabled                      = (known after ap
+ply)
+
+      + os_disk {
+          + caching                   = "ReadWrite"
+          + disk_size_gb              = (known after apply)
+          + id                        = (known after apply)
+          + name                      = (known after apply)
+          + storage_account_type      = "Standard_LRS"
+          + write_accelerator_enabled = false
+        }
+
+      + source_image_reference {
+          + offer     = "ubuntu-24_04-lts"
+          + publisher = "Canonical"
+          + sku       = "server"
+          + version   = "latest"
+        }
+
+      + termination_notification (known after apply)
+    }
+
+  # azurerm_network_interface.tradebook will be created
+  + resource "azurerm_network_interface" "tradebook" {
+      + accelerated_networking_enabled = false
+      + applied_dns_servers            = (known after apply)
+      + id                             = (known after apply)
+      + internal_domain_name_suffix    = (known after apply)
+      + ip_forwarding_enabled          = false
+      + location                       = "ukwest"
+      + mac_address                    = (known after apply)
+      + name                           = "nic-bank-tradebook"
+      + private_ip_address             = (known after apply)
+      + private_ip_addresses           = (known after apply)
+      + resource_group_name            = "rg-tradefin-dev"
+      + tags                           = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+      + virtual_machine_id             = (known after apply)
+
+      + ip_configuration {
+          + gateway_load_balancer_frontend_ip_configuration_id = (known after ap
+ply)
+          + name                                               = "ipconfig"
+          + primary                                            = (known after ap
+ply)
+          + private_ip_address                                 = "10.10.1.10"
+          + private_ip_address_allocation                      = "Static"
+          + private_ip_address_version                         = "IPv4"
+          + subnet_id                                          = "/subscriptions
+/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/M
+icrosoft.Network/virtualNetworks/vnet-bank-onprem/subnets/snet-bank-servers"
+        }
+    }
+
+  # azurerm_private_dns_zone_virtual_network_link.bank["blob"] will be created
+  + resource "azurerm_private_dns_zone_virtual_network_link" "bank" {
+      + id                   = (known after apply)
+      + name                 = "link-bank-blob"
+      + private_dns_zone_id  = "/subscriptions/00000000-0000-0000-0000-000000000
+0d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/privateDnsZones/p
+rivatelink.blob.core.windows.net"
+      + registration_enabled = false
+      + resolution_policy    = (known after apply)
+      + tags                 = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+      + virtual_network_id   = "/subscriptions/00000000-0000-0000-0000-000000000
+0d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/virtualNetworks/v
+net-bank-onprem"
+    }
+
+  # azurerm_private_dns_zone_virtual_network_link.bank["dfs"] will be created
+  + resource "azurerm_private_dns_zone_virtual_network_link" "bank" {
+      + id                   = (known after apply)
+      + name                 = "link-bank-dfs"
+      + private_dns_zone_id  = "/subscriptions/00000000-0000-0000-0000-000000000
+0d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/privateDnsZones/p
+rivatelink.dfs.core.windows.net"
+      + registration_enabled = false
+      + resolution_policy    = (known after apply)
+      + tags                 = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+      + virtual_network_id   = "/subscriptions/00000000-0000-0000-0000-000000000
+0d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/virtualNetworks/v
+net-bank-onprem"
+    }
+
+  # azurerm_resource_group_template_deployment.tradebook will be created
+  + resource "azurerm_resource_group_template_deployment" "tradebook" {
+      + deployment_mode     = "Incremental"
+      + id                  = (known after apply)
+      + name                = "ls-tradebook"
+      + output_content      = (known after apply)
+      + parameters_content  = (known after apply)
+      + resource_group_name = "rg-tradefin-dev"
+      + template_content    = (known after apply)
+    }
+
+  # azurerm_virtual_network_peering.bank_to_tradefin will be created
+  + resource "azurerm_virtual_network_peering" "bank_to_tradefin" {
+      + allow_forwarded_traffic                = false
+      + allow_gateway_transit                  = false
+      + allow_virtual_network_access           = true
+      + id                                     = (known after apply)
+      + name                                   = "peer-bank-to-tradefin"
+      + peer_complete_virtual_networks_enabled = true
+      + remote_virtual_network_id              = "/subscriptions/00000000-0000-0
+000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network
+/virtualNetworks/vnet-tradefin-dev"
+      + resource_group_name                    = "rg-tradefin-dev"
+      + use_remote_gateways                    = false
+      + virtual_network_name                   = "vnet-bank-onprem"
+    }
+
+  # azurerm_virtual_network_peering.tradefin_to_bank will be created
+  + resource "azurerm_virtual_network_peering" "tradefin_to_bank" {
+      + allow_forwarded_traffic                = false
+      + allow_gateway_transit                  = false
+      + allow_virtual_network_access           = true
+      + id                                     = (known after apply)
+      + name                                   = "peer-tradefin-to-bank"
+      + peer_complete_virtual_networks_enabled = true
+      + remote_virtual_network_id              = "/subscriptions/00000000-0000-0
+000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network
+/virtualNetworks/vnet-bank-onprem"
+      + resource_group_name                    = "rg-tradefin-dev"
+      + use_remote_gateways                    = false
+      + virtual_network_name                   = "vnet-tradefin-dev"
+    }
+
+  # random_password.tradebook will be created
+  + resource "random_password" "tradebook" {
+      + bcrypt_hash = (sensitive value)
+      + id          = (known after apply)
+      + length      = 24
+      + lower       = true
+      + min_lower   = 0
+      + min_numeric = 0
+      + min_special = 0
+      + min_upper   = 0
+      + number      = true
+      + numeric     = true
+      + result      = (sensitive value)
+      + special     = false
+      + upper       = true
+    }
+
+  # random_password.tradebook_admin will be created
+  + resource "random_password" "tradebook_admin" {
+      + bcrypt_hash = (sensitive value)
+      + id          = (known after apply)
+      + length      = 24
+      + lower       = true
+      + min_lower   = 0
+      + min_numeric = 0
+      + min_special = 0
+      + min_upper   = 0
+      + number      = true
+      + numeric     = true
+      + result      = (sensitive value)
+      + special     = false
+      + upper       = true
+    }
+
+Plan: 12 to add, 0 to change, 0 to destroy.
+random_password.tradebook_admin: Creating...
+random_password.tradebook_admin: Creation complete after 0s [id=none]
+random_password.tradebook: Creating...
+random_password.tradebook: Creation complete after 0s [id=none]
+azurerm_network_interface.tradebook: Creating...
+azurerm_network_interface.tradebook: Still creating... [00m10s elapsed]
+azurerm_network_interface.tradebook: Creation complete after 12s [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Network/networkInterfaces/nic-bank-tradebook]
+azurerm_private_dns_zone_virtual_network_link.bank["blob"]: Creating...
+azurerm_private_dns_zone_virtual_network_link.bank["blob"]: Still creating... [0
+0m10s elapsed]
+azurerm_private_dns_zone_virtual_network_link.bank["blob"]: Still creating... [0
+0m20s elapsed]
+azurerm_private_dns_zone_virtual_network_link.bank["blob"]: Still creating... [0
+0m30s elapsed]
+azurerm_private_dns_zone_virtual_network_link.bank["blob"]: Creation complete af
+ter 33s [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/r
+g-tradefin-dev/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core
+.windows.net/virtualNetworkLinks/link-bank-blob]
+azurerm_private_dns_zone_virtual_network_link.bank["dfs"]: Creating...
+azurerm_private_dns_zone_virtual_network_link.bank["dfs"]: Still creating... [00
+m10s elapsed]
+azurerm_private_dns_zone_virtual_network_link.bank["dfs"]: Still creating... [00
+m20s elapsed]
+azurerm_private_dns_zone_virtual_network_link.bank["dfs"]: Still creating... [00
+m30s elapsed]
+azurerm_private_dns_zone_virtual_network_link.bank["dfs"]: Creation complete aft
+er 32s [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg
+-tradefin-dev/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.w
+indows.net/virtualNetworkLinks/link-bank-dfs]
+azurerm_linux_virtual_machine.tradebook: Creating...
+azurerm_linux_virtual_machine.tradebook: Still creating... [00m10s elapsed]
+azurerm_linux_virtual_machine.tradebook: Still creating... [00m20s elapsed]
+azurerm_linux_virtual_machine.tradebook: Still creating... [00m30s elapsed]
+azurerm_linux_virtual_machine.tradebook: Still creating... [00m40s elapsed]
+azurerm_linux_virtual_machine.tradebook: Still creating... [00m50s elapsed]
+azurerm_linux_virtual_machine.tradebook: Creation complete after 52s [id=/subscr
+iptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/prov
+iders/Microsoft.Compute/virtualMachines/vm-bank-tradebook]
+azurerm_virtual_network_peering.bank_to_tradefin: Creating...
+azurerm_virtual_network_peering.bank_to_tradefin: Still creating... [00m10s elap
+sed]
+azurerm_virtual_network_peering.bank_to_tradefin: Still creating... [00m20s elap
+sed]
+azurerm_virtual_network_peering.bank_to_tradefin: Creation complete after 29s [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Network/virtualNetworks/vnet-bank-onprem/virtualNetwork
+Peerings/peer-bank-to-tradefin]
+azurerm_key_vault_secret.tradebook: Creating...
+azurerm_key_vault_secret.tradebook: Creation complete after 5s [id=https://kv-tr
+adefin-dev.vault.azure.net/secrets/tradebook-adf-password/0371b8e0e5ec4cefaf2b46
+f05bc74f93]
+azurerm_virtual_network_peering.tradefin_to_bank: Creating...
+azurerm_virtual_network_peering.tradefin_to_bank: Still creating... [00m10s elap
+sed]
+azurerm_virtual_network_peering.tradefin_to_bank: Still creating... [00m20s elap
+sed]
+azurerm_virtual_network_peering.tradefin_to_bank: Creation complete after 29s [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/virtualNetwor
+kPeerings/peer-tradefin-to-bank]
+azurerm_resource_group_template_deployment.tradebook: Creating...
+azurerm_resource_group_template_deployment.tradebook: Still creating... [00m10s 
+elapsed]
+azurerm_resource_group_template_deployment.tradebook: Still creating... [00m20s 
+elapsed]
+azurerm_resource_group_template_deployment.tradebook: Still creating... [00m30s 
+elapsed]
+azurerm_resource_group_template_deployment.tradebook: Still creating... [00m40s 
+elapsed]
+azurerm_resource_group_template_deployment.tradebook: Creation complete after 46
+s [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-trad
+efin-dev/providers/Microsoft.Resources/deployments/ls-tradebook]
+azurerm_data_factory_custom_dataset.tradebook: Creating...
+azurerm_data_factory_custom_dataset.tradebook: Creation complete after 3s [id=/s
+ubscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev
+/providers/Microsoft.DataFactory/factories/adf-tradefin-dev/datasets/ds_tradeboo
+k]
+azurerm_data_factory_pipeline.main["pl_tradebook_ping"]: Creating...
+azurerm_data_factory_pipeline.main["pl_tradebook_ping"]: Creation complete after
+ 3s [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tr
+adefin-dev/providers/Microsoft.DataFactory/factories/adf-tradefin-dev/pipelines/
+pl_tradebook_ping]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 12 added, 0 changed, 0 destroyed.
+$ cd ..
+$ T="-g rg-tradefin-dev -n vm-bank-tradebook --command-id RunShellScript"
+$ M="--query value[0].message -o tsv"
+$ az vm run-command invoke $T --scripts "cloud-init status --wait" $M
+Enable succeeded:
+[stdout]
+status: done
+
+[stderr]
+$ R=$(bash adf/adf.sh run pl_tradebook_ping)
+$ bash adf/adf.sh wait $R
+Succeeded
+$ bash adf/adf.sh activities $R
+count_lcs	Succeeded	{"lcs":400,"last_change":"2026-10-30 18:08:24+00"}

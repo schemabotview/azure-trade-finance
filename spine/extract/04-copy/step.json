@@ -1,0 +1,1 @@
+{"from": "extract/03-linked-service", "changes": ["infra/pipelines/pl_full_load.json"], "azure": true, "setup": ["cd infra && terraform init -input=false >/dev/null"], "generated": ["tradebook"]}
