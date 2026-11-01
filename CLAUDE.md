@@ -44,7 +44,7 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 | 4 | `secure` | 8 | §2–§8 authored, narrated (text), 4K-checked, recorded on Azure; §1 needs Graph permissions |
 | 5 | `land` | 9 | authored, narrated (text), 4K-checked; §1, §2, §9 re-recorded after Courses 3–4 |
 | 6 | `network` | 7 | authored, narrated (text), 4K-checked, recorded on Azure (§6.6: ADF + a self-hosted IR on a Windows VM in a simulated bank network, UK West); torn down |
-| 7 | `extract` | 8 | planned |
+| 7 | `extract` | 8 | authored, narrated (text), 4K-checked, recorded on Azure (TradeBook as a PostgreSQL VM in the bank network, peered; batches 41–43 through the SHIR into the private lake); torn down |
 | 8 | `bronze` | 8 | §6–8 authored (local); §1–5 need Databricks |
 | 9 | `silver` | 8 | authored, narrated (text), 4K-checked (all local) |
 | 10 | `gold` | 7 | authored, narrated (text), 4K-checked (all local) |
@@ -116,6 +116,15 @@ See COURSE-PLAN, "The spine". The rules an author applies every step:
 - Role assignments and policy assignments take minutes to take effect: record the step that USES
   one a few minutes after the step that made it (4.4 → 4.5, 4.7 → 4.8).
 - Course 3 and 4 resources were left up while Course 4 and 5 recorded, then torn down together.
+- Course 7: prototype first (restore the parent, apply the course's Terraform by hand from a reviewed
+  `terraform plan -out`, run every pipeline), then plan back to the parent's state and record in order.
+  azurerm 5.12's model of the PostgreSqlV2 linked service drops `authenticationType`: it is an ARM
+  template deployment (`adf-tradebook.tf`). ADF adds `compressionProperties: null` to a
+  DelimitedTextReadSettings: write it in the pipeline JSON or every plan shows a change.
+- The normaliser keeps TradeBook's own timestamps (at or before 2026-11-01T02:00:07, `BUSINESS_END`):
+  a window end or a watermark in Azure output is data, not a clock.
+- A pipeline's state lives in the lake (the watermark). To re-record a step that moved it, put the
+  parent's watermark back first (a throwaway pipeline, deleted after), or the window is empty.
 
 ## Frames
 
