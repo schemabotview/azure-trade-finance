@@ -1,0 +1,12 @@
+$ az account show --query "{tenant:tenantId, subscription:name, state:state}"
+{
+  "state": "Enabled",
+  "subscription": "sub-tradefin-dev",
+  "tenant": "00000000-0000-0000-0000-0000000000a1"
+}
+$ az account list --query "[].{name:name, state:state}" -o table
+Name                  State
+--------------------  -------
+sub-tradefin-dev  Enabled
+$ az group list --query "[?contains(name,'tradefin')].name"
+[]

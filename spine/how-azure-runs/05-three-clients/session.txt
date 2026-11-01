@@ -1,0 +1,9 @@
+$ az account show --query name -o tsv
+sub-tradefin-dev
+$ U="https://management.azure.com/subscriptions/{subscriptionId}"
+$ az rest --url "$U?api-version=2022-12-01" --query displayName -o tsv
+sub-tradefin-dev
+$ cd read && terraform init -input=false >/dev/null
+$ terraform plan -no-color | grep -A1 "Changes to Outputs"
+Changes to Outputs:
+  + subscription = "sub-tradefin-dev"

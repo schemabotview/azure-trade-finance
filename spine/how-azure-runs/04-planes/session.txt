@@ -1,0 +1,11 @@
+$ C="{arm:endpoints.resourceManager, storage:suffixes.storageEndpoint}"
+$ az cloud show --query "$C"
+{
+  "arm": "https://management.azure.com/",
+  "storage": "core.windows.net"
+}
+$ Q="[?contains(name,'tradefin')]"
+$ az storage account list --query "$Q" --debug 2>&1 | grep -oE "Request URL: .*"
+Request URL: 'https://management.azure.com/subscriptions/00000000-0000-0000-0000
+-0000000000d1/providers/Microsoft.Storage/storageAccounts?api-version=2025-08-01
+'

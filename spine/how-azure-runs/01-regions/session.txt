@@ -1,0 +1,17 @@
+$ az account list-locations --query "length([?metadata.regionType=='Physical'])"
+63
+$ Q="[?metadata.regionType=='Physical' && starts_with(name,'uk')]"
+$ F="{name:name, paired:metadata.pairedRegion[0].name}"
+$ az account list-locations --query "$Q.$F" -o table
+Name     Paired
+-------  --------
+uksouth  ukwest
+ukwest   uksouth
+$ Z="[?name=='uksouth'].availabilityZoneMappings[]"
+$ F="{logical:logicalZone, physical:physicalZone}"
+$ az account list-locations --query "$Z.$F" -o table
+Logical    Physical
+---------  -----------
+1          uksouth-az3
+2          uksouth-az2
+3          uksouth-az1

@@ -1,4 +1,5 @@
 import { intro } from './intro'
+import { howAzureRuns } from './how-azure-runs'
 import { start } from './start'
 import { secure } from './secure'
 import { land } from './land'
@@ -13,6 +14,7 @@ import type { Course, Section } from './types'
 // registered here only once it is authored.
 export const COURSES: Record<string, Course> = {
   [intro.id]: intro,
+  [howAzureRuns.id]: howAzureRuns,
   [start.id]: start,
   [secure.id]: secure,
   [land.id]: land,

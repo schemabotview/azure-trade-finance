@@ -1,0 +1,7 @@
+$ python model/charges.py
+meter                                units  unit price   a month
+lake, hot, GB stored                  5.00      0.0190      0.10
+ADF activity runs, cloud (x1000)      0.12      1.0000      0.12
+ADF activity runs, SHIR (x1000)       0.03      1.5000      0.04
+Databricks jobs DBUs                 22.50      0.3000      6.75
+total, USD (retail, before tax)                             7.01

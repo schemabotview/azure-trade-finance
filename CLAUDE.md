@@ -39,7 +39,7 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 | # | course | sections | status |
 |---|---|---|---|
 | 1 | `intro` | 3 | authored, narrated (text), 4K-checked (§1 doc-cited, §2–3 from the spine's finished Gold) |
-| 2 | `how-azure-runs` | 7 | planned |
+| 2 | `how-azure-runs` | 7 | authored, narrated (text), 4K-checked; §1–5 read-only labs recorded on Azure (no resources), §6 doc-cited, §7 a model priced from prices.azure.com |
 | 3 | `start` | 8 | authored, narrated (text), 4K-checked; §3–5, §7–8 recorded on Azure |
 | 4 | `secure` | 8 | §2–§8 authored, narrated (text), 4K-checked, recorded on Azure; §1 needs Graph permissions |
 | 5 | `land` | 9 | authored, narrated (text), 4K-checked; §1, §2, §9 re-recorded after Courses 3–4 |

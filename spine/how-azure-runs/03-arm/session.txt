@@ -1,0 +1,11 @@
+$ P="Request URL|Request method|Response status"
+$ Q="[?contains(name,'tradefin')]"
+$ az group list --query "$Q" --debug 2>&1 | grep -oE "($P): .*"
+Request URL: 'https://management.azure.com/subscriptions/00000000-0000-0000-0000
+-0000000000d1/resourcegroups?api-version=2024-11-01'
+Request method: 'GET'
+Response status: 200
+$ U="https://management.azure.com/subscriptions/{subscriptionId}/providers"
+$ R="length(value[?registrationState=='Registered'])"
+$ az rest --url "$U?api-version=2021-04-01" --query "$R"
+27
