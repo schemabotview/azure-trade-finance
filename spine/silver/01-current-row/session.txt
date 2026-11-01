@@ -1,9 +1,11 @@
 $ python pipeline/current.py
 WARNING: Using incubator modules: jdk.incubator.vector
-Bronze: 520 rows for 418 LCs
+Bronze: 923 rows for 418 LCs
 +-----------+---+
 |rows_per_lc|lcs|
 +-----------+---+
-|          1|316|
-|          2|102|
+|          1| 18|
+|          2|298|
+|          3| 99|
+|          4|  3|
 +-----------+---+

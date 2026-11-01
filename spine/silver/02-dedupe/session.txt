@@ -1,6 +1,6 @@
 $ python pipeline/silver.py
 WARNING: Using incubator modules: jdk.incubator.vector
-Bronze 520 rows -> Silver 418 rows
+Bronze 923 rows -> Silver 418 rows
 $ python pipeline/lc.py LC-2041
 WARNING: Using incubator modules: jdk.incubator.vector
 +-------+--------------+----------+-------+--------+

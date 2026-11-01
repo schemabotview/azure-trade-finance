@@ -20,7 +20,9 @@ def exposure(lcs):
 def main() -> None:
     spark = spark_session()
     fact = exposure(spark.read.format("delta").load("lake/silver/lc_current"))
-    fact.write.format("delta").mode("overwrite").save(FACT)
+    # Gold's shape grows with the course: an overwrite replaces it whole
+    (fact.write.format("delta").mode("overwrite")
+     .option("overwriteSchema", "true").save(FACT))
     (fact.groupBy("status")
      .agg(F.count("*").alias("lcs"),
           F.max(F.col("exposure") > 0).alias("counts_as_exposure"))

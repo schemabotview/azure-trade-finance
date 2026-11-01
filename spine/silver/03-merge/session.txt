@@ -3,6 +3,7 @@ $ python pipeline/silver.py --through 43
 WARNING: Using incubator modules: jdk.incubator.vector
 batch 41: 400 rows, 400 inserted, 0 updated, 0 ignored
 batch 42: 120 rows, 18 inserted, 102 updated, 0 ignored
+batch 43: 3 rows, 0 inserted, 3 updated, 0 ignored
 $ python pipeline/lc.py LC-2041
 WARNING: Using incubator modules: jdk.incubator.vector
 +-------+--------------+----------+-------+--------+

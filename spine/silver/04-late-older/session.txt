@@ -1,5 +1,6 @@
 $ python pipeline/silver.py
 WARNING: Using incubator modules: jdk.incubator.vector
+batch 44: 400 rows, 0 inserted, 0 updated, 400 ignored
 $ python pipeline/lc.py LC-2041
 WARNING: Using incubator modules: jdk.incubator.vector
 +-------+--------------+----------+-------+--------+

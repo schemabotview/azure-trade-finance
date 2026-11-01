@@ -1,42 +1,17 @@
 $ python pipeline/gold.py
-Traceback (most recent call last):
-  File "/home/ana/lc-exposure/pipeline/gold.py", line 7, in <module>
-    from gates import OPEN
-  File "/home/ana/lc-exposure/pipeline/gates.py", line 10, in <module>
-    "no lc_id": F.col("lc_id").isNull() | (F.trim("lc_id") == ""),
-                ~~~~~^^^^^^^^^
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/uti
-ls.py", line 283, in wrapped
-    return f(*args, **kwargs)
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/errors/
-utils.py", line 344, in wrapper
-    return func(*args, **kwargs)
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/fun
-ctions/builtin.py", line 331, in col
-    return _invoke_function("col", col)
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/fun
-ctions/builtin.py", line 111, in _invoke_function
-    assert SparkContext._active_spark_context is not None
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError
+WARNING: Using incubator modules: jdk.incubator.vector
+lake/gold/fact_lc_exposure: 418 rows, one per LC
++----------+--------+--------------+------------+---------------+------+
+|group_name|currency|gross_exposure|limit_amount|utilisation_pct|breach|
++----------+--------+--------------+------------+---------------+------+
+|   Contoso|     EUR|     714000.00|  4000000.00|           17.9|    No|
+|   Contoso|     USD|     594000.00|  6000000.00|            9.9|    No|
+|  Fabrikam|     EUR|     807000.00|  3000000.00|           26.9|    No|
+| Northwind|     USD|    1915000.00|  8000000.00|           23.9|    No|
+| Woodgrove|     USD|    7500000.00| 10000000.00|           75.0|    No|
++----------+--------+--------------+------------+---------------+------+
 $ python pipeline/g4.py
-Traceback (most recent call last):
-  File "/home/ana/lc-exposure/pipeline/g4.py", line 4, in <module>
-    from gates import g4
-  File "/home/ana/lc-exposure/pipeline/gates.py", line 10, in <module>
-    "no lc_id": F.col("lc_id").isNull() | (F.trim("lc_id") == ""),
-                ~~~~~^^^^^^^^^
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/uti
-ls.py", line 283, in wrapped
-    return f(*args, **kwargs)
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/errors/
-utils.py", line 344, in wrapper
-    return func(*args, **kwargs)
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/fun
-ctions/builtin.py", line 331, in col
-    return _invoke_function("col", col)
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/fun
-ctions/builtin.py", line 111, in _invoke_function
-    assert SparkContext._active_spark_context is not None
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError
+WARNING: Using incubator modules: jdk.incubator.vector
+  EUR fact = aggregate   FAIL  6520000.00 vs 1521000.00
+  USD fact = aggregate   FAIL  20925000.00 vs 10009000.00
+G4 FAIL: Gold is not published

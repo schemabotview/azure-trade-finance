@@ -27,14 +27,17 @@ def main() -> None:
             .join(groups, lcs.applicant_id == groups.counterparty_id, "left")
             .select("lc_id", "applicant_id", "group_name", "currency",
                     "status", "source_version", "amount", "exposure"))
-    fact.write.format("delta").mode("overwrite").save(FACT)
+    # Gold's shape grows with the course: an overwrite replaces it whole
+    (fact.write.format("delta").mode("overwrite")
+     .option("overwriteSchema", "true").save(FACT))
     print(f"{FACT}: {fact.count()} rows, one per LC")
     # one row per group AND currency: amounts in different currencies are
     # never added together
     agg = (fact.where(F.col("group_name").isNotNull())
            .groupBy("group_name", "currency")
            .agg(F.sum("exposure").alias("gross_exposure")))
-    agg.write.format("delta").mode("overwrite").save(AGG)
+    (agg.write.format("delta").mode("overwrite")
+     .option("overwriteSchema", "true").save(AGG))
     agg.orderBy("group_name", "currency").show()
 
 

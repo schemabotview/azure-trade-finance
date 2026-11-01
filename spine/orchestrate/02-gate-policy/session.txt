@@ -1,24 +1,11 @@
 $ python pipeline/run.py
-Traceback (most recent call last):
-  File "/home/ana/lc-exposure/pipeline/run.py", line 8, in <module>
-    import bronze
-  File "/home/ana/lc-exposure/pipeline/bronze.py", line 15, in <module>
-    from gates import g2  # noqa: E402
-    ^^^^^^^^^^^^^^^^^^^^
-  File "/home/ana/lc-exposure/pipeline/gates.py", line 10, in <module>
-    "no lc_id": F.col("lc_id").isNull() | (F.trim("lc_id") == ""),
-                ~~~~~^^^^^^^^^
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/uti
-ls.py", line 283, in wrapped
-    return f(*args, **kwargs)
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/errors/
-utils.py", line 344, in wrapper
-    return func(*args, **kwargs)
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/fun
-ctions/builtin.py", line 331, in col
-    return _invoke_function("col", col)
-  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/fun
-ctions/builtin.py", line 111, in _invoke_function
-    assert SparkContext._active_spark_context is not None
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError
+WARNING: Using incubator modules: jdk.incubator.vector
+batch 41: already in Bronze
+batch 42: already in Bronze
+batch 43: already in Bronze
+batch 44: already in Bronze
+G2 WARN: 2 rows in quarantine
+  G3 one row per lc_id                    PASS  0 duplicated
+  G3 every open LC's counterparty mapped  FAIL  CP-1501 LC-2299 USD 1200000.00
+  G3 every open group/currency limited    PASS  0 without a limit
+G3 FAIL: Gold does not run; it keeps the last good answer
