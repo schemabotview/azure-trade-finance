@@ -558,7 +558,8 @@ FACTS = {  # COURSE-PLAN.md, "Facts": what a real id is shown as
 }
 TRANSPORT = ('HTTP response was nil', 'connection may have been reset', 'connection reset by peer', 'i/o timeout',
              'TLS handshake timeout', 'RemoteDisconnected', 'Connection aborted',
-             'is being deleted. Try operation later')  # the end of an earlier teardown, still running
+             'is being deleted. Try operation later',  # the end of an earlier teardown, still running
+             'unexpected status 404 (404 Not Found) with error: ResourceNotFound')  # a re-created name, not yet consistent
 SECRETS = ('AZURE_TENANT_ID', 'AZURE_SUBSCRIPTION_ID', 'AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET')
 
 

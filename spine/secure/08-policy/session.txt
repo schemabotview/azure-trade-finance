@@ -1,4 +1,128 @@
-$ G="-g rg-tradefin-dev --sku Standard_LRS -o none"
-$ az storage account create -n sttradefinpolicy $G -l westeurope
-$ az storage account create -n sttradefinpolicy $G -l uksouth
+$ G="-g rg-tradefin-dev --sku Standard_LRS -o none" N=sttradefinpolicy
+$ az storage account create -n $N $G -l francecentral --tags owner=ops
+ERROR: (RequestDisallowedByPolicy) Resource 'sttradefinpolicy' was disallowed by
+ policy. Policy identifiers: '[{"policyAssignment":{"name":"lc-exposure: UK regi
+ons only","id":"/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGrou
+ps/rg-tradefin-dev/providers/Microsoft.Authorization/policyAssignments/allowed-l
+ocations"},"policyDefinition":{"name":"Allowed locations","id":"/providers/Micro
+soft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001000","vers
+ion":"1.1.0"}}]'.
+Code: RequestDisallowedByPolicy
+Message: Resource 'sttradefinpolicy' was disallowed by policy. Policy identifier
+s: '[{"policyAssignment":{"name":"lc-exposure: UK regions only","id":"/subscript
+ions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provide
+rs/Microsoft.Authorization/policyAssignments/allowed-locations"},"policyDefiniti
+on":{"name":"Allowed locations","id":"/providers/Microsoft.Authorization/policyD
+efinitions/00000000-0000-0000-0000-000000001000","version":"1.1.0"}}]'.
+Target: sttradefinpolicy
+Additional Information:Type: PolicyViolation
+Info: {
+    "evaluationDetails": {
+        "evaluatedExpressions": [
+            {
+                "result": "True",
+                "expressionKind": "Field",
+                "expression": "location",
+                "path": "location",
+                "expressionValue": "francecentral",
+                "targetValue": [
+                    "uksouth",
+                    "ukwest"
+                ],
+                "operator": "NotIn"
+            },
+            {
+                "result": "True",
+                "expressionKind": "Field",
+                "expression": "location",
+                "path": "location",
+                "expressionValue": "francecentral",
+                "targetValue": "global",
+                "operator": "NotEquals"
+            },
+            {
+                "result": "True",
+                "expressionKind": "Field",
+                "expression": "type",
+                "path": "type",
+                "expressionValue": "Microsoft.Storage/storageAccounts",
+                "targetValue": "Microsoft.AzureActiveDirectory/b2cDirectories",
+                "operator": "NotEquals"
+            }
+        ]
+    },
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/
+00000000-0000-0000-0000-000000001000",
+    "policyDefinitionName": "00000000-0000-0000-0000-000000001000",
+    "policyDefinitionDisplayName": "Allowed locations",
+    "policyDefinitionVersion": "1.1.0",
+    "policyDefinitionEffect": "Deny",
+    "policyAssignmentId": "/subscriptions/00000000-0000-0000-0000-0000000000d1/r
+esourceGroups/rg-tradefin-dev/providers/Microsoft.Authorization/policyAssignment
+s/allowed-locations",
+    "policyAssignmentName": "allowed-locations",
+    "policyAssignmentDisplayName": "lc-exposure: UK regions only",
+    "policyAssignmentScope": "/subscriptions/00000000-0000-0000-0000-0000000000d
+1/resourceGroups/rg-tradefin-dev",
+    "policyAssignmentParameters": {
+        "listOfAllowedLocations": [
+            "uksouth",
+            "ukwest"
+        ]
+    },
+    "policyExemptionIds": [],
+    "policyEnrollmentIds": []
+}
+$ az storage account create -n $N $G -l uksouth
+ERROR: (RequestDisallowedByPolicy) Resource 'sttradefinpolicy' was disallowed by
+ policy. Policy identifiers: '[{"policyAssignment":{"name":"lc-exposure: every r
+esource has an owner tag","id":"/subscriptions/00000000-0000-0000-0000-000000000
+0d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Authorization/policyAssig
+nments/require-owner-tag"},"policyDefinition":{"name":"Require a tag on resource
+s","id":"/providers/Microsoft.Authorization/policyDefinitions/00000000-0000-0000
+-0000-000000001001","version":"1.0.1"}}]'.
+Code: RequestDisallowedByPolicy
+Message: Resource 'sttradefinpolicy' was disallowed by policy. Policy identifier
+s: '[{"policyAssignment":{"name":"lc-exposure: every resource has an owner tag",
+"id":"/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-trad
+efin-dev/providers/Microsoft.Authorization/policyAssignments/require-owner-tag"}
+,"policyDefinition":{"name":"Require a tag on resources","id":"/providers/Micros
+oft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001001","versi
+on":"1.0.1"}}]'.
+Target: sttradefinpolicy
+Additional Information:Type: PolicyViolation
+Info: {
+    "evaluationDetails": {
+        "evaluatedExpressions": [
+            {
+                "result": "True",
+                "expressionKind": "Field",
+                "expression": "tags[owner]",
+                "path": "tags[owner]",
+                "targetValue": "false",
+                "operator": "Exists"
+            }
+        ]
+    },
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/
+00000000-0000-0000-0000-000000001001",
+    "policyDefinitionName": "00000000-0000-0000-0000-000000001001",
+    "policyDefinitionDisplayName": "Require a tag on resources",
+    "policyDefinitionVersion": "1.0.1",
+    "policyDefinitionEffect": "deny",
+    "policyAssignmentId": "/subscriptions/00000000-0000-0000-0000-0000000000d1/r
+esourceGroups/rg-tradefin-dev/providers/Microsoft.Authorization/policyAssignment
+s/require-owner-tag",
+    "policyAssignmentName": "require-owner-tag",
+    "policyAssignmentDisplayName": "lc-exposure: every resource has an owner tag
+",
+    "policyAssignmentScope": "/subscriptions/00000000-0000-0000-0000-0000000000d
+1/resourceGroups/rg-tradefin-dev",
+    "policyAssignmentParameters": {
+        "tagName": "owner"
+    },
+    "policyExemptionIds": [],
+    "policyEnrollmentIds": []
+}
 $ az storage account list -g rg-tradefin-dev --query "[].name" -o tsv
+sttradefindev

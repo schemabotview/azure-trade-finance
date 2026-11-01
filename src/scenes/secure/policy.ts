@@ -10,13 +10,14 @@ import session from '../../../spine/secure/08-policy/session.txt?raw'
 // by the assignments §4.7 applied: one in West Europe (not an allowed location), one in UK South without
 // an owner tag. Nothing was created: the group still holds one account.
 const accounts = outputOf(session, 'az storage account list -g rg-tradefin-dev --query "[].name" -o tsv').trim().split('\n')
-const denied = [...session.matchAll(/RequestDisallowedByPolicy/g)].length
+const denied = [...session.matchAll(/^Code: RequestDisallowedByPolicy/gm)].length
 
 export const securePolicy: SceneModel = ideFrame({
   tree: secureTree('infra/policy.tf', { extra: [...KEYVAULT, 'infra/policy.tf'] }),
   editor: { file: 'infra/policy.tf', code, show: [[lineOf(code, 'data "azurerm_policy_definition" "locations"'), lineOf(code, 'parameters           = jsonencode({ tagName')]],
     highlight: [lineOf(code, 'display_name = "Allowed locations"'), lineOf(code, 'display_name = "Require a tag on resources"')] },
   session,
+  keep: ['$ G=', '-l francecentral', 'Code: RequestDisallowedByPolicy', '-l uksouth', 'Code: RequestDisallowedByPolicy', ['$ az storage account list', accounts.at(-1)!]],
   side: [
     level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
@@ -28,7 +29,7 @@ export const securePolicy: SceneModel = ideFrame({
     },
     {
       type: 'table', id: 'tries', title: 'Two tries, by hand', tone: 'consume', columns: ['create', 'refused by'], rows: [
-        { id: 't-west', cells: ['westeurope', 'UK regions only'], tone: 'consume' },
+        { id: 't-west', cells: ['francecentral, owner tag', 'UK regions only'], tone: 'consume' },
         { id: 't-tag', cells: ['uksouth, no tags', 'an owner tag on everything'], tone: 'consume' },
         { id: 't-after', cells: ['accounts in the group now', accounts.join(', ')] },
       ],
