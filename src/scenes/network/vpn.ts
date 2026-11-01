@@ -9,7 +9,7 @@ export const networkVpn: SceneModel = {
   nodes: [
     {
       type: 'group', id: 'left', bare: true, children: [
-        level('doc-cited', 'learn.microsoft.com/azure/expressroute/expressroute-introduction · …/vpn-gateway/vpn-gateway-about-vpngateways'),
+        level('doc-cited', 'Azure’s ExpressRoute and VPN Gateway documentation (below)'),
         {
           type: 'group', id: 'vpn', title: 'Site-to-site VPN', icon: 'lock', tone: 'ingest', dir: 'row', children: [
             { type: 'item', id: 'v-bank', title: 'the bank’s VPN device', sub: 'on-premises', icon: 'building' },
@@ -24,6 +24,12 @@ export const networkVpn: SceneModel = {
             { type: 'item', id: 'e-gw', title: 'ExpressRoute gateway', sub: 'in the VNet', icon: 'network' },
           ],
         },
+      ],
+    },
+    {
+      type: 'table', id: 'sources', title: 'Sources', tone: 'neutral', columns: ['page'], rows: [
+        { id: 'src-er', cells: ['learn.microsoft.com/azure/expressroute/\u200bexpressroute-introduction'] },
+        { id: 'src-vpn', cells: ['learn.microsoft.com/azure/vpn-gateway/\u200bvpn-gateway-about-vpngateways'] },
       ],
     },
     {

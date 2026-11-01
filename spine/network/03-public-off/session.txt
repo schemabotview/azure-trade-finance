@@ -1,5 +1,158 @@
 $ az storage fs list --query "[].name" -o tsv
+bronze
+gold
+landing
+reference
+silver
 $ cd infra
 $ terraform apply -var-file=envs/dev.tfvars -auto-approve
+Acquiring state lock. This may take a few moments...
+data.azurerm_policy_definition.locations: Reading...
+data.azurerm_policy_definition.locations: Read complete after 4s [id=/providers/
+Microsoft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001002]
+module.storage.data.azurerm_client_config.me: Reading...
+module.storage.data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW5
+0Q29uZmlncy9jbGllbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN
+0SWQ9MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDA
+wMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDA
+tMDAwMC0wMDAwMDAwMDAwYTE=]
+data.azurerm_policy_definition.tag: Reading...
+data.azurerm_policy_definition.tag: Read complete after 2s [id=/providers/Micros
+oft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001003]
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+data.azurerm_client_config.me: Reading...
+data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW50Q29uZmlncy9jbG
+llbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN0SWQ9MDAwMDAwMD
+AtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDAwMDAwLTAwMDAtMD
+AwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMD
+AwMDAwYTE=]
+azurerm_resource_group_policy_assignment.locations: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Authorization/policyAssignments/allowed-locations]
+azurerm_user_assigned_identity.pipeline: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.ManagedIdentity/userAssignedIdentities/id-tradefin-pipeline]
+azurerm_monitor_action_group.risk: Refreshing state... [id=/subscriptions/000000
+00-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsof
+t.Insights/actionGroups/ag-trade-risk]
+azurerm_resource_group_policy_assignment.owner_tag: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Authorization/policyAssignments/require-owner-tag]
+azurerm_role_assignment.secrets_officer: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001004]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+module.network.azurerm_virtual_network.main: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Network/virtualNetworks/vnet-tradefin-dev]
+module.network.azurerm_network_security_group.shir: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Network/networkSecurityGroups/nsg-tradefin-shir]
+azurerm_role_assignment.pipeline_reader: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001005]
+azurerm_consumption_budget_resource_group.main: Refreshing state... [id=/subscri
+ptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provi
+ders/Microsoft.Consumption/budgets/budget-tradefin-dev]
+module.keyvault.azurerm_key_vault.main: Refreshing state... [id=/subscriptions/0
+0000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mic
+rosoft.KeyVault/vaults/kv-tradefin-dev]
+module.storage.azurerm_storage_management_policy.lifecycle: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/managementPolic
+ies/default]
+module.storage.azurerm_role_assignment.data: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev/providers/Microsoft.Authorizat
+ion/roleAssignments/00000000-0000-0000-0000-000000001006]
+module.storage.azurerm_storage_container.zone["bronze"]: Refreshing state... [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defau
+lt/containers/bronze]
+module.storage.azurerm_storage_container.zone["gold"]: Refreshing state... [id=/
+subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-de
+v/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/default
+/containers/gold]
+module.storage.azurerm_storage_container.zone["silver"]: Refreshing state... [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defau
+lt/containers/silver]
+module.storage.azurerm_storage_container.zone["reference"]: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/de
+fault/containers/reference]
+module.storage.azurerm_storage_container.zone["landing"]: Refreshing state... [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defa
+ult/containers/landing]
+module.network.azurerm_subnet.main["snet-pe"]: Refreshing state... [id=/subscrip
+tions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provid
+ers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-pe]
+module.network.azurerm_subnet.main["snet-shir"]: Refreshing state... [id=/subscr
+iptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/prov
+iders/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-shir]
+module.network.azurerm_subnet.main["snet-dbx-container"]: Refreshing state... [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-
+dbx-container]
+module.network.azurerm_subnet.main["snet-dbx-host"]: Refreshing state... [id=/su
+bscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/
+providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-dbx-h
+ost]
+module.network.azurerm_subnet_network_security_group_association.shir: Refreshin
+g state... [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroup
+s/rg-tradefin-dev/providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/
+subnets/snet-shir]
+azurerm_role_assignment.pipeline_secrets: Refreshing state... [id=/subscriptions
+/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/M
+icrosoft.KeyVault/vaults/kv-tradefin-dev/providers/Microsoft.Authorization/roleA
+ssignments/00000000-0000-0000-0000-000000001007]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # module.storage.azurerm_storage_account.lake will be updated in-place
+  ~ resource "azurerm_storage_account" "lake" {
+        id                                             = "/subscriptions/0000000
+0-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft
+.Storage/storageAccounts/sttradefindev"
+        name                                           = "sttradefindev"
+      ~ public_network_access                          = "Enabled" -> "Disabled"
+        tags                                           = {
+            "app"   = "lc-exposure"
+            "env"   = "dev"
+            "owner" = "trade-risk"
+        }
+        # (99 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+module.storage.azurerm_storage_account.lake: Modifying... [id=/subscriptions/000
+00000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Micro
+soft.Storage/storageAccounts/sttradefindev]
+module.storage.azurerm_storage_account.lake: Still modifying... [id=/subscriptio
+ns/5cd3e971-2e20-49fb-95bc-....Storage/storageAccounts/sttradefindev, 00m10s ela
+psed]
+module.storage.azurerm_storage_account.lake: Modifications complete after 15s [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 $ az storage account show -n sttradefindev --query publicNetworkAccess -o tsv
+Disabled
 $ az storage fs list --query "[].name" -o tsv
+ERROR:
+The request may be blocked by network rules of storage account. Please check net
+work rule set using 'az storage account show -n accountname --query networkRuleS
+et'.
+If you want to change the default action to apply when no rule matches, please u
+se 'az storage account update'.

@@ -1,6 +1,336 @@
 $ cd infra
 $ terraform apply -var-file=envs/dev.tfvars -auto-approve
+Acquiring state lock. This may take a few moments...
+data.azurerm_client_config.me: Reading...
+data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW50Q29uZmlncy9jbG
+llbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN0SWQ9MDAwMDAwMD
+AtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDAwMDAwLTAwMDAtMD
+AwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMD
+AwMDAwYTE=]
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+data.azurerm_policy_definition.locations: Reading...
+data.azurerm_policy_definition.locations: Read complete after 2s [id=/providers/
+Microsoft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001002]
+module.storage.data.azurerm_client_config.me: Reading...
+module.storage.data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW5
+0Q29uZmlncy9jbGllbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN
+0SWQ9MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDA
+wMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDA
+tMDAwMC0wMDAwMDAwMDAwYTE=]
+data.azurerm_policy_definition.tag: Reading...
+data.azurerm_policy_definition.tag: Read complete after 2s [id=/providers/Micros
+oft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001003]
+azurerm_monitor_action_group.risk: Refreshing state... [id=/subscriptions/000000
+00-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsof
+t.Insights/actionGroups/ag-trade-risk]
+azurerm_user_assigned_identity.pipeline: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.ManagedIdentity/userAssignedIdentities/id-tradefin-pipeline]
+azurerm_role_assignment.secrets_officer: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001004]
+azurerm_resource_group_policy_assignment.locations: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Authorization/policyAssignments/allowed-locations]
+azurerm_resource_group_policy_assignment.owner_tag: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Authorization/policyAssignments/require-owner-tag]
+module.keyvault.azurerm_key_vault.main: Refreshing state... [id=/subscriptions/0
+0000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mic
+rosoft.KeyVault/vaults/kv-tradefin-dev]
+module.network.azurerm_network_security_group.shir: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Network/networkSecurityGroups/nsg-tradefin-shir]
+module.network.azurerm_virtual_network.main: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Network/virtualNetworks/vnet-tradefin-dev]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+azurerm_consumption_budget_resource_group.main: Refreshing state... [id=/subscri
+ptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provi
+ders/Microsoft.Consumption/budgets/budget-tradefin-dev]
+azurerm_role_assignment.pipeline_reader: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001005]
+module.network.azurerm_subnet.main["snet-shir"]: Refreshing state... [id=/subscr
+iptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/prov
+iders/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-shir]
+module.network.azurerm_subnet.main["snet-dbx-container"]: Refreshing state... [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-
+dbx-container]
+module.network.azurerm_subnet.main["snet-dbx-host"]: Refreshing state... [id=/su
+bscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/
+providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-dbx-h
+ost]
+module.network.azurerm_subnet.main["snet-pe"]: Refreshing state... [id=/subscrip
+tions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provid
+ers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/subnets/snet-pe]
+module.storage.azurerm_role_assignment.data: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev/providers/Microsoft.Authorizat
+ion/roleAssignments/00000000-0000-0000-0000-000000001006]
+module.storage.azurerm_storage_management_policy.lifecycle: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/managementPolic
+ies/default]
+module.storage.azurerm_storage_container.zone["silver"]: Refreshing state... [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defau
+lt/containers/silver]
+module.storage.azurerm_storage_container.zone["bronze"]: Refreshing state... [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defau
+lt/containers/bronze]
+module.storage.azurerm_storage_container.zone["gold"]: Refreshing state... [id=/
+subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-de
+v/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/default
+/containers/gold]
+module.storage.azurerm_storage_container.zone["landing"]: Refreshing state... [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defa
+ult/containers/landing]
+module.storage.azurerm_storage_container.zone["reference"]: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/de
+fault/containers/reference]
+azurerm_role_assignment.pipeline_secrets: Refreshing state... [id=/subscriptions
+/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/M
+icrosoft.KeyVault/vaults/kv-tradefin-dev/providers/Microsoft.Authorization/roleA
+ssignments/00000000-0000-0000-0000-000000001007]
+module.network.azurerm_subnet_network_security_group_association.shir: Refreshin
+g state... [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroup
+s/rg-tradefin-dev/providers/Microsoft.Network/virtualNetworks/vnet-tradefin-dev/
+subnets/snet-shir]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_private_dns_zone.lake["blob"] will be created
+  + resource "azurerm_private_dns_zone" "lake" {
+      + id                                                    = (known after app
+ly)
+      + max_number_of_record_sets                             = (known after app
+ly)
+      + max_number_of_virtual_network_links                   = (known after app
+ly)
+      + max_number_of_virtual_network_links_with_registration = (known after app
+ly)
+      + name                                                  = "privatelink.blo
+b.core.windows.net"
+      + number_of_record_sets                                 = (known after app
+ly)
+      + resource_group_name                                   = "rg-tradefin-dev
+"
+      + tags                                                  = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+
+      + soa_record (known after apply)
+    }
+
+  # azurerm_private_dns_zone.lake["dfs"] will be created
+  + resource "azurerm_private_dns_zone" "lake" {
+      + id                                                    = (known after app
+ly)
+      + max_number_of_record_sets                             = (known after app
+ly)
+      + max_number_of_virtual_network_links                   = (known after app
+ly)
+      + max_number_of_virtual_network_links_with_registration = (known after app
+ly)
+      + name                                                  = "privatelink.dfs
+.core.windows.net"
+      + number_of_record_sets                                 = (known after app
+ly)
+      + resource_group_name                                   = "rg-tradefin-dev
+"
+      + tags                                                  = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+
+      + soa_record (known after apply)
+    }
+
+  # azurerm_private_dns_zone_virtual_network_link.lake["blob"] will be created
+  + resource "azurerm_private_dns_zone_virtual_network_link" "lake" {
+      + id                   = (known after apply)
+      + name                 = "link-blob"
+      + private_dns_zone_id  = (known after apply)
+      + registration_enabled = false
+      + resolution_policy    = (known after apply)
+      + tags                 = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+      + virtual_network_id   = "/subscriptions/00000000-0000-0000-0000-000000000
+0d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/virtualNetworks/v
+net-tradefin-dev"
+    }
+
+  # azurerm_private_dns_zone_virtual_network_link.lake["dfs"] will be created
+  + resource "azurerm_private_dns_zone_virtual_network_link" "lake" {
+      + id                   = (known after apply)
+      + name                 = "link-dfs"
+      + private_dns_zone_id  = (known after apply)
+      + registration_enabled = false
+      + resolution_policy    = (known after apply)
+      + tags                 = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+      + virtual_network_id   = "/subscriptions/00000000-0000-0000-0000-000000000
+0d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/virtualNetworks/v
+net-tradefin-dev"
+    }
+
+  # azurerm_private_endpoint.lake["blob"] will be created
+  + resource "azurerm_private_endpoint" "lake" {
+      + custom_dns_configs       = (known after apply)
+      + id                       = (known after apply)
+      + location                 = "uksouth"
+      + name                     = "pe-sttradefindev-blob"
+      + network_interface        = (known after apply)
+      + private_dns_zone_configs = (known after apply)
+      + resource_group_name      = "rg-tradefin-dev"
+      + subnet_id                = "/subscriptions/00000000-0000-0000-0000-00000
+00000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/virtualNetwor
+ks/vnet-tradefin-dev/subnets/snet-pe"
+      + tags                     = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+
+      + private_dns_zone_group {
+          + id                   = (known after apply)
+          + name                 = "lake-blob"
+          + private_dns_zone_ids = (known after apply)
+        }
+
+      + private_service_connection {
+          + is_manual_connection           = false
+          + name                           = "lake-blob"
+          + private_connection_resource_id = "/subscriptions/00000000-0000-0000-
+0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Storage/sto
+rageAccounts/sttradefindev"
+          + private_ip_address             = (known after apply)
+          + subresource_names              = [
+              + "blob",
+            ]
+        }
+    }
+
+  # azurerm_private_endpoint.lake["dfs"] will be created
+  + resource "azurerm_private_endpoint" "lake" {
+      + custom_dns_configs       = (known after apply)
+      + id                       = (known after apply)
+      + location                 = "uksouth"
+      + name                     = "pe-sttradefindev-dfs"
+      + network_interface        = (known after apply)
+      + private_dns_zone_configs = (known after apply)
+      + resource_group_name      = "rg-tradefin-dev"
+      + subnet_id                = "/subscriptions/00000000-0000-0000-0000-00000
+00000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Network/virtualNetwor
+ks/vnet-tradefin-dev/subnets/snet-pe"
+      + tags                     = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+
+      + private_dns_zone_group {
+          + id                   = (known after apply)
+          + name                 = "lake-dfs"
+          + private_dns_zone_ids = (known after apply)
+        }
+
+      + private_service_connection {
+          + is_manual_connection           = false
+          + name                           = "lake-dfs"
+          + private_connection_resource_id = "/subscriptions/00000000-0000-0000-
+0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Storage/sto
+rageAccounts/sttradefindev"
+          + private_ip_address             = (known after apply)
+          + subresource_names              = [
+              + "dfs",
+            ]
+        }
+    }
+
+Plan: 6 to add, 0 to change, 0 to destroy.
+azurerm_private_dns_zone.lake["blob"]: Creating...
+azurerm_private_dns_zone.lake["blob"]: Still creating... [00m10s elapsed]
+azurerm_private_dns_zone.lake["blob"]: Still creating... [00m20s elapsed]
+azurerm_private_dns_zone.lake["blob"]: Still creating... [00m30s elapsed]
+azurerm_private_dns_zone.lake["blob"]: Creation complete after 33s [id=/subscrip
+tions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provid
+ers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net]
+azurerm_private_dns_zone.lake["dfs"]: Creating...
+azurerm_private_dns_zone.lake["dfs"]: Still creating... [00m10s elapsed]
+azurerm_private_dns_zone.lake["dfs"]: Still creating... [00m20s elapsed]
+azurerm_private_dns_zone.lake["dfs"]: Still creating... [00m30s elapsed]
+azurerm_private_dns_zone.lake["dfs"]: Creation complete after 33s [id=/subscript
+ions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provide
+rs/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net]
+azurerm_private_dns_zone_virtual_network_link.lake["blob"]: Creating...
+azurerm_private_dns_zone_virtual_network_link.lake["blob"]: Still creating... [0
+0m10s elapsed]
+azurerm_private_dns_zone_virtual_network_link.lake["blob"]: Still creating... [0
+0m21s elapsed]
+azurerm_private_dns_zone_virtual_network_link.lake["blob"]: Still creating... [0
+0m31s elapsed]
+azurerm_private_dns_zone_virtual_network_link.lake["blob"]: Creation complete af
+ter 35s [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/r
+g-tradefin-dev/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core
+.windows.net/virtualNetworkLinks/link-blob]
+azurerm_private_dns_zone_virtual_network_link.lake["dfs"]: Creating...
+azurerm_private_dns_zone_virtual_network_link.lake["dfs"]: Still creating... [00
+m10s elapsed]
+azurerm_private_dns_zone_virtual_network_link.lake["dfs"]: Still creating... [00
+m20s elapsed]
+azurerm_private_dns_zone_virtual_network_link.lake["dfs"]: Still creating... [00
+m30s elapsed]
+azurerm_private_dns_zone_virtual_network_link.lake["dfs"]: Creation complete aft
+er 33s [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg
+-tradefin-dev/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.w
+indows.net/virtualNetworkLinks/link-dfs]
+azurerm_private_endpoint.lake["blob"]: Creating...
+azurerm_private_endpoint.lake["blob"]: Still creating... [00m10s elapsed]
+azurerm_private_endpoint.lake["blob"]: Still creating... [00m20s elapsed]
+azurerm_private_endpoint.lake["blob"]: Still creating... [00m30s elapsed]
+azurerm_private_endpoint.lake["blob"]: Still creating... [00m40s elapsed]
+azurerm_private_endpoint.lake["blob"]: Still creating... [00m50s elapsed]
+azurerm_private_endpoint.lake["blob"]: Creation complete after 57s [id=/subscrip
+tions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provid
+ers/Microsoft.Network/privateEndpoints/pe-sttradefindev-blob]
+azurerm_private_endpoint.lake["dfs"]: Creating...
+azurerm_private_endpoint.lake["dfs"]: Still creating... [00m10s elapsed]
+azurerm_private_endpoint.lake["dfs"]: Still creating... [00m20s elapsed]
+azurerm_private_endpoint.lake["dfs"]: Still creating... [00m30s elapsed]
+azurerm_private_endpoint.lake["dfs"]: Still creating... [00m40s elapsed]
+azurerm_private_endpoint.lake["dfs"]: Still creating... [00m50s elapsed]
+azurerm_private_endpoint.lake["dfs"]: Creation complete after 56s [id=/subscript
+ions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provide
+rs/Microsoft.Network/privateEndpoints/pe-sttradefindev-dfs]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 6 added, 0 changed, 0 destroyed.
 $ Z="-g rg-tradefin-dev -z privatelink.blob.core.windows.net"
 $ Q="[].[name, aRecords[0].ipv4Address]"
 $ az network private-dns record-set a list $Z --query "$Q" -o tsv
+sttradefindev	10.30.1.4
 $ az network private-endpoint list -g rg-tradefin-dev --query "[].name" -o tsv
+pe-sttradefindev-blob
+pe-sttradefindev-dfs
