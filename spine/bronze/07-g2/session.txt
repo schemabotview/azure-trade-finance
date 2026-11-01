@@ -1,0 +1,2 @@
+$ python pipeline/bronze.py
+$ python pipeline/quarantine.py

@@ -1,0 +1,3 @@
+{"from": "bronze/07-g2", "changes": [], "env": true, "venv": true,
+ "setup": ["az storage blob copy start --source-container landing --source-blob lc_deals/batch_id=41/part-00000.csv -c landing -b lc_deals/batch_id=44/part-00000.csv -o none --only-show-errors",
+           "az storage blob upload -c landing -n lc_deals/batch_id=44/_SUCCESS -f /dev/null -o none --only-show-errors"]}

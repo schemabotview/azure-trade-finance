@@ -1,0 +1,4 @@
+{"from": "bronze/06-bronze", "changes": ["pipeline/gates.py", "pipeline/bronze.py", "pipeline/quarantine.py"], "env": true, "venv": true,
+ "generated": ["deliveries"],
+ "setup": ["az storage blob upload-batch -d landing --destination-path lc_deals -s data/deliveries -o none --only-show-errors",
+           "az storage blob upload -c landing -n lc_deals/batch_id=43/_SUCCESS -f /dev/null -o none --only-show-errors"]}
