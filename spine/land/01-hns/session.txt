@@ -1,4 +1,5 @@
 $ cd infra
 $ terraform apply -var-file=envs/dev.tfvars -auto-approve
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
 $ az storage account show -n sttradefindev --query isHnsEnabled
 $ az storage account show -n sttradefindev --query "primaryEndpoints.[blob,dfs]"
