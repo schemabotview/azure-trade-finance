@@ -1,1 +1,1 @@
-{"from": "start/01-tradebook", "changes": ["env.sh", "requirements.txt", "extract/"], "env": true, "venv": true, "setup": ["az storage container create -n landing -o none", "az storage container create -n reference -o none"], "capture": ["lake:landing/lc_deals/batch_id=41/part-00000.csv"]}
+{"from": "land/02-zones", "changes": ["env.sh", "requirements.txt", "extract/"], "env": true, "venv": true, "setup": ["az storage container create -n landing -o none", "az storage container create -n reference -o none"], "capture": ["lake:landing/lc_deals/batch_id=41/part-00000.csv"]}

@@ -1,8 +1,8 @@
 # Learn Azure by building a trade finance risk pipeline: full course, beginner to professional — plan
 
 **Plan status:** v1.1, awaiting owner review (2026-11-01; v1.1 moves infrastructure to Terraform). Runtime "A+" and 12 courses agreed with the
-owner. Infra built and the pilot's local half authored (2026-11-01): Course 5 §3–§8; the Azure
-steps (Terraform) are next. Shared rules (section shape, ◆ detours, packaging, build order) are
+owner. Infra built and the pilot's Course 5 authored (2026-11-01): §3–§8 local, §1, §2, §9 recorded
+on Azure with Terraform. Shared rules (section shape, ◆ detours, packaging, build order) are
 in `CLAUDE.md`, "Shared rules"; this plan states only what is specific to this concept.
 
 ## The idea
@@ -278,15 +278,15 @@ and writes to the emulated lake, so the frame carries the emulated label.
 
 | # | Section | Step | Side pane | Level |
 | --- | --- | --- | --- | --- |
-| 1 | Storage accounts and the hierarchical namespace | HNS on; `az storage fs` | flat blob names vs real directories | A |
-| 2 | Containers as zones | `landing`, `bronze`, `silver`, `gold`, `reference` | the zones on the map | A |
+| 1 | Storage accounts and the hierarchical namespace | `terraform apply`: the group, the account (HNS on, no account keys), the deployer's data role; the blob and dfs endpoints | flat blob names vs real directories | A |
+| 2 | Containers as zones | one `for_each`: `landing`, `bronze`, `silver`, `gold`, `reference`; a real directory with `az storage fs` | the zones on the map | A |
 | 3 | Immutable batch folders | batch 41, the full load, written once; the re-run refused | a batch_id identifies a delivery, not an LC revision | E |
 | 4 | Incremental by watermark | the desk's day (setup); watermark set to batch 41's end; `lookup` counts the window | old / new watermark on a timeline | L · E |
 | 5 | The manifest | `lookup` writes `_manifest.json` FIRST: window, expected rows, files, typed columns | manifest ↔ folder | L · E |
 | 6 | ⑂ G1 fails | the desk amends 3 LCs during the copy (setup): 117 of 120 | G1: do not publish; the old watermark stays | L · E |
 | 7 | Retry-safe landing | copy twice (same path), `commit` = G1 → seal `_SUCCESS` → watermark; copy refused | a retry lands on the same folder until sealed | E |
 | 8 | Reference files | mapping and limits on their own path | reference path → Silver directly, not through Bronze | E |
-| 9 | Who may read a batch | SAS vs RBAC vs ACL; a lifecycle rule | three ways in; hot → cool → archive | A |
+| 9 | Who may read a batch | a lifecycle rule (Terraform); the role, the ACL, a user delegation SAS (200; unsigned 409) | three ways in; hot → cool → archive | A |
 
 **6. `network` · Private by default · 7**
 

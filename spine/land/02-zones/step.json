@@ -1,0 +1,2 @@
+{"from": "land/01-hns", "changes": ["infra/modules/storage/main.tf", "azure.sh"], "azure": true, "env": "azure.sh",
+ "setup": ["cd infra && terraform init -input=false >/dev/null"]}

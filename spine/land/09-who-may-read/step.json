@@ -1,0 +1,2 @@
+{"from": "land/08-reference", "changes": ["infra/modules/storage/main.tf", "extract/share.py"], "azure": true, "env": "azure.sh",
+ "venv": true, "generated": ["reference"], "setup": ["cd infra && terraform init -input=false >/dev/null"]}

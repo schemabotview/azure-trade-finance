@@ -1,6 +1,18 @@
 {
-  "count": 6,
+  "count": 9,
   "entries": [
+    {
+      "course": "land",
+      "section": "storage-and-hns",
+      "file": "land/storage-and-hns.wav",
+      "narration": "The lake starts as one storage account, and on the map it is the green box in the middle of the resource group, ringed. This frame was recorded once on a real Azure subscription, and the label says so. The Terraform module on the right declares the account: standard tier, locally redundant, in U K South. Two lines matter most. The hierarchical namespace is switched on, which is what makes this an A D L S Gen two account rather than a plain blob store. And account keys are switched off: nobody reaches this data with a shared secret, only with an identity and a role. The module also gives whoever runs it the data role on this one account, because owning a subscription lets you manage an account, not read what is inside it. Terraform plans three resources, the resource group, the account and the role, and applies them. The two queries underneath read the account back: the hierarchical namespace is true, and the account answers on two addresses, the blob endpoint and the D F S endpoint, the Data Lake A P I. The table shows what the switch changes. Without it, a folder is only part of each file's name, and renaming a folder means copying and deleting every file under it. With it, a folder is a real directory, and a rename is one operation. Next, the zones inside it."
+    },
+    {
+      "course": "land",
+      "section": "containers-as-zones",
+      "file": "land/containers-as-zones.wav",
+      "narration": "Inside the account, the lake is divided into zones, and each zone is a container, which A D L S calls a file system. On the map, all five now have colour inside the storage account. The Terraform is one resource block with a for each over five names, so the list of zones lives in exactly one place. Like the account, the containers are made through the control plane, the management A P I. Terraform plans five additions and applies them. Then the session switches to the data plane, signed in as the same identity, with no key: the listing returns the five zones. Next, one command creates a directory inside landing, lc deals, then batch I D equals forty two, and the listing beneath shows two directories, the parent and the child, made in one call. On a flat namespace there would be nothing to list until a file existed. The table on the right says what each zone will hold, and when the course fills it. Landing receives TradeBook's batches exactly as delivered. Bronze keeps every version received. Silver keeps one current row per letter of credit. Gold holds the answer, exposure by group and currency. And reference holds the risk team's mapping and limits. Each zone has one job, so each can have its own access rules and its own retention. Next, a batch lands in landing."
+    },
     {
       "course": "land",
       "section": "immutable-batch-folders",
@@ -36,6 +48,12 @@
       "section": "reference-files",
       "file": "land/reference-files.wav",
       "narration": "Two files do not come from TradeBook at all. TradeBook knows legal entities, each company that applies for a letter of credit, but only the risk team knows which entities belong together as one group, and what each group may borrow. Those two facts arrive as files from the risk team, sitting in the project's reference folder. The terminal shows the first lines of the mapping: three Woodgrove companies, all in the Woodgrove group. Reference dot p y publishes both files to their own container, reference, in a folder named for the date they hold for, as of the thirty first of October. They are not deliveries in the landing sense: no watermark, no batch number, and they never pass through Bronze. The listing confirms the two paths. The side pane shows why the zones are separate. On the left, TradeBook's letters of credit go to landing, then Bronze, which keeps every version, then Silver. On the right, the risk team's files go to the reference zone, and Silver reads them directly, after checking them itself in Course nine. Below is the limits file as the lake now holds it: Woodgrove, ten million dollars; Contoso in two currencies, never added together; Fabrikam, three million euros; Northwind, eight million dollars. Next, who is allowed to read a batch."
+    },
+    {
+      "course": "land",
+      "section": "who-may-read",
+      "file": "land/who-may-read.wav",
+      "narration": "Last in this course: who may read what lands, and for how long it stays. This frame was recorded on Azure, against the same account. The session first applies one more Terraform resource, a lifecycle policy, then publishes the reference files to the real lake with the same script that ran against the emulator: only the environment changed, a U R L and a sign in instead of a connection string. There are three ways in, and the table in the side pane holds one of each, read from the terminal. R B A C grants a role on the whole account: here, Storage Blob Data Contributor, given to the identity that deployed it. An access control list works per directory, like file permissions: on group limits, the owner can read and write, the group can read, and everyone else gets nothing. The third way is a shared access signature, a link that carries its own permission. Share dot p y signs one with a key that Azure lends to the signed in identity, never an account key, because the account has none. The link reads one file for four hours. With its signature, the request returns two hundred. The same address without the signature returns four hundred and nine: public access is off. At the bottom, the lifecycle: landing's batches stay hot for thirty days while Bronze reads them, cool after that, move to archive after ninety, and are deleted after four hundred. Next, the network around all of this."
     }
   ]
 }

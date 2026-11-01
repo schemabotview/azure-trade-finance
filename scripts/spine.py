@@ -104,7 +104,7 @@ PYTHON = '/usr/local/bin/python3.14'
 PG_MAJOR = 18
 AZURITE_PORT = 10000
 # Run outputs, the venv, generated data: never part of a step's snapshot, never removed by a lay.
-IGNORED = {'__pycache__', '.venv', 'data', 'reference', 'out'}
+IGNORED = {'__pycache__', '.venv', 'data', 'reference', 'out', '.terraform'}
 MARK = '__SPINE_MARK__'
 UUID = re.compile(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
 ANSI = re.compile(r'\x1b\[[0-9;?]*[@-~]|\x1b[=>]|\r')
@@ -250,7 +250,12 @@ def environment() -> dict:
             'TERM': 'dumb', 'NO_COLOR': '1', 'PYTHON_COLORS': '0', 'PS1': '', 'PGHOST': '/tmp',
             'PIP_DISABLE_PIP_VERSION_CHECK': '1', 'PSQLRC': '/dev/null', 'PAGER': 'cat', 'PSQL_PAGER': 'cat',
             'AZURE_CORE_COLLECT_TELEMETRY': 'no', 'AZURE_CORE_ONLY_SHOW_ERRORS': 'false', 'AZURE_CONFIG_DIR': str(HOME / '.azure'),
-            'PIP_CACHE_DIR': str(SPINE_ROOT / 'pip-cache'), 'COLUMNS': '80', 'TZ': 'UTC'}
+            'PIP_CACHE_DIR': str(SPINE_ROOT / 'pip-cache'), 'COLUMNS': '80', 'TZ': 'UTC',
+            # Terraform one request at a time (aws-ecommerce's rule): the same order every recording,
+            # and no burst of parallel listKeys calls for the sandbox's proxy to reset. Invisible in
+            # every typed command.
+            'TF_CLI_ARGS_plan': '-parallelism=1', 'TF_CLI_ARGS_apply': '-parallelism=1',
+            'TF_CLI_ARGS_destroy': '-parallelism=1'}
 
 
 class Lake:
@@ -361,8 +366,10 @@ def wrap(text: str, columns: int) -> str:
     return '\n'.join(rows)
 
 
-def session_of(step: Path, env: dict) -> tuple[str, dict[str, str]]:
-    """Run the step's setup silently, then its commands one by one, in ONE shell's state."""
+def session_of(step: Path, env: dict, normalise=None) -> tuple[str, dict[str, str], str]:
+    """Run the step's setup silently, then its commands one by one, in ONE shell's state. Returns the
+    transcript (normalised BEFORE it is wrapped: a wrapped id is an id split in two), the captures, and
+    the raw unwrapped output, which a recording scans for leaks."""
     config = config_of(step)
     if config.get('venv'):
         env = venv(env)
@@ -372,22 +379,34 @@ def session_of(step: Path, env: dict) -> tuple[str, dict[str, str]]:
         r = as_ana(prelude + cmd, env)
         if r.returncode:
             sys.exit(f'✗ {name_of(step)}: setup `{cmd}` failed:\n{r.stdout}{r.stderr}')
-    cwd, blocks, columns = WORK, [], config.get('columns', 80)
-    state = SPINE_ROOT / 'shell-state'
+    cwd, blocks, columns, raw = WORK, [], config.get('columns', 80), []
+    normalise = normalise or (lambda s: s)
+    # One terminal's state across commands that each run in their own bash: the profile (prelude),
+    # then every variable a typed command set (`ID=$(…)`, `URL=…`), saved after it and sourced before
+    # the next. The names bash starts with are the baseline; only new ones are carried.
+    state, saved = SPINE_ROOT / 'shell-state', SPINE_ROOT / 'shell-vars'
     state.write_text(prelude)
-    run(['chmod', '644', str(state)])
+    saved.write_text('')
+    baseline = SPINE_ROOT / 'shell-baseline'
+    baseline.write_text(as_ana(f'source {state} >/dev/null 2>&1; compgen -v | sort', env).stdout)
+    for f in (state, saved, baseline):
+        run(['chmod', '666', str(f)])
     typed = commands((step / 'session.txt').read_text())
     for cmd in typed:  # before ANY runs: an Azure command must not run for a step that cannot record
         if len(cmd) + 2 > columns:  # a wrapped command would read back as a shorter one
             sys.exit(f'✗ {name_of(step)}: `$ {cmd[:40]}…` is {len(cmd) + 2} columns; the pane holds {columns}')
     for cmd in typed:
-        script = f'source {state}\ncd {cwd}\n{{ {cmd}\n}} 2>&1\necho "{MARK}$PWD"\n'
+        script = (f'source {state}\nsource {saved}\ncd {cwd}\n{{ {cmd}\n}} 2>&1\necho "{MARK}$PWD"\n'
+                  f'new=$(comm -13 {baseline} <(compgen -v | sort) | grep -vx "new\\|BASH_.*\\|_" )\n'
+                  f'[ -n "$new" ] && declare -p $new 2>/dev/null > {saved}.tmp && mv {saved}.tmp {saved}\n')
         r = as_ana(script, env)
         output, _, after = (r.stdout + r.stderr).partition(MARK)
         if after:
             cwd = Path(after.split('\n')[0])
         output = ANSI.sub('', output).rstrip('\n')
         output = '\n'.join(line.rstrip() for line in output.split('\n'))
+        raw.append(output)
+        output = normalise(output)
         blocks.append(wrap(f'$ {cmd}', columns) + (f'\n{wrap(output, columns)}' if output else ''))
     captured = {}
     for name in config.get('capture', []):
@@ -399,7 +418,8 @@ def session_of(step: Path, env: dict) -> tuple[str, dict[str, str]]:
             tmp.unlink()
         else:
             captured[name] = (WORK / name).read_text()
-    return '\n'.join(blocks).rstrip('\n') + '\n', captured
+    captured = {k: normalise(v) for k, v in captured.items()}
+    return '\n'.join(blocks).rstrip('\n') + '\n', captured, '\n'.join(raw)
 
 
 def masked(text: str, step: Path) -> str:
@@ -511,7 +531,7 @@ def write_local(step: Path, lake: Lake) -> None:
         sys.exit(f'✗ {name_of(step)} starts from {name_of(parent)}, which is {recorded_ok(parent)[1]}')
     restore_state(parent, lake)
     lay(step)
-    transcript, captured = session_of(step, environment())
+    transcript, captured, _ = session_of(step, environment())
     (step / 'session.txt').write_text(transcript)
     for file, text in captured.items():
         (step / 'captured' / file).parent.mkdir(parents=True, exist_ok=True)
@@ -533,6 +553,9 @@ FACTS = {  # COURSE-PLAN.md, "Facts": what a real id is shown as
     'client': '00000000-0000-0000-0000-0000000000c1',
     'domain': 'syndicabank.onmicrosoft.example',
 }
+TRANSPORT = ('HTTP response was nil', 'connection may have been reset', 'connection reset by peer', 'i/o timeout',
+             'TLS handshake timeout', 'RemoteDisconnected', 'Connection aborted',
+             'is being deleted. Try operation later')  # the end of an earlier teardown, still running
 SECRETS = ('AZURE_TENANT_ID', 'AZURE_SUBSCRIPTION_ID', 'AZURE_CLIENT_ID', 'AZURE_CLIENT_SECRET')
 
 
@@ -555,7 +578,39 @@ class Normaliser:
         # What was TYPED is never rewritten (the step's key hashes it); only what Azure printed
         return '\n'.join(line if line.startswith('$ ') else self.output(line) for line in text.split('\n'))
 
+    B64 = re.compile(r'[A-Za-z0-9+/]{24,}={0,2}')
+
+    def decoded(self, text: str) -> list[str]:
+        """Every base64 run in the text that decodes to printable text (azurerm's client_config id is
+        base64 of the client, object and subscription ids)."""
+        import base64, binascii
+        out = []
+        for m in self.B64.finditer(text.replace('\n', '')):
+            s = m.group(0)
+            try:
+                d = base64.b64decode(s + '=' * (-len(s) % 4), validate=True).decode()
+            except (binascii.Error, UnicodeDecodeError, ValueError):
+                continue
+            if d.isprintable():
+                out.append(d)
+        return out
+
     def output(self, text: str) -> str:
+        import base64, binascii
+
+        def b64(m: re.Match) -> str:  # normalise inside a base64 value, and encode it again
+            s = m.group(0)
+            try:
+                d = base64.b64decode(s + '=' * (-len(s) % 4), validate=True).decode()
+            except (binascii.Error, UnicodeDecodeError, ValueError):
+                return s
+            if not d.isprintable():
+                return s
+            n = self.plain(d)
+            return s if n == d else base64.b64encode(n.encode()).decode().rstrip('=') if not s.endswith('=') else base64.b64encode(n.encode()).decode()
+        return self.plain(self.B64.sub(b64, text))
+
+    def plain(self, text: str) -> str:
         from datetime import datetime
         for real, shown in self.names.items():
             text = text.replace(real, shown)
@@ -585,6 +640,9 @@ class Normaliser:
         return re.sub(r'[\w.+-]+@(?!syndicabank\.)[\w-]+(\.[\w-]+)+', f'ana@{FACTS["domain"]}', text)
 
     def refuse(self, text: str) -> list[str]:
+        # Searched three ways: as written, with every line break removed (a wrapped id), and inside
+        # every base64 run that decodes to text.
+        text = '\n'.join([text, text.replace('\n', ''), *self.decoded(text)])
         out = []
         for kind, value in self.real.items():
             for frag in re.findall(r'[0-9a-f]{8,}', value.replace('-', '')) + ([value] if len(value) >= 6 else []):
@@ -615,15 +673,22 @@ def record(step: Path) -> int:
     if r.returncode:
         sys.exit('✗ az login failed (the output is not printed: it may hold a secret)')
     shown = as_ana('az account show --query "{t:tenantDefaultDomain}" -o tsv', env).stdout.strip()
+    # The signed-in identity's object id, from its own token: it appears in role assignments and
+    # inside azurerm's client_config id
+    claims = as_ana('az account get-access-token --query accessToken -o tsv', env).stdout.strip().split('.')
+    import base64
+    oid = json.loads(base64.urlsafe_b64decode(claims[1] + '=' * (-len(claims[1]) % 4))).get('oid', '') if len(claims) > 1 else ''
     real = {'subscription': os.environ['AZURE_SUBSCRIPTION_ID'], 'tenant': os.environ['AZURE_TENANT_ID'],
-            'client': os.environ['AZURE_CLIENT_ID'], 'tenant_domain': shown}
+            'client': os.environ['AZURE_CLIENT_ID'], 'tenant_domain': shown, 'object': oid}
     suffix = os.environ.get('TRADEFIN_SUFFIX', '')  # storage names are global: the owner's carry a suffix
     names = {f'sttradefindev{suffix}': 'sttradefindev', f'sttradefinprod{suffix}': 'sttradefinprod'} if suffix else {}
     norm = Normaliser(real, names)
-    transcript, captured = session_of(step, env)
-    transcript = norm(transcript)
-    captured = {k: norm(v) for k, v in captured.items()}
-    leaks = norm.refuse(transcript + ''.join(captured.values()))
+    transcript, captured, _ = session_of(step, env, normalise=norm.output)
+    leaks = norm.refuse(transcript + '\n'.join(captured.values()))
+    # A dropped connection is the network's, not the lesson's: record the step again
+    flaky = [m for m in TRANSPORT if m in transcript]
+    if flaky:
+        sys.exit(f'✗ {name_of(step)}: a transport failure ("{flaky[0]}") is in the transcript — nothing written; record it again')
     if os.environ['AZURE_CLIENT_SECRET'] in transcript:
         leaks.append('the client secret')
     if leaks:
@@ -656,10 +721,19 @@ def recorded_ok(step: Path) -> tuple[bool, str]:
 
 
 def teardown() -> int:
-    r = run(['az', 'group', 'list', '--query', "[?contains(name, 'tradefin')].name", '-o', 'tsv'])
+    """After a course: `terraform destroy` of what infra/ made, then the state's own resource group
+    (COURSE-PLAN.md, "The spine"). Run with Ana's recording sign-in; prints no ids."""
+    env = {**environment(), 'AZURE_CONFIG_DIR': str(SPINE_ROOT / 'azure-record')}
+    if (WORK / 'infra' / 'main.tf').exists():
+        r = as_ana('cd infra && terraform init -input=false >/dev/null && '
+                   'terraform destroy -var-file=envs/dev.tfvars -auto-approve -input=false >/dev/null', env)
+        print('✓ terraform destroy' if r.returncode == 0 else f'✗ terraform destroy failed:\n{ANSI.sub("", r.stderr)[-2000:]}')
+        if r.returncode:
+            return 1
+    r = as_ana("az group list --query \"[?contains(name, 'tradefin')].name\" -o tsv", env)
     for group in r.stdout.split():
-        run(['az', 'group', 'delete', '-n', group, '--yes', '--no-wait'])
-        print(f'deleting {group}')
+        as_ana(f'az group delete -n {group} --yes', env, check=True)
+        print(f'✓ deleted {group}')
     return 0
 
 
@@ -732,7 +806,7 @@ def main(argv: list[str]) -> int:
                     continue
                 lay(step)
                 snap = Snapshot(lake) if config.get('branch') else None
-                transcript, captured = session_of(step, environment())
+                transcript, captured, _ = session_of(step, environment())
                 if snap:
                     snap.restore()
                 if not asked(step):

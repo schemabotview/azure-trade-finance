@@ -1,0 +1,1 @@
+{"from": "start/01-tradebook", "changes": ["infra/"], "azure": true, "setup": ["bash infra/bootstrap.sh"]}

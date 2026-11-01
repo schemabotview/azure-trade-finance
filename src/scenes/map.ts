@@ -1,4 +1,5 @@
-import type { Edge, Group, Item, SceneModel, SceneNode } from '@graphlearning/graphl-flow'
+import type { Code, Edge, Group, Item, SceneModel, SceneNode } from '@graphlearning/graphl-flow'
+import { keepLines, terminal, trim, type Keep } from './ide'
 
 // THE PIPELINE'S MAP — ported from aws-ecommerce's map.ts, drawn the way Azure draws its own: the
 // subscription and its resource group as boundaries; inside, the VNet with its subnets, the storage
@@ -49,7 +50,8 @@ const CONTROLS = [
 export const BUILT: Record<string, string[]> = { intro: [], 'how-azure-runs': [] }
 BUILT.start = ['tradebook', 'rg', 'storage', 'budget']
 BUILT.secure = [...BUILT.start, 'entra', 'keyvault', 'policy']
-BUILT.land = [...BUILT.secure, 'landing', 'reference', 'g1']
+// §5.2 makes all five zones as containers; what fills bronze, silver and gold comes in Courses 8–10
+BUILT.land = [...BUILT.secure, 'landing', 'bronze', 'silver', 'gold', 'reference', 'g1']
 BUILT.network = [...BUILT.land, 'vnet', 'snet-shir', 'snet-pe', 'snet-dbx', 'shir', 'pe-storage']
 BUILT.extract = [...BUILT.network, 'adf']
 BUILT.bronze = [...BUILT.extract, 'dbw', 'dbx-compute', 'connector', 'bronze', 'g2']
@@ -127,4 +129,15 @@ export function mapFrame({ built, side, edges = [] }: MapFrame): SceneModel {
     ],
     edges: [...MAP_EDGES, ...edges],
   }
+}
+
+/** A map side pane's terminal: an 80-column pane, the session's lines folded to `keep`. */
+export function mapTerminal(session: string, keep?: Keep[]): Code {
+  const rows = terminal(session)
+  return { type: 'code', id: 'terminal', terminal: true, filename: 'terminal — lc-exposure', code: rows, fill: true, show: keep && keepLines(rows, keep) }
+}
+
+/** A map side pane's editor: a file from the step, its lines folded to `show`. */
+export function mapEditor(file: string, code: string, show?: [number, number][], highlight?: number[]): Code {
+  return { type: 'code', id: 'editor', filename: file, lang: 'hcl', code: trim(code), show, highlight, tone: 'ingest', fill: true }
 }

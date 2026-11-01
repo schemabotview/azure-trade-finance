@@ -19,15 +19,11 @@
 ## Status
 
 Plan v1.1 written 2026-11-01 (infrastructure moved from Bicep to Terraform), awaiting the owner's
-review. 2026-11-01 (cloud session): **infra built, and the pilot's local half authored** — Course 5
-§3–§8, six sections, checked and shot at 4K. Next:
+review. 2026-11-01 (cloud sessions): **infra built, and the pilot's Course 5 authored** — all nine
+sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, then torn down. Next:
 
-1. Owner review of `COURSE-PLAN.md` and of `#/land-immutable-batch-folders` … `#/land-reference-files`.
-2. Pilot, Azure half — needs the recording secrets (Identity, "secrets") in the environment: §5.1
-   (HNS), §5.2 (containers as zones, the first map frame), §5.9 (SAS / RBAC / ACL, lifecycle), and
-   the ◆ RBAC full scene from Course 4. Each is a `{"azure": true}` step written in Terraform and
-   recorded with `python scripts/spine.py --record <step>`, then `--teardown`. A first pass in Bicep
-   (before plan v1.1) was recorded and discarded; its resources were deleted.
+1. Owner review of `COURSE-PLAN.md` and of `#/land-storage-and-hns` … `#/land-who-may-read`.
+2. The pilot's last piece: the ◆ RBAC full scene from Course 4 (needs Course 4's steps, or a lab).
 3. Courses 1–4, 6–12 one at a time, each reviewed on its rendered routes, then narrated.
 4. Audio (`npm run gen:audio` is current for the six sections), record, film, cover.
 
@@ -47,7 +43,7 @@ review. 2026-11-01 (cloud session): **infra built, and the pilot's local half au
 | 2 | `how-azure-runs` | 7 | planned |
 | 3 | `start` | 8 | planned |
 | 4 | `secure` | 8 | planned |
-| 5 | `land` | 9 | pilot: §3–§8 authored, narrated (text), 4K-checked; §1, §2, §9 wait for Azure |
+| 5 | `land` | 9 | pilot: authored, narrated (text), 4K-checked; §1, §2, §9 recorded on Azure |
 | 6 | `network` | 7 | planned |
 | 7 | `extract` | 8 | planned |
 | 8 | `bronze` | 8 | planned |
@@ -94,6 +90,23 @@ See COURSE-PLAN, "The spine". The rules an author applies every step:
 - A command wider than the pane fails the replay (a wrapped command reads back as a shorter one).
   Code is ≤ 79 columns; the terminal holds 13 rows.
 - The proxy's CA bundle under `/root` is copied for `ana` (pip inside the replay).
+- A variable a typed command sets (`ID=$(…)`) is carried to the next command, as in one terminal.
+
+**Recording on Azure** (`--record`), learned on Course 5:
+
+- Sign-in is `az login` as the service principal, silently; Terraform's azurerm uses that CLI
+  sign-in, so no secret reaches the project. The state backend (`infra/bootstrap.sh`, Course 3 §5)
+  is made by the first Azure step's `setup`; later Azure steps `setup` a silent `terraform init`.
+- Normalisation runs BEFORE wrapping (a wrapped id is an id split in two), and inside base64 runs
+  (azurerm's `client_config` id is base64 of the client, object and subscription ids). The leak
+  check searches as written, with line breaks removed, and decoded. `python scripts/leaks.py` runs
+  the same check over the whole tree: run it before committing a recording.
+- Terraform runs one request at a time (`TF_CLI_ARGS_*=-parallelism=1`, invisible): parallel
+  `listKeys` calls were reset by the sandbox's proxy.
+- A transcript holding a transport failure, or "is being deleted" (an earlier teardown still
+  running), is refused: record it again. A re-record must start from the parent's Azure state —
+  remove what a failed attempt created (`terraform destroy -target=…`) so the apply is the real one.
+- `--teardown` is `terraform destroy`, then every `*tradefin*` group (the state's included).
 
 ## Frames
 
