@@ -1,7 +1,8 @@
 # Learn Azure by building a trade finance risk pipeline: full course, beginner to professional — plan
 
 **Plan status:** v1, awaiting owner review (2026-11-01). Runtime "A+" and 12 courses agreed with the
-owner. Nothing is authored yet. Shared rules (section shape, ◆ detours, packaging, build order) are
+owner. Infra built and the pilot's local half authored (2026-11-01): Course 5 §3–§8; the Azure
+steps wait for the recording secrets. Shared rules (section shape, ◆ detours, packaging, build order) are
 in `CLAUDE.md`, "Shared rules"; this plan states only what is specific to this concept.
 
 ## The idea
@@ -57,8 +58,10 @@ finished answer: Woodgrove | USD, 97% of its limit.
 | PostgreSQL | **18.6** (conda-forge, `sql-bank`'s `setup-postgres.sh`) | TradeBook, the source system |
 | Python | **3.14.9** | the extractor, gates, the generator |
 | PySpark + delta-spark | **4.2.0** + **4.4.1** on Java **21** | Bronze → Gold, run locally (the pipeline's numbers) |
-| Azurite | pinned at the infra step | blob landing, emulated (Blob API only: no hierarchical namespace) |
-| Azure CLI, Bicep CLI, azcopy | pinned at the infra step | the platform, recorded on Azure |
+| psycopg, azure-storage-blob, azure-identity | **3.3.6**, **12.31.1**, **1.27.0** | the extractor's libraries (`requirements.txt`) |
+| Azurite | **3.37.0** (npm) | blob landing, emulated (Blob API only: no hierarchical namespace) |
+| Azure CLI | **2.91.0** (pip, its own venv) | the platform, recorded on Azure; also `az storage` against Azurite |
+| Bicep CLI, azcopy | pinned at the first Azure recording (`az bicep install --version`) | infrastructure, bulk copy |
 | Databricks CLI | **1.22.1** (as `databricks-retail-bank-lakehouse`) | Azure Databricks, recorded on Azure |
 | Azure subscription | the owner's | every "recorded on Azure" step |
 
@@ -137,9 +140,20 @@ owner's subscription are never shown: the replay normalises them to the values b
 | the answer | Woodgrove USD: LC-2041 v1 2.0m → v2 2.2m, other open LCs 5.0m + 2.5m → gross 9.7m, limit 10.0m, utilisation 97%, headroom 0.3m, breach No |
 | exposure rule | open (`ISSUED`, `ACTIVE`, `AMENDED`) → amount; else 0. Money `decimal(18,2)` |
 | alerts | action group `ag-trade-risk`, email `trade-risk@syndicabank.example` |
+| tenant / client ids | shown as `00000000-0000-0000-0000-0000000000a1` (tenant) and `…c1` (the recording service principal); any other GUID as `…0000000010NN` in order of first appearance |
 
-The generator's other values (LC ids, counterparties, amounts) are frozen when the pilot is recorded
-and added here then.
+The generator's values, frozen with the pilot's local steps (2026-11-01; `tradebook_gen/model.py`,
+asserted by `python -m tradebook_gen verify`):
+
+| fact | value |
+| --- | --- |
+| counterparties | Woodgrove `CP-1101`–`1103`, Contoso `CP-1201`–`1203`, Fabrikam `CP-1301`–`1302`, Northwind `CP-1401`–`1403`; `CP-1501` Tailspin Imports Ltd has NO group mapping |
+| the seed | LC-2001 … LC-2400 at 2026-10-31 02:00 (batch 41's window end): batch 41 is the full load, 400 rows |
+| the desk's day | 2026-10-31: 18 new LCs (LC-2401 … LC-2418), 70 amendments, 32 closures = 120 rows in batch 42's window `(2026-10-31T02:00:00Z, 2026-11-01T02:00:00Z]`, of 418 LCs |
+| Woodgrove USD open | LC-2041 (2.2m, AMENDED v2), LC-2087 (5.0m), LC-2133 (2.5m); every other Woodgrove LC is closed |
+| other groups, open | Contoso USD 4.85m, EUR 3.10m; Fabrikam EUR 3.42m (breach); Northwind USD 6.30m |
+| unmapped | LC-2299, Tailspin, open 1.2m USD: the 1.2m an inner join loses (§9.8) |
+| §5.6's race | LC-2310, LC-2316, LC-2322 (Northwind, in the window) amended at 2026-11-01 02:00:07: the copy reads 117 |
 
 ## Frames
 
@@ -199,7 +213,8 @@ detour returns to the pipeline.
 ## The courses
 
 Side pane = the diagram. ◆ = detour. ⑂ = a branch step (run, then discarded). Level: L runs locally ·
-A recorded on Azure · E emulated · C compiled · D doc-cited · M model.
+A recorded on Azure · E emulated · C compiled · D doc-cited · M model. `L · E`: the code runs locally
+and writes to the emulated lake, so the frame carries the emulated label.
 
 **1. `intro` · Trade finance, and what we'll build · 3**
 
@@ -252,11 +267,11 @@ A recorded on Azure · E emulated · C compiled · D doc-cited · M model.
 | --- | --- | --- | --- | --- |
 | 1 | Storage accounts and the hierarchical namespace | HNS on; `az storage fs` | flat blob names vs real directories | A |
 | 2 | Containers as zones | `landing`, `bronze`, `silver`, `gold`, `reference` | the zones on the map | A |
-| 3 | Immutable batch folders | `batch_id=42/` written once | a batch_id identifies a delivery, not an LC revision | E |
-| 4 | Incremental by watermark | `extract.py`: read watermark → copy `updated_at` window | old / new watermark on a timeline | L |
-| 5 | The manifest | `_manifest.json`: expected counts, files, schema | manifest ↔ folder | L |
-| 6 | ⑂ G1 fails | a short copy: 117 of 120 | G1: do not publish; the old watermark stays | L |
-| 7 | Retry-safe landing | the same batch re-run, same path | a retry lands on the same folder | E |
+| 3 | Immutable batch folders | batch 41, the full load, written once; the re-run refused | a batch_id identifies a delivery, not an LC revision | E |
+| 4 | Incremental by watermark | the desk's day (setup); watermark set to batch 41's end; `lookup` counts the window | old / new watermark on a timeline | L · E |
+| 5 | The manifest | `lookup` writes `_manifest.json` FIRST: window, expected rows, files, typed columns | manifest ↔ folder | L · E |
+| 6 | ⑂ G1 fails | the desk amends 3 LCs during the copy (setup): 117 of 120 | G1: do not publish; the old watermark stays | L · E |
+| 7 | Retry-safe landing | copy twice (same path), `commit` = G1 → seal `_SUCCESS` → watermark; copy refused | a retry lands on the same folder until sealed | E |
 | 8 | Reference files | mapping and limits on their own path | reference path → Silver directly, not through Bronze | E |
 | 9 | Who may read a batch | SAS vs RBAC vs ACL; a lifecycle rule | three ways in; hot → cool → archive | A |
 
@@ -360,8 +375,10 @@ A recorded on Azure · E emulated · C compiled · D doc-cited · M model.
 
 ## Open
 
-- The pins for Azurite, the Azure CLI, Bicep and azcopy, and the Azure Databricks runtime, set at
-  the infra step.
+- The pins for Bicep, azcopy and the Azure Databricks runtime, set at the first Azure recording.
+- Course 3's sections are unauthored; the chain's head `start/01-tradebook` (load TradeBook) exists
+  so Course 5's local steps have a source. Courses 3–4's Azure steps slot in before `land/03` when
+  recorded: only `land/03`'s `from` and `changes` move, and local steps replay, so nothing re-records.
 - Whether the SHIR VM is kept between Courses 6 and 7 or rebuilt (cost vs a shorter chain).
 - Section 12.6 needs a GitHub repository with an OIDC federated credential: this repo, or a
   separate demo repo.

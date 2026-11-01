@@ -1,0 +1,41 @@
+{
+  "count": 6,
+  "entries": [
+    {
+      "course": "land",
+      "section": "immutable-batch-folders",
+      "file": "land/immutable-batch-folders.wav",
+      "narration": "The pipeline's first real job is to land TradeBook's letters of credit in the lake, and land them in a way we can trust later. On Ana's laptop the lake is Azurite, Azure Storage's emulator, and the label at the top of the side pane says so. Extract dot p y reads every L C that TradeBook held up to the window's end, two o'clock on the thirty first of October, and writes them as one C S V file. The path is the idea: the landing container, then lc deals, then a folder named batch I D equals forty one. Each night's copy gets a folder of its own, and the upload refuses to overwrite. The terminal shows both sides of that rule. The first run writes four hundred rows. The same command again, a retry or a careless double click, is refused, because the file already exists. A delivery, once written, never changes under the people reading it. The table in the side pane shows why two numbers are needed. Source version is TradeBook's count of one L C's revisions. The batch I D names the delivery that carried a row. This letter of credit arrives at version one, for two million dollars, in batch forty one; tomorrow its amendment, version two, arrives in batch forty two. Bronze will keep both. Next, we stop copying everything, and copy only what changed."
+    },
+    {
+      "course": "land",
+      "section": "incremental-by-watermark",
+      "file": "land/incremental-by-watermark.wav",
+      "narration": "Batch forty one was a full load. Since then, the desk has worked through the whole of the thirty first of October, issuing, amending and closing letters of credit, and copying all of TradeBook every night would copy mostly what the lake already has. So the extractor now keeps a watermark: the end of the last good window, stored as a small blob in the landing container. The first command shows there is none yet, and the second sets it to batch forty one's window end, the point the full load covered. The query underneath asks TradeBook about every row's updated at: four hundred and eighteen L Cs now, the newest changed late on the thirty first. Lookup is the extractor's first step, and it copies nothing. It counts the rows whose updated at is after the watermark, and no later than tonight's window end, two o'clock on the first of November. The window is open at the start and closed at the end, so a row stamped exactly on a boundary belongs to one batch, never two. One hundred and twenty of the four hundred and eighteen changed. The side pane draws it as one line of time: the full load, the watermark, tonight's window, and the next watermark, greyed until batch forty two has been delivered and checked. Next, lookup writes down what it found, before anything is copied."
+    },
+    {
+      "course": "land",
+      "section": "the-manifest",
+      "file": "land/the-manifest.wav",
+      "narration": "Lookup now leaves something behind: a manifest, a small J SON file in batch forty two's folder. It is written first, before a single row is copied, and that order is the point. The highlighted lines build it from what lookup just learned. The window, with its start and its end. The number of rows the copy must deliver, one hundred and twenty. The files the batch will hold, one C S V. And the table's columns with their PostgreSQL types, read from the database's own catalogue, so a column that disappears or changes type upstream will show up as a difference rather than a surprise. The terminal shows lookup writing it, and the listing beneath shows the landing container: batch forty one's file, and batch forty two's folder, holding only the manifest so far. In the side pane is the blob itself, read back from the lake: the batch, the window, one hundred and twenty expected rows, one file, and ten typed columns, folded in the middle. Above it, the order of the night. Lookup writes the promise. The copy, still to come, writes the data. And the gate called G one will hold the folder to the promise before anything downstream may read it. Next, the copy runs, on a night when the promise is not kept."
+    },
+    {
+      "course": "land",
+      "section": "g1-fails",
+      "file": "land/g1-fails.wav",
+      "narration": "This is a night that goes wrong, run once and then thrown away, so the course carries on from the manifest. The new file is g one dot p y, the landing gate. It reads the manifest, lists the batch folder, and checks three things: every promised file is there, the columns are the ones declared, and the rows add up to the expected count. Each check prints what it found against what was promised, and the batch passes only if all three match. The copy reads the manifest's window and writes one hundred and seventeen rows. G one compares: one file of one, ten columns of ten, and one hundred and seventeen rows of one hundred and twenty. Fail. The batch is not published, and the watermark has not moved. The side pane tells the story of the night. At two o'clock, lookup counted one hundred and twenty rows in the window. Seven seconds later, the desk amended three letters of credit, and each one's updated at moved past the window's end, out of tonight's batch. When the copy ran, they were no longer in its window. Nothing crashed, and no error was raised: without the gate, a short batch would have flowed on to Bronze and to the morning's numbers. Next, we make the rerun safe."
+    },
+    {
+      "course": "land",
+      "section": "retry-safe-landing",
+      "file": "land/retry-safe-landing.wav",
+      "narration": "A failed night has to be run again, and write once gets in the way: the short file is already in the folder, and a retry would be refused. So the rule changes. A batch folder stays open until it is sealed, and while it is open, a retry overwrites the same path. The copy step first checks for a file called underscore success, and refuses if it exists; otherwise it writes the part file, overwriting. The new commit step runs G one, and only if it passes writes underscore success, and only then moves the watermark. In the terminal, the copy runs twice, as a retry would, and both times writes one hundred and twenty rows to the same file: running it again changes nothing. Commit runs the gate, all three checks pass, the batch is sealed, and the watermark moves to two o'clock on the first of November. One more copy is refused: the batch is sealed. The side pane shows the folder's life, open, committed, sealed, and what it holds now: the manifest from lookup, one part file written twice, and the seal. The order matters. If the machine fails between sealing and moving the watermark, the next run finds a sealed batch, and runs only the commit again. Next, the files that do not come from TradeBook at all."
+    },
+    {
+      "course": "land",
+      "section": "reference-files",
+      "file": "land/reference-files.wav",
+      "narration": "Two files do not come from TradeBook at all. TradeBook knows legal entities, each company that applies for a letter of credit, but only the risk team knows which entities belong together as one group, and what each group may borrow. Those two facts arrive as files from the risk team, sitting in the project's reference folder. The terminal shows the first lines of the mapping: three Woodgrove companies, all in the Woodgrove group. Reference dot p y publishes both files to their own container, reference, in a folder named for the date they hold for, as of the thirty first of October. They are not deliveries in the landing sense: no watermark, no batch number, and they never pass through Bronze. The listing confirms the two paths. The side pane shows why the zones are separate. On the left, TradeBook's letters of credit go to landing, then Bronze, which keeps every version, then Silver. On the right, the risk team's files go to the reference zone, and Silver reads them directly, after checking them itself in Course nine. Below is the limits file as the lake now holds it: Woodgrove, ten million dollars; Contoso in two currencies, never added together; Fabrikam, three million euros; Northwind, eight million dollars. Next, who is allowed to read a batch."
+    }
+  ]
+}

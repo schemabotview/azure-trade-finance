@@ -1,0 +1,7 @@
+$ python extract/extract.py lookup --batch 42 --window-end 2026-11-01T02:00:00Z
+batch 42: window (2026-10-31T02:00:00Z, 2026-11-01T02:00:00Z]
+120 of 418 LCs changed in the window
+manifest -> landing/lc_deals/batch_id=42/_manifest.json
+$ az storage blob list -c landing --prefix lc_deals/ --query "[].name" -o tsv
+lc_deals/batch_id=41/part-00000.csv
+lc_deals/batch_id=42/_manifest.json

@@ -1,0 +1,6 @@
+$ python extract/extract.py --batch 41 --window-end 2026-10-31T02:00:00Z
+batch 41: 400 rows -> landing/lc_deals/batch_id=41/part-00000.csv
+$ python extract/extract.py --batch 41 --window-end 2026-10-31T02:00:00Z
+refused: landing/lc_deals/batch_id=41/part-00000.csv already exists
+$ az storage blob list -c landing --query "[].name" -o tsv
+lc_deals/batch_id=41/part-00000.csv

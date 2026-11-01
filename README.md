@@ -11,20 +11,22 @@ platform is recorded on a real subscription; every frame says which. Planned as 
 courses, 87 sections). Prerequisites: [`sql-bank`](https://github.com/schemabotview/sql-bank) and
 [`spark-ecommerce-analytics`](https://github.com/schemabotview/spark-ecommerce-analytics).
 
-**Status:** plan v1, awaiting the owner's review; nothing authored yet.
+**Status:** plan v1 awaiting the owner's review; infra built; the pilot's local half (Course 5
+§3–§8) authored.
 Plan: [`COURSE-PLAN.md`](COURSE-PLAN.md) · Rules and status: [`CLAUDE.md`](CLAUDE.md).
 
 ## Run
 
-Not scaffolded yet. Once it is (COURSE-PLAN, build order in CLAUDE.md "Status"):
-
 ```sh
-npm install
+npm ci
 npm run dev                                # http://localhost:5173 · #/<course>-<section>
 npm run check                              # content + 4K render
 ```
 
-## Layout (planned)
+The spine (as root, once): `scripts/install-toolchain.sh`, `scripts/setup-postgres.sh`,
+`scripts/install-azure-tools.sh`; then `python scripts/spine.py` replays every local step.
+
+## Layout
 
 ```
 src/content/<course>/    one file per section (+ narration) and the course index

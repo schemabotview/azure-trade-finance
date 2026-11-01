@@ -1,0 +1,12 @@
+{
+  "_comment": "Per-repo publishing identity, read by @graphlearning/shell's thumb / gen-descriptions scripts. Env vars (CONCEPT, SITE, APP_PATH, HASHTAGS, PANEL_BG) still override.",
+  "concept": "Azure",
+  "site": "https://graphl.in",
+  "appPath": "/azure-trade-finance",
+  "hashtags": "#Azure #DataEngineering #AzureDataFactory #Databricks #TechEducation",
+  "panelBg": "radial-gradient(118% 104% at 70% 34%, #50a8f0 0%, #0078d4 44%, #0b1220 100%)",
+  "film": {
+    "title": "Learn Azure by building a trade finance risk pipeline: full course, beginner to professional",
+    "blurb": "Every number is really computed (PostgreSQL 18.6, Python 3.14.9, PySpark 4.2.0 with Delta), and every Azure command was really run once on a real subscription, its transcript recorded."
+  }
+}

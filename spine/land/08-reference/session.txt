@@ -1,0 +1,11 @@
+$ head -4 reference/counterparty_group.csv
+counterparty_id,counterparty_name,group_name
+CP-1101,Woodgrove Retail Ltd,Woodgrove
+CP-1102,Woodgrove Foods plc,Woodgrove
+CP-1103,Woodgrove Asia Pte Ltd,Woodgrove
+$ python extract/reference.py --as-of 2026-10-31
+ 11 rows -> reference/counterparty_group/as_of=2026-10-31/counterparty_group.csv
+  5 rows -> reference/group_limits/as_of=2026-10-31/group_limits.csv
+$ az storage blob list -c reference --query "[].name" -o tsv
+counterparty_group/as_of=2026-10-31/counterparty_group.csv
+group_limits/as_of=2026-10-31/group_limits.csv

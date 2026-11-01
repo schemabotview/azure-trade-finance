@@ -1,0 +1,1 @@
+{"from": "land/04-watermark", "changes": ["extract/extract.py"], "env": true, "venv": true, "capture": ["lake:landing/lc_deals/batch_id=42/_manifest.json"]}

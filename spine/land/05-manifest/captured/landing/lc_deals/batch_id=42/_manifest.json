@@ -1,0 +1,24 @@
+{
+  "batch_id": 42,
+  "table": "lc_deals",
+  "window": {
+    "from": "2026-10-31T02:00:00Z",
+    "to": "2026-11-01T02:00:00Z"
+  },
+  "expected_rows": 120,
+  "files": [
+    "part-00000.csv"
+  ],
+  "columns": {
+    "lc_id": "text",
+    "applicant_id": "text",
+    "beneficiary": "text",
+    "currency": "character(3)",
+    "amount": "numeric(18,2)",
+    "status": "text",
+    "issue_date": "date",
+    "expiry_date": "date",
+    "source_version": "integer",
+    "updated_at": "timestamp with time zone"
+  }
+}

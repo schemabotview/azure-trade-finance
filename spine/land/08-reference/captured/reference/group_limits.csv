@@ -1,0 +1,6 @@
+group_name,currency,limit_amount
+Woodgrove,USD,10000000.00
+Contoso,USD,6000000.00
+Contoso,EUR,4000000.00
+Fabrikam,EUR,3000000.00
+Northwind,USD,8000000.00

@@ -1,0 +1,12 @@
+$ psql -q -f tradebook/schema.sql
+$ psql -q -f tradebook/load.sql
+$ psql -c "SELECT status, count(*) FROM lc_deals GROUP BY 1 ORDER BY 2 DESC"
+  status   | count
+-----------+-------
+ EXPIRED   |    95
+ CLOSED    |    88
+ CANCELLED |    87
+ ACTIVE    |    78
+ AMENDED   |    28
+ ISSUED    |    24
+(6 rows)

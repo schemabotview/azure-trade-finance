@@ -1,0 +1,2 @@
+{"from": "land/05-manifest", "changes": ["extract/extract.py", "extract/g1.py"], "env": true, "venv": true, "branch": true,
+ "setup": ["psql -q -f data/tradebook/desk-late.sql"]}

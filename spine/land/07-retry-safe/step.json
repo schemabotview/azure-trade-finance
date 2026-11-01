@@ -1,0 +1,1 @@
+{"from": "land/06-g1-fails", "changes": ["extract/extract.py"], "env": true, "venv": true, "capture": ["lake:landing/lc_deals/batch_id=42/part-00000.csv"]}

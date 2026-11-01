@@ -1,0 +1,2 @@
+{"from": "land/07-retry-safe", "changes": ["extract/reference.py"], "env": true, "venv": true, "generated": ["reference"],
+ "capture": ["reference/group_limits.csv"]}

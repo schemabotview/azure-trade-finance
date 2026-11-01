@@ -18,18 +18,26 @@
 
 ## Status
 
-Plan v1 written 2026-11-01, awaiting the owner's review. Nothing authored. Next, in order:
+Plan v1 written 2026-11-01, awaiting the owner's review. 2026-11-01 (cloud session): **infra built,
+and the pilot's local half authored** — Course 5 §3–§8, six sections, checked and shot at 4K. Next:
 
-1. Owner review of `COURSE-PLAN.md`.
-2. Infra (no content): scaffold the repo from `spark-ecommerce-analytics` (vite, `package.json`
-   scripts, `src/main.tsx`, `theme.css`, checks, registry, shots, film, the Colab notebook with
-   `REPO = "azure-trade-finance"`); `scripts/concept.json` and `titles.json`; `tradebook_gen` +
-   `verify`; `spine.py` with both step kinds (local replay, Azure record-once with normalisation);
-   the map frame; the install scripts; pin the open versions.
-3. Pilot: Course 5 `land` (local + emulated + Azure steps, G1) plus one ◆ full scene from Course 4
-   (RBAC) → owner review.
-4. Courses 1–4, 6–12 one at a time, each reviewed on its rendered routes, then narrated.
-5. Audio, record, film, cover (Shared rules, "Pipeline").
+1. Owner review of `COURSE-PLAN.md` and of `#/land-immutable-batch-folders` … `#/land-reference-files`.
+2. Pilot, Azure half — needs the recording secrets (Identity, "secrets") in the environment: §5.1
+   (HNS), §5.2 (containers as zones, the first map frame), §5.9 (SAS / RBAC / ACL, lifecycle), and
+   the ◆ RBAC full scene from Course 4. Each is a `{"azure": true}` step recorded with
+   `python scripts/spine.py --record <step>`, then `--teardown`.
+3. Courses 1–4, 6–12 one at a time, each reviewed on its rendered routes, then narrated.
+4. Audio (`npm run gen:audio` is current for the six sections), record, film, cover.
+
+**Built (infra):** the app (vite, shell `ConceptApp`, `--brand` #0078d4), checks (`check-content`,
+`check-render` with the map-frame fit), `registry`, `shots` (also takes a bare scene id, e.g.
+`npm run shots -- preview-map-land`), `film`, the Colab notebook, `concept.json`, `titles.json`;
+`tradebook_gen` + `verify` (15 planted facts); `scripts/spine.py` (both step kinds);
+`src/scenes/ide.ts` (aws-ecommerce's), `map.ts` (`BUILT` per course; previews `#/preview-map-land`,
+`#/preview-map-finished`), `level.ts` (the verification label); installers
+`install-toolchain.sh` (Python 3.14.9, Java 21), `setup-postgres.sh` (PostgreSQL 18.6, OS user
+`ana`), `install-azure-tools.sh` (Azure CLI 2.91.0, Azurite 3.37.0). Not ported yet: the cover
+(`thumb-film.mjs` was Spark's own drawing), `record-all` wiring is the shell's.
 
 | # | course | sections | status |
 |---|---|---|---|
@@ -37,7 +45,7 @@ Plan v1 written 2026-11-01, awaiting the owner's review. Nothing authored. Next,
 | 2 | `how-azure-runs` | 7 | planned |
 | 3 | `start` | 7 | planned |
 | 4 | `secure` | 8 | planned |
-| 5 | `land` | 9 | planned (pilot) |
+| 5 | `land` | 9 | pilot: §3–§8 authored, narrated (text), 4K-checked; §1, §2, §9 wait for Azure |
 | 6 | `network` | 7 | planned |
 | 7 | `extract` | 8 | planned |
 | 8 | `bronze` | 8 | planned |
@@ -60,6 +68,21 @@ See COURSE-PLAN, "The spine". The rules an author applies every step:
 - **Never list the owner's subscription unfiltered on screen**: filter to `*tradefin*` resources.
 - **The pipeline's numbers come from local steps only**; a frame quoting a number reads it from a
   local session.
+
+**How the replay works here** (`scripts/spine.py`'s docstring has every key):
+
+- Run as root: the replay drives the shell as OS user `ana` in `/home/ana/lc-exposure` (the path on
+  screen, nothing rewritten) and the server as `postgres`. One chain, real state: one working copy,
+  one `tradebook` database, one Azurite, from `start/01-tradebook` on. `python scripts/spine.py`
+  replays it all (~1 min); `--write land/05` rewrites one step's transcript.
+- Off-screen events are `setup`: the desk's business day (`desk-2026-10-31.sql`, before §5.4) and
+  the race (`desk-late.sql`, inside the §5.6 branch). Both are tradebook_gen's output.
+- `"branch": true` puts back the working copy, the database and the lake after the step.
+- `lake:<container>/<blob>` in `capture` reads a blob back after the session (the manifest, the batch
+  files a scene quotes LC-2041 from).
+- A command wider than the pane fails the replay (a wrapped command reads back as a shorter one).
+  Code is ≤ 79 columns; the terminal holds 13 rows.
+- The proxy's CA bundle under `/root` is copied for `ana` (pip inside the replay).
 
 ## Frames
 
