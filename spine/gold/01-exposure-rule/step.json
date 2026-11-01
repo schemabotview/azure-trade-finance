@@ -1,0 +1,1 @@
+{"from": "silver/08-join", "changes": ["pipeline/gold.py"], "env": true, "venv": true}

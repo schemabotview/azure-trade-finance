@@ -1,0 +1,1 @@
+{"from": "gold/02-fact", "changes": ["pipeline/gold.py"], "env": true, "venv": true}

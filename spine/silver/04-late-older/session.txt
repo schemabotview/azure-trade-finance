@@ -1,0 +1,2 @@
+$ python pipeline/silver.py
+$ python pipeline/lc.py LC-2041

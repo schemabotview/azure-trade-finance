@@ -3,5 +3,5 @@ $ terraform init -input=false
 $ terraform apply -var-file=envs/dev.tfvars -auto-approve
 $ F="--factory-name adf-tradefin-dev -g rg-tradefin-dev -n ir-tradebook-shir"
 $ IR="az datafactory integration-runtime get-status $F"
-$ $IR --query properties.state -o tsv
-$ $IR --query "properties.nodes[].[nodeName, status]" -o tsv
+$ until $IR --query properties.state -o tsv | grep -qx Online; do sleep 20; done
+$ $IR --query "{state: properties.state, node: properties.nodes[0].nodeName}"

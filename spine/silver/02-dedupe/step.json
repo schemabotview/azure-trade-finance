@@ -1,0 +1,1 @@
+{"from": "silver/01-current-row", "changes": ["pipeline/silver.py", "pipeline/lc.py"], "env": true, "venv": true}

@@ -1,0 +1,1 @@
+{"from": "silver/05-delta-log", "changes": ["pipeline/reference_tables.py"], "env": true, "venv": true}

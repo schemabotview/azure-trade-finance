@@ -1,0 +1,1 @@
+{"from": "bronze/08-replay", "changes": ["pipeline/current.py"], "env": true, "venv": true}

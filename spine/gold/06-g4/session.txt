@@ -1,0 +1,2 @@
+$ python pipeline/gold.py
+$ python pipeline/g4.py

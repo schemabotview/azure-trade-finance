@@ -1,0 +1,2 @@
+$ python pipeline/run.py night-44
+$ python pipeline/audit.py

@@ -1,0 +1,2 @@
+$ ls lake/silver/lc_current/_delta_log/
+$ python pipeline/history.py LC-2041 1

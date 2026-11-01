@@ -1,0 +1,3 @@
+$ python pipeline/gold.py
+$ python pipeline/g4.py
+$ python pipeline/answer.py Woodgrove USD
