@@ -1,0 +1,2 @@
+{"from": "network/04-private-endpoint", "changes": ["infra/main.tf", "infra/shir.tf", "infra/shir-install.ps1", "infra/.terraform.lock.hcl"], "azure": true,
+ "setup": ["cd infra && terraform init -input=false >/dev/null", "az extension add -n datafactory -o none --only-show-errors"]}

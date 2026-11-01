@@ -1,0 +1,5 @@
+$ B=lc_deals/batch_id=41
+$ az storage blob upload -c landing -n $B/_SUCCESS --data "" -o none
+$ python pipeline/bronze.py
+$ python pipeline/bronze.py
+$ python pipeline/versions.py LC-2041

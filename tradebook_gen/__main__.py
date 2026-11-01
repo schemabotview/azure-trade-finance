@@ -23,10 +23,10 @@ import sys
 from decimal import Decimal
 from pathlib import Path
 
-from .model import (BUSINESS_DATE, COUNTERPARTIES, LATE_AMENDED, LATE_AT, SEED_CUTOFF, build,
-                    counterparty_group_rows, group_limit_rows)
+from .model import (BUSINESS_DATE, CORRECTION_BAD_AMOUNT, CORRECTION_BAD_KEY_LC, CORRECTION_BATCH, COUNTERPARTIES,
+                    LATE_AMENDED, LATE_AT, SEED_CUTOFF, WINDOW_END, build, counterparty_group_rows, group_limit_rows)
 
-PARTS = ('tradebook', 'reference')
+PARTS = ('tradebook', 'reference', 'deliveries')
 
 
 def ts(t) -> str:
@@ -45,8 +45,43 @@ def lit(v) -> str:
     return str(v) if isinstance(v, (int, Decimal)) else "'" + str(v).replace("'", "''") + "'"
 
 
+COLUMNS = {'lc_id': 'text', 'applicant_id': 'text', 'beneficiary': 'text', 'currency': 'character(3)', 'amount': 'numeric(18,2)',
+           'status': 'text', 'issue_date': 'date', 'expiry_date': 'date', 'source_version': 'integer',
+           'updated_at': 'timestamp with time zone'}
+
+
+def correction() -> dict[str, str]:
+    """Batch 43: the desk's manual correction file — the three late amendments, as extract.py writes rows,
+    plus two rows typed by hand: one with its lc_id cell empty, one with the amount written 2,0m."""
+    import json
+    lcs = {lc.lc_id: lc for lc in build()}
+    row = lambda lc_id, v, at: [lc_id, lcs[lc_id].applicant_id, lcs[lc_id].beneficiary, lcs[lc_id].currency, f'{v.amount:.2f}', v.status,
+                                lcs[lc_id].issue_date.isoformat(), lcs[lc_id].expiry_date.isoformat(), str(v.version), at]
+    stamp = LATE_AT.strftime('%Y-%m-%d %H:%M:%S+00:00')
+    rows = []
+    for lc_id in LATE_AMENDED:
+        v = lcs[lc_id].versions[-1]
+        late = type(v)(v.version + 1, v.amount + Decimal('25000.00'), 'AMENDED', LATE_AT)
+        rows.append(row(lc_id, late, stamp))
+    blank = row(CORRECTION_BAD_KEY_LC, lcs[CORRECTION_BAD_KEY_LC].at(WINDOW_END), stamp)
+    blank[0] = ''
+    typo = row('LC-2401', lcs['LC-2401'].at(WINDOW_END), stamp)
+    typo[4] = CORRECTION_BAD_AMOUNT
+    rows += [blank, typo]
+    buf = io.StringIO(newline='')
+    w = csv.writer(buf, lineterminator='\n')
+    w.writerow(list(COLUMNS))
+    w.writerows(rows)
+    manifest = {'batch_id': CORRECTION_BATCH, 'table': 'lc_deals', 'source': 'manual correction, trade finance operations',
+                'expected_rows': len(rows), 'files': ['part-00000.csv'], 'columns': COLUMNS}
+    return {f'batch_id={CORRECTION_BATCH}/part-00000.csv': buf.getvalue(),
+            f'batch_id={CORRECTION_BATCH}/_manifest.json': json.dumps(manifest, indent=2)}
+
+
 def files(part: str) -> dict[str, str]:
     """Every file of a part, {relative path: text}."""
+    if part == 'deliveries':
+        return correction()
     if part == 'reference':
         return {'counterparty_group.csv': csv_text(counterparty_group_rows()), 'group_limits.csv': csv_text(group_limit_rows())}
     lcs = build()

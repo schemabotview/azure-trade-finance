@@ -1,0 +1,1 @@
+{"from": "network/06-shir", "changes": ["requirements.txt", "jars.txt", "conf/", "pipeline/"], "env": true, "venv": true}

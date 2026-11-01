@@ -107,7 +107,8 @@ PG_MAJOR = 18
 AZURITE_PORT = 10000
 # Run outputs, the venv, generated data: never part of a step's snapshot, never removed by a lay.
 # Terraform's local state and saved plans hold real ids: never in a snapshot, never in a state archive.
-IGNORED = {'__pycache__', '.venv', 'data', 'reference', 'out', '.terraform', 'terraform.tfstate', 'terraform.tfstate.backup', 'tfplan'}
+IGNORED = {'__pycache__', '.venv', 'data', 'reference', 'out', '.terraform', 'terraform.tfstate', 'terraform.tfstate.backup', 'tfplan',
+           'jars', 'logs', 'lake', 'spark-warehouse', 'metastore_db'}
 MARK = '__SPINE_MARK__'
 UUID = re.compile(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
 ANSI = re.compile(r'\x1b\[[0-9;?]*[@-~]|\x1b[=>]|\r')
@@ -254,6 +255,8 @@ def environment() -> dict:
             'PIP_DISABLE_PIP_VERSION_CHECK': '1', 'PSQLRC': '/dev/null', 'PAGER': 'cat', 'PSQL_PAGER': 'cat',
             'AZURE_CORE_COLLECT_TELEMETRY': 'no', 'AZURE_CORE_ONLY_SHOW_ERRORS': 'false', 'AZURE_CONFIG_DIR': str(HOME / '.azure'),
             'PIP_CACHE_DIR': str(SPINE_ROOT / 'pip-cache'), 'COLUMNS': '80', 'TZ': 'UTC',
+            # a container's hostname resolves to loopback, which Spark warns about; a laptop's does not
+            'SPARK_LOCAL_IP': '127.0.0.1',
             # Terraform one request at a time (aws-ecommerce's rule): the same order every recording,
             # and no burst of parallel listKeys calls for the sandbox's proxy to reset. Invisible in
             # every typed command.
@@ -328,6 +331,16 @@ def lay(step: Path) -> None:
         # TradeBook's files are the local copy's seed (data/, not shown); the risk team's reference
         # files are the project's own reference/ folder (COURSE-PLAN.md, "The app")
         shutil.copytree(generated(part), WORK / ('reference' if part == 'reference' else f'data/{part}'), dirs_exist_ok=True)
+    if (WORK / 'jars.txt').exists():  # Delta's jars (Maven Central), fetched once and cached by name
+        (WORK / 'jars').mkdir(exist_ok=True)
+        for url in (WORK / 'jars.txt').read_text().split():
+            if url.startswith('#'):
+                continue
+            cached = SPINE_ROOT / 'jars' / url.rsplit('/', 1)[1]
+            if not cached.exists():
+                cached.parent.mkdir(parents=True, exist_ok=True)
+                run(['curl', '-sSfL', '-o', str(cached), url])
+            shutil.copy(cached, WORK / 'jars' / cached.name)
     run(['chown', '-R', f'{USER}:{USER}', str(WORK)])
 
 

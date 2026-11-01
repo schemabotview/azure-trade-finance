@@ -81,6 +81,15 @@ BATCH_42_ROWS = DAY_NEW + DAY_AMENDED + DAY_CLOSED  # = 120: lc_deals rows chang
 # batch 42 is copying. Northwind's, so the branch touches no number the course quotes.
 LATE_AMENDED = ('LC-2310', 'LC-2316', 'LC-2322')
 LATE_AT = datetime(2026, 11, 1, 2, 0, 7, tzinfo=UTC)
+# Course 8's planted deliveries (COURSE-PLAN.md, "The data"). TradeBook's own constraints make a null
+# lc_id or a malformed amount impossible in an extract, so they arrive the way they do in a bank: a
+# manual correction file from the desk's operations team, sealed as batch 43 (G2, §8.7). Batch 44 is
+# batch 41's file re-sent under a new name: the duplicate Bronze keeps (§8.8), Silver dedupes (§9.2),
+# and LC-2041's v1 arriving after its v2 (§9.4) — made by the step's setup from the lake itself.
+CORRECTION_BATCH = 43
+CORRECTION_BAD_AMOUNT = '2,0m'
+CORRECTION_BAD_KEY_LC = 'LC-2345'   # its row arrives with the lc_id cell empty
+REPLAY_BATCH, REPLAYED_BATCH = 44, 41
 
 
 @dataclass
