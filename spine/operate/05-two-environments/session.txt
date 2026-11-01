@@ -1,0 +1,15 @@
+$ cd infra && head envs/*
+==> envs/dev.backend.hcl <==
+key = "dev.tfstate"
+
+==> envs/dev.tfvars <==
+env = "dev"
+
+==> envs/prod.backend.hcl <==
+key = "prod.tfstate"
+
+==> envs/prod.tfvars <==
+env = "prod"
+$ terraform init -backend=false -input=false >/dev/null
+$ terraform validate
+Success! The configuration is valid.

@@ -1,5 +1,5 @@
 {
-  "count": 62,
+  "count": 64,
   "entries": [
     {
       "course": "intro",
@@ -372,6 +372,18 @@
       "section": "three-kinds-of-progress",
       "file": "orchestrate/three-kinds-of-progress.wav",
       "narration": "A nightly pipeline will fail one night, somewhere in the middle, and the most useful property it can have is that the answer to a failure is simply: run it again. This pipeline has that property, and the frame shows why. Each stage remembers how far it got, and each remembers it differently. On the left is the extraction, which remembers a watermark: the end of the last window it landed and sealed. The terminal reads it: the first of November, two in the morning. The watermark only moves after G one has sealed a batch, so after a failure the next run asks TradeBook for the same rows again, and nothing is lost or skipped. In the middle is Bronze, which remembers which batches it has taken, like a checkpoint. Run again, it reports every batch already in Bronze and appends nothing. On the right is Silver, and Silver's memory is different again. It keeps a list of merged batches too, and the first run finds nothing new. But then the list is deleted, as if Silver had lost track completely, and every batch is merged again from the start. Four hundred, one hundred and twenty, three, and four hundred rows: nothing inserted, nothing updated, every row ignored. Silver's real progress is the business state itself. A row only changes when a newer source version arrives, so replaying old batches changes nothing. Three different memories, one result: after a failure at any point, the same rerun is safe. Next course, watching the pipeline, paying for it, and shipping it."
+    },
+    {
+      "course": "operate",
+      "section": "two-environments",
+      "file": "operate/two-environments.wav",
+      "narration": "Everything so far has been built in one environment, dev. A bank will want a second, prod, and the risk is that the two drift apart, one hand edit at a time, until prod is something nobody can rebuild. With Terraform the answer is to write the infrastructure once and make the environment a parameter. The label says how far this section goes: the configuration is validated offline, which is real, but prod is not deployed, because prod belongs in its own subscription. The editor shows the one change to the code. The state backend no longer names its state file. The key now comes from a small file per environment, passed to terraform init. The terminal lists the environment folder: for each environment, a backend file naming its state blob, dev dot t f state or prod dot t f state, and a variables file setting env to dev or prod. Every resource name already includes the environment, so the same code makes r g tradefin dev in one and r g tradefin prod in the other. Then terraform validate: the configuration is valid. The side pane draws the shape. One root module, every resource written once. Two pairs of small files. Two state files, so that a plan for dev can never touch prod. And two subscriptions, each with its own access and its own bill. Promoting a change is then just applying the same commit to the other environment. Next, the last section: where this pipeline could go from here."
+    },
+    {
+      "course": "operate",
+      "section": "where-next",
+      "file": "operate/where-next.wav",
+      "narration": "The map is lit from end to end: TradeBook in the bank, a private path out through the bank's own runtime, a lake in zones with four gates between them, and every morning, an answer the desk can trust. This last frame is a concept frame, and its note says so: none of what follows was built here. These are the natural next steps, each placed against the part of the map it would change. Hard delete change capture changes the extract: today a deleted row in TradeBook simply stops appearing, because the watermark only sees rows whose updated at moved. Versioned Gold changes Gold, so that yesterday's answer stays queryable beside today's. F X conversion would add a single total per group, with the exchange rate stated and stored, never a silent sum of two currencies. Streaming would replace the nightly batch between landing and Bronze with minutes. And Microsoft Fabric is a different platform for the lake and the jobs together. The side pane also lists what would stay the same through all of them. The gates still decide what moves on. Money is still decimal, and still per currency. And every resource is still written in Terraform, with nothing left running that is not needed. Woodgrove is at ninety seven percent of its dollar limit. Tomorrow at two in the morning, the pipeline runs again."
     }
   ]
 }

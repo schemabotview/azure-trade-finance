@@ -738,7 +738,7 @@ def restore_azure(parent: Path, env: dict) -> None:
     r = as_ana('bash infra/bootstrap.sh >/dev/null 2>&1', env)
     if r.returncode:
         sys.exit(f'✗ restoring {name_of(parent)}: the state backend could not be made')
-    apply = 'cd infra && terraform init -input=false >/dev/null 2>&1 && terraform apply -var-file=envs/dev.tfvars -auto-approve -input=false -no-color 2>&1'
+    apply = 'cd infra && terraform init -input=false $([ -f envs/dev.backend.hcl ] && echo -backend-config=envs/dev.backend.hcl) >/dev/null 2>&1 && terraform apply -var-file=envs/dev.tfvars -auto-approve -input=false -no-color 2>&1'
     for attempt in range(6):
         r = as_ana(apply, env)
         plan = as_ana('cd infra && terraform plan -var-file=envs/dev.tfvars -input=false -no-color -detailed-exitcode >/dev/null 2>&1', env)

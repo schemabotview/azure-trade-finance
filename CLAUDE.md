@@ -49,7 +49,7 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 | 9 | `silver` | 8 | authored, narrated (text), 4K-checked (all local) |
 | 10 | `gold` | 7 | authored, narrated (text), 4K-checked (all local) |
 | 11 | `orchestrate` | 8 | §2–3 and ◆ §8 authored (local); §1, §4–7 need Databricks |
-| 12 | `operate` | 7 | planned |
+| 12 | `operate` | 7 | §5 (compiled) and §7 (concept) authored; §1–3 need the Databricks job, §4 Cost Management (refused here), §6 a federated credential (Graph) |
 
 ## Spine
 
