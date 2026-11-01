@@ -22,7 +22,7 @@ az role assignment create --role "Storage Blob Data Contributor" \
 # A new role takes a minute or two to reach the data plane: wait for it.
 for _ in $(seq 30); do
   az storage blob list -c tfstate --account-name $account --auth-mode login \
-    -o none 2>/dev/null && exit 0
+    -o none 2>/dev/null && { echo "state: $account/tfstate, ready"; exit 0; }
   sleep 10
 done
 echo "the data role did not arrive" >&2; exit 1
