@@ -1,1 +1,1 @@
-{"from": "land/09-who-may-read", "changes": ["infra/main.tf", "infra/modules/network/"], "azure": true, "restore": true}
+{"from": "land/09-who-may-read", "changes": ["infra/main.tf", "infra/modules/network/"], "azure": true, "setup": ["cd infra && terraform init -input=false >/dev/null"]}
