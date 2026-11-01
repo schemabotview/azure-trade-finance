@@ -1,6 +1,6 @@
 # Learn Azure by building a trade finance risk pipeline: full course, beginner to professional — plan
 
-**Plan status:** v1, awaiting owner review (2026-11-01). Runtime "A+" and 12 courses agreed with the
+**Plan status:** v1.1, awaiting owner review (2026-11-01; v1.1 moves infrastructure to Terraform). Runtime "A+" and 12 courses agreed with the
 owner. Nothing is authored yet. Shared rules (section shape, ◆ detours, packaging, build order) are
 in `CLAUDE.md`, "Shared rules"; this plan states only what is specific to this concept.
 
@@ -20,7 +20,7 @@ Region is built, how RBAC evaluates a request, where a private endpoint's packet
 | the desk needs to… | Azure teaches | course |
 | --- | --- | --- |
 | know where its system will live | regions, zones, the resource hierarchy, ARM | 2 |
-| create anything at all, repeatably and on a budget | resource groups, tags, Bicep, budgets | 3 |
+| create anything at all, repeatably and on a budget | resource groups, tags, Terraform and its state, budgets | 3 |
 | let a pipeline in without a password in code | Entra ID, managed identities, RBAC, Key Vault, Policy | 4 |
 | land extracts that can be trusted | ADLS Gen2, containers as zones, SAS / RBAC / ACL, lifecycle | 5 |
 | reach a database inside the bank, privately | VNet, NSG, private endpoints, the self-hosted IR | 6 |
@@ -46,7 +46,7 @@ re-taught.
 ## Packaging
 
 **One film: "Learn Azure by building a trade finance risk pipeline: full course, beginner to
-professional"** — 12 courses, 87 sections, ~1 h 55 min (section ~80 s), titled *concept: what the
+professional"** — 12 courses, 88 sections, ~1 h 57 min (section ~80 s), titled *concept: what the
 pipeline gets* (e.g. "Managed identities: no password in the pipeline"). The film opens with the
 finished answer: Woodgrove | USD, 97% of its limit.
 
@@ -58,26 +58,30 @@ finished answer: Woodgrove | USD, 97% of its limit.
 | Python | **3.14.9** | the extractor, gates, the generator |
 | PySpark + delta-spark | **4.2.0** + **4.4.1** on Java **21** | Bronze → Gold, run locally (the pipeline's numbers) |
 | Azurite | pinned at the infra step | blob landing, emulated (Blob API only: no hierarchical namespace) |
-| Azure CLI, Bicep CLI, azcopy | pinned at the infra step | the platform, recorded on Azure |
+| Terraform | **1.17.0** (as `aws-ecommerce`) | every resource, recorded on Azure; `.terraform.lock.hcl` committed |
+| `hashicorp/azurerm`, `databricks/databricks` providers | pinned at the infra step | Azure resources; Unity Catalog objects and the job |
+| tflint, `terraform validate` | pinned at the infra step | static checks, offline |
+| Azure CLI, azcopy | pinned at the infra step | reads, the data plane, the state bootstrap; recorded on Azure |
 | Databricks CLI | **1.22.1** (as `databricks-retail-bank-lakehouse`) | Azure Databricks, recorded on Azure |
 | Azure subscription | the owner's | every "recorded on Azure" step |
 
-Region **UK South** (`uksouth`), paired with UK West. Infrastructure is **Bicep** (Azure's own
-language, compiled to ARM JSON), not Terraform: the course teaches ARM, and Bicep is its native
-client. Same pins as the sister repos where they overlap; never changed after the pilot is recorded.
+Region **UK South** (`uksouth`), paired with UK West. Infrastructure is **Terraform**, from the
+first resource (Course 3) to prod (Course 12): the same tool as `aws-ecommerce`, and one tool for
+both Azure and Databricks. ARM is still taught (2.3, 2.5): `azurerm` is one more client of the same
+API. The CLI reads and moves data; it creates nothing except the state backend's bootstrap. Same pins as the sister repos where they overlap; never changed after the pilot is recorded.
 
 ## The app: `lc-exposure`
 
 ```
 lc-exposure/
-  infra/                  Bicep: main.bicep + modules/ (storage, keyvault, network, adf,
-                          databricks, monitor), params/dev, params/prod                  (3 → 12)
+  infra/                  Terraform: main.tf, variables.tf, backend.tf + modules/ (storage,
+                          keyvault, network, adf, databricks, monitor, job),
+                          envs/dev.tfvars, envs/prod.tfvars                              (3 → 12)
   tradebook/              schema.sql: lc_deals, lc_amendments; the seed                  (3)
   reference/              counterparty_group.csv, group_limits.csv                       (5)
   extract/                extract.py: watermark, batch folder, manifest; g1.py           (5)
-  adf/                    pl_extract_lc.json, linked services, datasets, triggers        (7)
+  adf/                    pl_extract_lc.json (activities, read by Terraform's `file()`)  (7)
   pipeline/               bronze.py, silver.py, gold.py, gates.py (G2–G4), audit.py      (8 → 11)
-  jobs/                   lc_exposure_job.json: tasks, dependencies, email_notifications (11)
   tests/                  gate and rule tests                                            (10 →)
   .github/workflows/      deploy.yml (OIDC)                                              (12)
 ```
@@ -126,6 +130,7 @@ owner's subscription are never shown: the replay normalises them to the values b
 | region | `uksouth` (pair `ukwest`), zones 1–3 |
 | resource groups | `rg-tradefin-dev`, `rg-tradefin-prod`; tags `app=lc-exposure`, `env`, `owner=trade-risk` |
 | storage | `sttradefindev` (ADLS Gen2, HNS on); containers `landing`, `bronze`, `silver`, `gold`, `reference` |
+| terraform state | `rg-tradefin-tfstate` → `sttradefintfstate`, container `tfstate`, keys `dev.tfstate`, `prod.tfstate` |
 | key vault | `kv-tradefin-dev`; secret `tradebook-password` |
 | identities | group `grp-trade-risk-eng`; ADF's system-assigned identity; Databricks access connector `ac-tradefin-dev` |
 | network | `vnet-tradefin-dev` 10.30.0.0/16; subnets `snet-pe` 10.30.1.0/24, `snet-shir` 10.30.2.0/24, Databricks `snet-dbx-host` / `snet-dbx-container` 10.30.8.0/22 each |
@@ -149,7 +154,7 @@ and added here then.
   `muted` in place; `BUILT[course]` is what exists; what a section adds is ringed by its `focus`.
   Every map frame shares one fit.
 - **IDE frame** (ported from `spark-ecommerce-analytics`' `ide.ts`): explorer | editor over terminal |
-  fixed side pane. Bicep, Python, SQL, KQL and ADF JSON are all shown here.
+  fixed side pane. Terraform (HCL), Python, SQL, KQL and ADF JSON are all shown here.
 - **◆ full scene**: a canonical big picture (the resource hierarchy, RBAC inheritance, a private
   endpoint's packet path, Databricks' two planes, Delta's log, three kinds of progress), its own
   section, with real output inside it.
@@ -171,6 +176,10 @@ Two kinds of step, marked in `step.json`:
   after its last, so a subscription holds nothing between recordings.
 - **Normalisation** happens in the recorder, never by hand: tenant, subscription and object ids,
   hostnames, emails, timestamps, run ids. A transcript holding a fragment of a real id is refused.
+- **Terraform state is never in the spine**: it holds real ids, so it lives only in the remote
+  backend (3.5) and is destroyed with the course. `.terraform.lock.hcl` is committed; `plan` and
+  `apply` output is normalised like any transcript. Teardown is `terraform destroy`, then the state
+  resource group.
 - The database, landing folders, the watermark, checkpoints and Delta tables carry forward along
   the chain; a step that breaks things on purpose (a failed gate) is `"branch": true` and discarded.
 
@@ -183,7 +192,7 @@ Every frame is in one level, and says so when it is not the first:
 | `runs locally` | really run here: PostgreSQL, Spark, Delta, Python |
 | `recorded on Azure` | run once on a real subscription; the transcript is the record |
 | `emulated` | Azurite, labelled; never presented as Azure's own output |
-| `compiled` | `bicep build` / the Bicep linter: real, offline, not deployed |
+| `compiled` | `terraform validate` / tflint: real, offline, not deployed |
 | `doc-cited` | Azure documentation says so; the URL is in the scene |
 | `model` | a documented rule reproduced as a small program; proves nothing about Azure |
 
@@ -217,21 +226,22 @@ A recorded on Azure · E emulated · C compiled · D doc-cited · M model.
 | 2 | The resource hierarchy | `az account management-group list`, `az account list` | tenant → management groups → subscriptions → resource groups → resources | A |
 | 3 | Azure Resource Manager | `az group list --debug` (the HTTPS call) | every client → ARM → resource providers | A |
 | 4 | Control plane vs data plane | list a storage account vs list its blobs | management.azure.com vs `<account>.blob.core.windows.net` | A |
-| 5 | Portal, CLI, Bicep: three clients | one resource read three ways | three clients, one API | A |
+| 5 | Portal, CLI, Terraform: three clients | one resource read three ways | three clients, one API | A |
 | 6 | IaaS, PaaS, SaaS | concept | each part of our pipeline on the responsibility line | D |
 | 7 | How Azure charges | lab: a month of the pipeline, modelled | meters: storage GB, ADF activity runs, DBUs | M |
 
-**3. `start` · The source, and a first deployment · 7**
+**3. `start` · The source, and a first deployment · 8**
 
 | # | Section | Step | Side pane | Level |
 | --- | --- | --- | --- | --- |
 | 1 | TradeBook | `psql`: `lc_deals`, `lc_amendments` | ER: deal → amendments, `source_version`, `updated_at` | L |
 | 2 | An LC's life | the history of LC-2041 | state machine ISSUED → AMENDED → CLOSED; what counts as open | L |
 | 3 | Signing in, and a resource group | `az login`, `az group create` with tags | subscription → `rg-tradefin-dev`; naming and tags | A |
-| 4 | A first Bicep file | `storage.bicep`; `az deployment group create` | Bicep → ARM → the storage account | A |
-| 5 | Parameters and modules | `main.bicep` + `modules/`; `bicep build` | module tree; the ARM JSON it compiles to | C |
-| 6 | Deployment modes | `what-if`, incremental vs complete | what each mode does to a resource not in the file | A |
-| 7 | Budgets | a budget at 80% forecast | budget → action group → email | A |
+| 4 | A first Terraform file | `main.tf`: the storage account; `init`, `plan`, `apply` | Terraform → azurerm → ARM → the storage account | A |
+| 5 | State, and where it lives | `backend "azurerm"`: state in `sttradefintfstate`, bootstrapped by the CLI; a second `apply` waits on the lease | code ↔ state ↔ Azure; the blob lease as the lock | A |
+| 6 | Variables and modules | `variables.tf` + `modules/`; `terraform validate`, tflint | the module tree, inputs → outputs | C |
+| 7 | What `plan` does to what is not in code | a tag changed with `az` (drift); a resource removed from code (destroy) | three cases: in code, in state only, in Azure only | A |
+| 8 | Budgets | `azurerm_consumption_budget_resource_group` at 80% forecast | budget → action group → email | A |
 
 **4. `secure` · Identity first · 8**
 
@@ -276,7 +286,7 @@ A recorded on Azure · E emulated · C compiled · D doc-cited · M model.
 
 | # | Section | Step | Side pane | Level |
 | --- | --- | --- | --- | --- |
-| 1 | Data Factory's parts | `adf-tradefin-dev` deployed by Bicep | pipeline → activities; linked service → dataset | A |
+| 1 | Data Factory's parts | `adf-tradefin-dev` deployed by Terraform | pipeline → activities; linked service → dataset | A |
 | 2 | Integration runtimes | Azure IR vs `ir-tradebook-shir` | which IR runs which activity | A |
 | 3 | A linked service to TradeBook | through the SHIR, password from Key Vault | ADF → SHIR → TradeBook; vault in the side | A |
 | 4 | The Copy activity | one table to `landing/` | source query → sink folder | A |
@@ -327,10 +337,10 @@ A recorded on Azure · E emulated · C compiled · D doc-cited · M model.
 
 | # | Section | Step | Side pane | Level |
 | --- | --- | --- | --- | --- |
-| 1 | Databricks Jobs | `lc_exposure_job`: Bronze → G2 → Silver → G3 → Gold → G4 | task graph | A |
+| 1 | Databricks Jobs | `databricks_job.lc_exposure` applied: Bronze → G2 → Silver → G3 → Gold → G4 | task graph | A |
 | 2 | The gate policy | PASS / WARN / FAIL | three outcomes, what each blocks | L |
 | 3 | The audit table | `risk.audit.gate_results` | run_id, batch_id, rule, expected, actual, status | L |
-| 4 | Failure email | `email_notifications.on_failure` | failure → email | A |
+| 4 | Failure email | the job's `email_notifications { on_failure }` | failure → email | A |
 | 5 | The ADF parent | Copy → G1 → watermark → run the Databricks job | the parent pipeline | A |
 | 6 | One schedule owner | the job's own schedule paused | two schedulers → a double run | A |
 | 7 | A failed night | G3 fails; the fix; a rerun | the run, red then green | A |
@@ -344,8 +354,8 @@ A recorded on Azure · E emulated · C compiled · D doc-cited · M model.
 | 2 | KQL | last night's failed gates | the query, its result table | A |
 | 3 | Alerts | a log alert → `ag-trade-risk` | signal → rule → action group | A |
 | 4 | Where the money goes | Cost Management by service | cost per service, the month | A |
-| 5 | Two environments | dev and prod from one Bicep, two param files | one template, two subscriptions | A |
-| 6 | CI with no stored secret | GitHub Actions + OIDC federated credential | GitHub → Entra → a token → deploy | A |
+| 5 | Two environments | dev and prod from one root module: two `.tfvars`, a state file each | one module, two subscriptions, two states | A |
+| 6 | CI with no stored secret | GitHub Actions runs `terraform plan`/`apply` with an OIDC federated credential | GitHub → Entra → a token → deploy | A |
 | 7 | Where next | concept | hard-delete CDC, versioned Gold, FX, streaming, Fabric — each on the map | D |
 
 ## Decisions
@@ -354,14 +364,18 @@ A recorded on Azure · E emulated · C compiled · D doc-cited · M model.
    by group; batch only (2026-11-01).
 2. Runtime **A+**: the pipeline's numbers run locally (PostgreSQL, Azurite, Spark/Delta), the Azure
    platform is recorded once on the owner's subscription (2026-11-01).
-3. 12 courses, 87 sections, one film (2026-11-01).
-4. Infrastructure as Bicep, not Terraform.
+3. 12 courses, 88 sections, one film (2026-11-01; 87 → 88 when Course 3 gained its state section).
+4. Infrastructure as Terraform, not Bicep: one tool across `aws-ecommerce` and this film, and it
+   declares the Databricks job too (2026-11-01, replacing "Bicep, not Terraform").
 5. Repo `azure-trade-finance`, public, under `schemabotview`.
 
 ## Open
 
-- The pins for Azurite, the Azure CLI, Bicep and azcopy, and the Azure Databricks runtime, set at
-  the infra step.
+- The pins for Azurite, the `azurerm` and `databricks` providers, tflint, the Azure CLI and azcopy,
+  and the Azure Databricks runtime, set at the infra step.
+- The Free Trial subscription refuses the Cost Management and Consumption APIs ("doesn't have valid
+  WebDirect/AIRS offer type", 2026-11-01): 12.4 needs a pay-as-you-go subscription or becomes a
+  labelled model (M).
 - Whether the SHIR VM is kept between Courses 6 and 7 or rebuilt (cost vs a shorter chain).
 - Section 12.6 needs a GitHub repository with an OIDC federated credential: this repo, or a
   separate demo repo.
