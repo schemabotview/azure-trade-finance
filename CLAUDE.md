@@ -48,7 +48,7 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 | 8 | `bronze` | 8 | §6–8 authored (local); §1–5 need Databricks |
 | 9 | `silver` | 8 | authored, narrated (text), 4K-checked (all local) |
 | 10 | `gold` | 7 | authored, narrated (text), 4K-checked (all local) |
-| 11 | `orchestrate` | 8 | §2–3 authored (local); §1, §4–8 need Databricks |
+| 11 | `orchestrate` | 8 | §2–3 and ◆ §8 authored (local); §1, §4–7 need Databricks |
 | 12 | `operate` | 7 | planned |
 
 ## Spine

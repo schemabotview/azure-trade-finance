@@ -1,0 +1,17 @@
+$ python extract/extract.py watermark
+watermark: 2026-11-01T02:00:00Z
+$ python pipeline/bronze.py
+WARNING: Using incubator modules: jdk.incubator.vector
+batch 41: already in Bronze
+batch 42: already in Bronze
+batch 43: already in Bronze
+batch 44: already in Bronze
+$ python pipeline/silver.py
+WARNING: Using incubator modules: jdk.incubator.vector
+$ rm -rf lake/silver/_merged_batches
+$ python pipeline/silver.py
+WARNING: Using incubator modules: jdk.incubator.vector
+batch 41: 400 rows, 0 inserted, 0 updated, 400 ignored
+batch 42: 120 rows, 0 inserted, 0 updated, 120 ignored
+batch 43: 3 rows, 0 inserted, 0 updated, 3 ignored
+batch 44: 400 rows, 0 inserted, 0 updated, 400 ignored

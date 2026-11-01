@@ -1,5 +1,5 @@
 {
-  "count": 61,
+  "count": 62,
   "entries": [
     {
       "course": "intro",
@@ -366,6 +366,12 @@
       "section": "audit-table",
       "file": "orchestrate/audit-table.wav",
       "narration": "Printing a gate's result to a terminal is fine while someone is watching. At two in the morning nobody is, and a week later someone will ask: when did this counterparty first fail to map, and did any night pass with it missing? So every gate writes its results to a table. Run dot p y now takes a run I D, and the highlighted lines turn each check into a row: the run, the gate, the rule, its status, and the detail. The rows are appended to the audit table, gate results, and never overwritten, so the table is the history of every night. On Azure it will be risk dot audit dot gate results, in the catalog; here it is a local Delta table. The side pane draws the flow, from the gates to one row per check, into the table, and to the question it answers. The terminal shows tonight's run again, under the run I D night forty four, failing at G three exactly as before. Then audit dot p y reads the table back, and the side pane shows its rows. The warning from G two, two rows quarantined. The failed G three check, every open L C's counterparty mapped. And the two G three checks that passed, because a pass is evidence too: it shows the check ran. With this table, what failed and when is a query, not a search through logs, and Course twelve will put an alert on it. The rest of this course runs on Azure: the job, the email, and the parent pipeline that runs it all."
+    },
+    {
+      "course": "orchestrate",
+      "section": "three-kinds-of-progress",
+      "file": "orchestrate/three-kinds-of-progress.wav",
+      "narration": "A nightly pipeline will fail one night, somewhere in the middle, and the most useful property it can have is that the answer to a failure is simply: run it again. This pipeline has that property, and the frame shows why. Each stage remembers how far it got, and each remembers it differently. On the left is the extraction, which remembers a watermark: the end of the last window it landed and sealed. The terminal reads it: the first of November, two in the morning. The watermark only moves after G one has sealed a batch, so after a failure the next run asks TradeBook for the same rows again, and nothing is lost or skipped. In the middle is Bronze, which remembers which batches it has taken, like a checkpoint. Run again, it reports every batch already in Bronze and appends nothing. On the right is Silver, and Silver's memory is different again. It keeps a list of merged batches too, and the first run finds nothing new. But then the list is deleted, as if Silver had lost track completely, and every batch is merged again from the start. Four hundred, one hundred and twenty, three, and four hundred rows: nothing inserted, nothing updated, every row ignored. Silver's real progress is the business state itself. A row only changes when a newer source version arrives, so replaying old batches changes nothing. Three different memories, one result: after a failure at any point, the same rerun is safe. Next course, watching the pipeline, paying for it, and shipping it."
     }
   ]
 }
