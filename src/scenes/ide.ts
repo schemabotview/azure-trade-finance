@@ -88,12 +88,12 @@ export interface Editor {
   lang?: Code['lang']
 }
 
-/** A file's language by its name. graphl-flow has no Bicep: HCL's block syntax is the nearest. */
+/** A file's language by its name: Terraform is HCL. */
 export function langOf(file: string): Code['lang'] {
   if (file.endsWith('.py')) return 'python'
   if (file.endsWith('.sql') || file.endsWith('.kql')) return 'sql'
   if (file.endsWith('.json')) return 'js'
-  if (file.endsWith('.bicep') || file.endsWith('.bicepparam')) return 'hcl'
+  if (file.endsWith('.tf') || file.endsWith('.tfvars') || file === '.terraform.lock.hcl') return 'hcl'
   if (file.endsWith('.sh') || file.endsWith('.gitignore')) return 'shell'
   return 'text'
 }

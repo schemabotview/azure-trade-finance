@@ -12,20 +12,22 @@
 | cast | Ana (data engineer), Syndica Bank's trade finance desk; groups Woodgrove, Contoso, Fabrikam, Northwind |
 | reference repos | all public under `github.com/schemabotview` — clone them beside this one, port, do not reinvent: **`spark-ecommerce-analytics`** (IDE frame, `spine.py`, the seeded generator, checks, registry, shots, film), **`aws-ecommerce`** (the map frame, `map.ts` with `BUILT`/`muted`, the record-once spine, verification levels), **`sql-bank`** (`setup-postgres.sh`, psql consoles), **`databricks-retail-bank-lakehouse`** (normalising a real cloud account, credentials as secrets), **`python-expense-tracker`** (the original templates) |
 | engine / shell | `@graphlearning/graphl-flow` ^0.8.0, `@graphlearning/shell` ^1.1.0, from npm. graphl-flow's Azure icon keys: `adls`, `datafactory`, `databricks`, `keyvault`, `loganalytics`, `monitor`, `storage`, `vm`, `devops`; brand `postgresql`, `github`, `githubactions`; Delta has no mark (lucide `layers`) |
-| toolchain | see COURSE-PLAN, "Stack and pins": PostgreSQL 18.6, Python 3.14.9, PySpark 4.2.0 + delta-spark 4.4.1 on Java 21, Azurite, Azure CLI + Bicep + azcopy, Databricks CLI 1.22.1 |
+| toolchain | see COURSE-PLAN, "Stack and pins": PostgreSQL 18.6, Python 3.14.9, PySpark 4.2.0 + delta-spark 4.4.1 on Java 21, Azurite, Terraform 1.17.0 (`azurerm` + `databricks` providers, tflint), Azure CLI + azcopy, Databricks CLI 1.22.1 |
 | frames | map (from aws-ecommerce), IDE (from spark-ecommerce-analytics), ◆ full scenes; `--brand` Azure blue |
 | secrets | `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET` (a service principal for recording), `DATABRICKS_HOST`, `DATABRICKS_TOKEN`: environment secrets, never committed, never printed |
 
 ## Status
 
-Plan v1 written 2026-11-01, awaiting the owner's review. 2026-11-01 (cloud session): **infra built,
-and the pilot's local half authored** — Course 5 §3–§8, six sections, checked and shot at 4K. Next:
+Plan v1.1 written 2026-11-01 (infrastructure moved from Bicep to Terraform), awaiting the owner's
+review. 2026-11-01 (cloud session): **infra built, and the pilot's local half authored** — Course 5
+§3–§8, six sections, checked and shot at 4K. Next:
 
 1. Owner review of `COURSE-PLAN.md` and of `#/land-immutable-batch-folders` … `#/land-reference-files`.
 2. Pilot, Azure half — needs the recording secrets (Identity, "secrets") in the environment: §5.1
    (HNS), §5.2 (containers as zones, the first map frame), §5.9 (SAS / RBAC / ACL, lifecycle), and
-   the ◆ RBAC full scene from Course 4. Each is a `{"azure": true}` step recorded with
-   `python scripts/spine.py --record <step>`, then `--teardown`.
+   the ◆ RBAC full scene from Course 4. Each is a `{"azure": true}` step written in Terraform and
+   recorded with `python scripts/spine.py --record <step>`, then `--teardown`. A first pass in Bicep
+   (before plan v1.1) was recorded and discarded; its resources were deleted.
 3. Courses 1–4, 6–12 one at a time, each reviewed on its rendered routes, then narrated.
 4. Audio (`npm run gen:audio` is current for the six sections), record, film, cover.
 
@@ -36,14 +38,14 @@ and the pilot's local half authored** — Course 5 §3–§8, six sections, chec
 `src/scenes/ide.ts` (aws-ecommerce's), `map.ts` (`BUILT` per course; previews `#/preview-map-land`,
 `#/preview-map-finished`), `level.ts` (the verification label); installers
 `install-toolchain.sh` (Python 3.14.9, Java 21), `setup-postgres.sh` (PostgreSQL 18.6, OS user
-`ana`), `install-azure-tools.sh` (Azure CLI 2.91.0, Azurite 3.37.0). Not ported yet: the cover
+`ana`), `install-azure-tools.sh` (Azure CLI 2.91.0, Azurite 3.37.0, Terraform 1.17.0). Not ported yet: the cover
 (`thumb-film.mjs` was Spark's own drawing), `record-all` wiring is the shell's.
 
 | # | course | sections | status |
 |---|---|---|---|
 | 1 | `intro` | 3 | planned |
 | 2 | `how-azure-runs` | 7 | planned |
-| 3 | `start` | 7 | planned |
+| 3 | `start` | 8 | planned |
 | 4 | `secure` | 8 | planned |
 | 5 | `land` | 9 | pilot: §3–§8 authored, narrated (text), 4K-checked; §1, §2, §9 wait for Azure |
 | 6 | `network` | 7 | planned |
@@ -61,8 +63,11 @@ See COURSE-PLAN, "The spine". The rules an author applies every step:
 - **Local steps replay; Azure steps are recorded once.** Never re-run an Azure step to check it:
   `check:spine` compares keys and hashes only. Re-record a changed step and every Azure step after
   it in the same course, in order.
-- **Tear down after recording a course** (`az group delete` of its resources); a subscription holds
-  nothing between recordings. Never leave the SHIR VM or a Databricks cluster running.
+- **Every resource is Terraform** (`infra/`); the CLI only reads, moves data, and bootstraps the
+  state backend. **State never enters the spine** (it holds real ids): remote backend only;
+  `.terraform.lock.hcl` is committed.
+- **Tear down after recording a course** (`terraform destroy`, then `rg-tradefin-tfstate`); a
+  subscription holds nothing between recordings. Never leave the SHIR VM or a Databricks cluster running.
 - **Normalise in the recorder, never by hand**: ids, hosts, emails, timestamps, run ids → the values
   in COURSE-PLAN, "Facts". The recorder refuses a transcript holding a fragment of a real id.
 - **Never list the owner's subscription unfiltered on screen**: filter to `*tradefin*` resources.

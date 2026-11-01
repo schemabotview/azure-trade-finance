@@ -7,12 +7,14 @@
 #                              learner installs, not part of lc-exposure's code.
 #   Azurite    AZURITE_VERSION Azure Storage's emulator (Blob API only — no hierarchical namespace),
 #                              at /opt/azurite, linked as /usr/local/bin/azurite-blob
-#   Bicep      BICEP_VERSION   installed by the CLI itself (`az bicep install --version`), so
-#                              `az bicep build` and `az deployment` use the pinned one
+#   Terraform  TF_VERSION      HashiCorp's release zip, its SHA256 checked against the release's
+#                              SHA256SUMS, at /usr/local/bin/terraform. The providers come from the
+#                              registry at `terraform init`, pinned by infra/'s required_providers and
+#                              the committed .terraform.lock.hcl.
 set -euo pipefail
 AZ_VERSION="${AZ_VERSION:-2.91.0}"
 AZURITE_VERSION="${AZURITE_VERSION:-3.37.0}"
-BICEP_VERSION="${BICEP_VERSION:-}"
+TF_VERSION="${TF_VERSION:-1.17.0}"
 
 if [[ "$(/opt/azure-cli/bin/pip show azure-cli 2>/dev/null | sed -n 's/^Version: //p')" != "$AZ_VERSION" ]]; then
   rm -rf /opt/azure-cli
@@ -21,13 +23,24 @@ if [[ "$(/opt/azure-cli/bin/pip show azure-cli 2>/dev/null | sed -n 's/^Version:
 fi
 ln -sf /opt/azure-cli/bin/az /usr/local/bin/az
 
-if [[ "$(cat /opt/azurite/node_modules/azurite/package.json 2>/dev/null | sed -n 's/.*"version": "\(.*\)".*/\1/p')" != "$AZURITE_VERSION" ]]; then
+if [[ "$(sed -n 's/.*"version": "\(.*\)".*/\1/p' /opt/azurite/node_modules/azurite/package.json 2>/dev/null)" != "$AZURITE_VERSION" ]]; then
   rm -rf /opt/azurite && mkdir -p /opt/azurite
   npm install --silent --prefix /opt/azurite "azurite@${AZURITE_VERSION}" >/dev/null
 fi
 ln -sf /opt/azurite/node_modules/.bin/azurite-blob /usr/local/bin/azurite-blob
 
-if [[ -n "$BICEP_VERSION" ]]; then az bicep install --version "v${BICEP_VERSION}" >/dev/null; fi
+if ! terraform version 2>/dev/null | grep -qx "Terraform v${TF_VERSION}"; then
+  work=$(mktemp -d)
+  zip="terraform_${TF_VERSION}_linux_amd64.zip"
+  base="https://releases.hashicorp.com/terraform/${TF_VERSION}"
+  curl -fsSL -o "$work/$zip" "$base/$zip"
+  curl -fsSL -o "$work/sums" "$base/terraform_${TF_VERSION}_SHA256SUMS"
+  (cd "$work" && grep " ${zip}\$" sums | sha256sum -c --quiet)
+  python3 -m zipfile -e "$work/$zip" "$work/out"
+  install -m 755 "$work/out/terraform" /usr/local/bin/terraform
+  rm -rf "$work"
+fi
 
 az version --query '"azure-cli"' -o tsv
 azurite-blob --version
+terraform version | head -1

@@ -50,7 +50,8 @@ it declares, and a step whose project differs anywhere it did not declare fails.
 step.json (other keys, all optional):
   {"venv": true}          run with the project's .venv (requirements.txt) activated; built silently,
                           one per requirements.txt
-  {"env": true}           `source env.sh` silently first, as Ana's shell profile does
+  {"env": true}           `source env.sh` silently first, as Ana's shell profile does; a file name
+                          sources that file instead (`"env": "azure.sh"`: an Azure step's shell)
   {"setup": ["cmd"]}      run silently before the session: ONLY what happens off screen between two
                           sections (the desk's business day), never the pipeline's own state
   {"generated": ["tradebook", "reference"]}  tradebook_gen's parts: tradebook → data/tradebook/,
@@ -337,7 +338,8 @@ def session_of(step: Path, env: dict) -> tuple[str, dict[str, str]]:
     config = config_of(step)
     if config.get('venv'):
         env = venv(env)
-    prelude = 'source env.sh\n' if config.get('env') else ''
+    env_file = config.get('env')
+    prelude = f'source {"env.sh" if env_file is True else env_file}\n' if env_file else ''
     for cmd in config.get('setup', []):
         r = as_ana(prelude + cmd, env)
         if r.returncode:
@@ -346,9 +348,11 @@ def session_of(step: Path, env: dict) -> tuple[str, dict[str, str]]:
     state = SPINE_ROOT / 'shell-state'
     state.write_text(prelude)
     run(['chmod', '644', str(state)])
-    for cmd in commands((step / 'session.txt').read_text()):
+    typed = commands((step / 'session.txt').read_text())
+    for cmd in typed:  # before ANY runs: an Azure command must not run for a step that cannot record
         if len(cmd) + 2 > columns:  # a wrapped command would read back as a shorter one
             sys.exit(f'✗ {name_of(step)}: `$ {cmd[:40]}…` is {len(cmd) + 2} columns; the pane holds {columns}')
+    for cmd in typed:
         script = f'source {state}\ncd {cwd}\n{{ {cmd}\n}} 2>&1\necho "{MARK}$PWD"\n'
         r = as_ana(script, env)
         output, _, after = (r.stdout + r.stderr).partition(MARK)
@@ -442,13 +446,18 @@ class Normaliser:
     ISO = re.compile(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?')
 
     def __init__(self, real: dict[str, str], names: dict[str, str]) -> None:
-        self.real = {k: v.lower() for k, v in real.items() if v}
+        # a value is real only if it is one: an SP has no default domain, and the CLI says "None"
+        self.real = {k: v.lower() for k, v in real.items() if v and v.lower() != 'none' and (k != 'tenant_domain' or '.' in v)}
         self.names = names  # real resource name → shown name (a storage account's global suffix)
         self.guids: dict[str, str] = {}
         self.t0 = None
 
     def __call__(self, text: str) -> str:
-        from datetime import datetime, timedelta
+        # What was TYPED is never rewritten (the step's key hashes it); only what Azure printed
+        return '\n'.join(line if line.startswith('$ ') else self.output(line) for line in text.split('\n'))
+
+    def output(self, text: str) -> str:
+        from datetime import datetime
         for real, shown in self.names.items():
             text = text.replace(real, shown)
         for kind, value in self.real.items():
@@ -472,6 +481,8 @@ class Normaliser:
             return shown.isoformat(timespec='seconds') + ('Z' if raw.endswith('Z') else '+00:00' if '+' in raw[10:] else '')
         text = self.ISO.sub(stamp, text)
         text = re.sub(r'adb-\d+\.\d+\.azuredatabricks\.net', 'adb-0000000000000000.0.azuredatabricks.net', text)
+        # A SAS signature is a credential for as long as the token lives: never on screen
+        text = re.sub(r'(sig=)[A-Za-z0-9%+/=]+', r'\1<signature>', text)
         return re.sub(r'[\w.+-]+@(?!syndicabank\.)[\w-]+(\.[\w-]+)+', f'ana@{FACTS["domain"]}', text)
 
     def refuse(self, text: str) -> list[str]:
