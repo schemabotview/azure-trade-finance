@@ -18,7 +18,7 @@ export const secureLeastPrivilege: SceneModel = ideFrame({
   editor: { file: 'infra/policy.tf', code, show: [[1, 2], [lineOf(code, 'resource "azurerm_resource_group_policy_assignment" "locations"'), lineOf(code, 'parameters           = jsonencode({ tagName')]],
     highlight: [lineOf(code, 'listOfAllowedLocations'), lineOf(code, 'tagName = { value = "owner" }')] },
   session,
-  keep: ['$ terraform apply', 'Plan: 2 to add', 'Apply complete!', ['$ Q=', policies.at(-1)!]],
+  keep: ['$ terraform apply', ['$ Q=', policies.at(-1)!]],
   side: [
     level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
@@ -32,5 +32,16 @@ export const secureLeastPrivilege: SceneModel = ideFrame({
         { id: 'q-who', cells: ['a person, or an identity?', 'the pipeline is its own'] },
       ],
     },
+    {
+      type: 'group', id: 'pipeline', title: 'id-tradefin-pipeline, all it holds', icon: 'key', tone: 'store', children: [
+        { type: 'item', id: 'g-reader', title: 'Reader', sub: 'on rg-tradefin-dev: see, never change', icon: 'search' },
+        { type: 'item', id: 'g-secrets', title: 'Key Vault Secrets User', sub: 'on kv-tradefin-dev: one password', icon: 'keyvault' },
+        { type: 'item', id: 'g-next', title: 'the lake’s data role', sub: 'Course 7, when Data Factory writes', icon: 'storage', tone: 'neutral' },
+      ],
+    },
+  ],
+  edges: [
+    { from: 'g-reader', to: 'g-secrets' },
+    { from: 'g-secrets', to: 'g-next', dashed: true },
   ],
 })

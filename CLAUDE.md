@@ -42,8 +42,8 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 | 1 | `intro` | 3 | planned |
 | 2 | `how-azure-runs` | 7 | planned |
 | 3 | `start` | 8 | authored, narrated (text), 4K-checked; §3–5, §7–8 recorded on Azure |
-| 4 | `secure` | 8 | planned |
-| 5 | `land` | 9 | pilot: authored, narrated (text), 4K-checked; §1, §2, §9 recorded on Azure |
+| 4 | `secure` | 8 | §2–§8 authored, narrated (text), 4K-checked, recorded on Azure; §1 needs Graph permissions |
+| 5 | `land` | 9 | authored, narrated (text), 4K-checked; §1, §2, §9 re-recorded after Courses 3–4 |
 | 6 | `network` | 7 | planned |
 | 7 | `extract` | 8 | planned |
 | 8 | `bronze` | 8 | planned |
@@ -106,7 +106,17 @@ See COURSE-PLAN, "The spine". The rules an author applies every step:
 - A transcript holding a transport failure, or "is being deleted" (an earlier teardown still
   running), is refused: record it again. A re-record must start from the parent's Azure state —
   remove what a failed attempt created (`terraform destroy -target=…`) so the apply is the real one.
-- `--teardown` is `terraform destroy`, then every `*tradefin*` group (the state's included).
+- `--teardown` is `terraform destroy`, then every `*tradefin*` group (the state's included). The vault
+  is purged on destroy (`purge_soft_delete_on_destroy`), so its name is free for the next recording.
+- azurerm's `features { storage { data_plane_available = false } }` (from §5.1): Terraform manages
+  storage accounts through ARM alone. Without it, the read-back of a just re-created account answered
+  404 on its file-share properties, again and again.
+- To re-record a step, restore its PARENT's Azure state first: lay the parent, `terraform apply`
+  silently (on an error: wait, `terraform untaint`, apply again) until `plan` says No changes; then
+  remove what the step itself creates (`terraform destroy -target=…`) so its apply is the real one.
+- Role assignments and policy assignments take minutes to take effect: record the step that USES
+  one a few minutes after the step that made it (4.4 → 4.5, 4.7 → 4.8).
+- Course 3 and 4 resources were left up while Course 4 and 5 recorded, then torn down together.
 
 ## Frames
 

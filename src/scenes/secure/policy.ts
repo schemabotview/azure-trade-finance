@@ -14,10 +14,10 @@ const denied = [...session.matchAll(/^Code: RequestDisallowedByPolicy/gm)].lengt
 
 export const securePolicy: SceneModel = ideFrame({
   tree: secureTree('infra/policy.tf', { extra: [...KEYVAULT, 'infra/policy.tf'] }),
-  editor: { file: 'infra/policy.tf', code, show: [[lineOf(code, 'data "azurerm_policy_definition" "locations"'), lineOf(code, 'parameters           = jsonencode({ tagName')]],
-    highlight: [lineOf(code, 'display_name = "Allowed locations"'), lineOf(code, 'display_name = "Require a tag on resources"')] },
+  editor: { file: 'infra/policy.tf', code, show: [[lineOf(code, 'resource "azurerm_resource_group_policy_assignment" "locations"'), lineOf(code, 'parameters           = jsonencode({ tagName') + 1]],
+    highlight: [lineOf(code, 'listOfAllowedLocations'), lineOf(code, 'tagName = { value = "owner" }')] },
   session,
-  keep: ['$ G=', '-l francecentral', 'Code: RequestDisallowedByPolicy', '-l uksouth', 'Code: RequestDisallowedByPolicy', ['$ az storage account list', accounts.at(-1)!]],
+  keep: ['$ G=', '-l francecentral', 'ERROR: (RequestDisallowedByPolicy)', '-l uksouth', 'ERROR: (RequestDisallowedByPolicy)', ['$ az storage account list', accounts.at(-1)!]],
   side: [
     level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
@@ -25,6 +25,12 @@ export const securePolicy: SceneModel = ideFrame({
         { type: 'item', id: 'p-def', title: 'a definition', sub: 'Azure’s built-in: “Allowed locations”', icon: 'file' },
         { type: 'item', id: 'p-assign', title: 'an assignment', sub: 'on rg-tradefin-dev, with parameters', icon: 'boxes' },
         { type: 'item', id: 'p-deny', title: `deny: ${denied} refused`, sub: 'before anything is created', icon: 'shield', tone: 'consume' },
+      ],
+    },
+    {
+      type: 'table', id: 'params', title: 'The two assignments, as the code sets them', tone: 'infra', columns: ['assignment', 'parameter'], rows: [
+        { id: 'pa-loc', cells: ['allowed-locations', /value = (\[[^\]]+\])/.exec(code)![1]] },
+        { id: 'pa-tag', cells: ['require-owner-tag', `tagName = ${/tagName = \{ value = "(\w+)"/.exec(code)![1]}`] },
       ],
     },
     {

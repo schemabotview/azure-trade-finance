@@ -266,19 +266,19 @@ and writes to the emulated lake, so the frame carries the emulated label.
 | # | Section | Step | Side pane | Level |
 | --- | --- | --- | --- | --- |
 | 1 | Entra ID | users, `grp-trade-risk-eng` | tenant → users, groups | A |
-| 2 | Service principals and managed identities | ADF's system-assigned identity | three kinds of identity, who holds the secret | A |
+| 2 | Service principals and managed identities | `id-tradefin-pipeline`, a user-assigned managed identity (ADF wears it in Course 7) | three kinds of identity, who holds the secret | A |
 | 3 | ◆ full scene: RBAC | assignments at three scopes | role × scope × principal; inheritance down the hierarchy | A |
-| 4 | Owner cannot read a blob | Owner reads blobs → `AuthorizationPermissionMismatch` | control-plane vs data-plane roles | A |
+| 4 | Owner cannot read a blob | Owner lists containers (a management action) but is refused blobs; data roles granted narrowly | control-plane vs data-plane roles | A |
 | 5 | Key Vault | `tradebook-password` stored; RBAC model | vault → secret → version | A |
 | 6 | No secret anywhere | the identity reads the secret, a person cannot | identity → token → vault, no password in code | A |
 | 7 | Least privilege | the pipeline's role matrix applied | matrix: principal × resource × role | A |
-| 8 | Azure Policy | allowed locations + required tags; a refused deploy | policy → assignment → deny | A |
+| 8 | Azure Policy | assignments applied in 4.7; two hand-made accounts refused (France Central; no owner tag) | policy → assignment → deny | A |
 
 **5. `land` · ADLS Gen2, and a batch you can trust · 9**
 
 | # | Section | Step | Side pane | Level |
 | --- | --- | --- | --- | --- |
-| 1 | Storage accounts and the hierarchical namespace | `terraform apply`: the group, the account (HNS on, no account keys), the deployer's data role; the blob and dfs endpoints | flat blob names vs real directories | A |
+| 1 | Storage accounts and the hierarchical namespace | HNS switched on: a creation-time choice, so `apply` replaces Course 3's account (and its data role); the blob and dfs endpoints | flat blob names vs real directories | A |
 | 2 | Containers as zones | one `for_each`: `landing`, `bronze`, `silver`, `gold`, `reference`; a real directory with `az storage fs` | the zones on the map | A |
 | 3 | Immutable batch folders | batch 41, the full load, written once; the re-run refused | a batch_id identifies a delivery, not an LC revision | E |
 | 4 | Incremental by watermark | the desk's day (setup); watermark set to batch 41's end; `lookup` counts the window | old / new watermark on a timeline | L · E |

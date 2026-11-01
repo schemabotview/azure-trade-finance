@@ -9,7 +9,7 @@ import session from '../../../spine/secure/02-identities/session.txt?raw'
 // §4.2 — service principals and managed identities (recorded on Azure). The pipeline gets its own
 // identity, id-tradefin-pipeline, a user-assigned managed identity: Azure holds its credential. Ana's
 // session runs as a service principal (the recording's sign-in), which DOES have a secret somewhere.
-const [name] = outputOf(session, 'az identity list -g rg-tradefin-dev --query "[].[name,principalId]" -o tsv').trim().split('\t')
+const [name, principal] = outputOf(session, 'az identity list -g rg-tradefin-dev --query "[].[name,principalId]" -o tsv').trim().split('\t')
 const me = outputOf(session, 'az account show --query user.type -o tsv').trim()
 
 export const secureIdentities: SceneModel = ideFrame({
@@ -22,9 +22,16 @@ export const secureIdentities: SceneModel = ideFrame({
     level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
       type: 'table', id: 'kinds', title: 'Three kinds of identity', tone: 'ingest', columns: ['kind', 'is', 'its secret'], rows: [
-        { id: 'k-user', cells: ['user', 'a person: Ana, at the desk', 'a password + MFA, hers'] },
-        { id: 'k-sp', cells: ['service principal', `an app: this session (${me})`, 'a secret or certificate, stored'], tone: 'infra' },
-        { id: 'k-mi', cells: ['managed identity', `Azure-run code: ${name}`, 'none to store: Azure holds it'], tone: 'store' },
+        { id: 'k-user', cells: ['user', 'a person: Ana', 'password + MFA'] },
+        { id: 'k-sp', cells: ['service principal', 'an app: this session', 'a secret, stored'], tone: 'infra' },
+        { id: 'k-mi', cells: ['managed identity', 'code Azure runs', 'none: Azure holds it'], tone: 'store' },
+      ],
+    },
+    {
+      type: 'table', id: 'record', title: name, tone: 'store', columns: ['field', 'value'], rows: [
+        { id: 'r-kind', cells: ['kind', 'user-assigned managed identity'] },
+        { id: 'r-principal', cells: ['principal id', principal] },
+        { id: 'r-me', cells: ['this session signs in as', me] },
       ],
     },
     {

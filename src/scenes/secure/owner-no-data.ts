@@ -13,7 +13,7 @@ export const secureOwnerNoData: SceneModel = ideFrame({
   editor: { file: 'infra/modules/storage/main.tf', code, show: [[lineOf(code, '# Owner manages'), lineOf(code, 'principal_id') + 1]],
     highlight: [lineOf(code, 'role_definition_name = "Storage Blob Data Contributor"')] },
   session,
-  keep: [['$ export', '"Storage Blob Data Reader"'], '$ terraform apply', 'Plan: 2 to add', 'Apply complete!'],
+  keep: ['$ export', '$ az storage container list', '[]', ['$ az storage blob list', 'You do not have the required permissions'], '$ terraform apply', 'Plan: 2 to add', 'Apply complete!'],
   side: [
     level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
@@ -21,6 +21,7 @@ export const secureOwnerNoData: SceneModel = ideFrame({
         { id: 'pl-what', cells: ['acts on', 'the account, its containers', 'the blobs inside'] },
         { id: 'pl-owner', cells: ['Owner may', 'yes: container list → []', 'no: blob list refused'], tone: 'consume' },
         { id: 'pl-role', cells: ['granted by', 'Owner, Contributor…', 'Storage Blob Data …'], tone: 'store' },
+        { id: 'pl-api', cells: ['example', 'create a container', 'read a blob'] },
       ],
     },
     {
@@ -30,6 +31,7 @@ export const secureOwnerNoData: SceneModel = ideFrame({
         { type: 'item', id: 'x-wait', title: 'a minute or two', sub: 'before a new role reaches the data plane', icon: 'clock' },
       ],
     },
+    { type: 'note', id: 'why', tone: 'ingest', text: 'Why two planes: whoever runs the platform should not, by that alone, read the bank’s data. An Owner can delete the account and still cannot read one LC.' },
   ],
   edges: [
     { from: 'x-blob', to: 'x-vault' },

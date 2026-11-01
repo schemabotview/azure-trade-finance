@@ -17,7 +17,7 @@ export const secureNoSecret: SceneModel = ideFrame({
   editor: { file: 'infra/main.tf', code, show: [[lineOf(code, "# The pipeline's identity may READ"), lineOf(code, 'principal_id         = azurerm_user_assigned_identity.pipeline.principal_id', lineOf(code, "may READ")) + 1]],
     highlight: [lineOf(code, 'role_definition_name = "Key Vault Secrets User"')] },
   session,
-  keep: ['$ terraform apply', 'Plan: 1 to add', 'Apply complete!', ['$ KV=', grep]],
+  keep: ['$ terraform apply', ['$ az role assignment list', grep]],
   side: [
     level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
@@ -25,6 +25,13 @@ export const secureNoSecret: SceneModel = ideFrame({
         { type: 'item', id: 'c-id', title: 'id-tradefin-pipeline', sub: 'a managed identity: no secret of its own', icon: 'key' },
         { type: 'item', id: 'c-token', title: 'a token from Entra ID', sub: 'minutes long, for the vault only', icon: 'cert' },
         { type: 'item', id: 'c-vault', title: 'kv-tradefin-dev', sub: 'role: Key Vault Secrets User → read', icon: 'keyvault', tone: 'store' },
+      ],
+    },
+    {
+      type: 'table', id: 'token', title: 'The token the identity gets', tone: 'store', columns: ['may', 'may not'], rows: [
+        { id: 't-1', cells: ['read a secret’s value', 'set, change or delete one'] },
+        { id: 't-2', cells: ['reach kv-tradefin-dev', 'reach anything else'] },
+        { id: 't-3', cells: ['last minutes', 'be written down for later'] },
       ],
     },
     {

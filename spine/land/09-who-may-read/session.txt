@@ -1,10 +1,161 @@
 $ cd infra
 $ terraform apply -var-file=envs/dev.tfvars -auto-approve
+Acquiring state lock. This may take a few moments...
+data.azurerm_policy_definition.locations: Reading...
+data.azurerm_policy_definition.locations: Read complete after 2s [id=/providers/
+Microsoft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001002]
+data.azurerm_client_config.me: Reading...
+data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW50Q29uZmlncy9jbG
+llbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN0SWQ9MDAwMDAwMD
+AtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDAwMDAwLTAwMDAtMD
+AwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMD
+AwMDAwYTE=]
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+data.azurerm_policy_definition.tag: Reading...
+data.azurerm_policy_definition.tag: Read complete after 3s [id=/providers/Micros
+oft.Authorization/policyDefinitions/00000000-0000-0000-0000-000000001003]
+module.storage.data.azurerm_client_config.me: Reading...
+module.storage.data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW5
+0Q29uZmlncy9jbGllbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN
+0SWQ9MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDA
+wMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDA
+tMDAwMC0wMDAwMDAwMDAwYTE=]
+azurerm_resource_group_policy_assignment.locations: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Authorization/policyAssignments/allowed-locations]
+azurerm_role_assignment.secrets_officer: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001004]
+azurerm_monitor_action_group.risk: Refreshing state... [id=/subscriptions/000000
+00-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsof
+t.Insights/actionGroups/ag-trade-risk]
+azurerm_user_assigned_identity.pipeline: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.ManagedIdentity/userAssignedIdentities/id-tradefin-pipeline]
+azurerm_resource_group_policy_assignment.owner_tag: Refreshing state... [id=/sub
+scriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/p
+roviders/Microsoft.Authorization/policyAssignments/require-owner-tag]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+module.keyvault.azurerm_key_vault.main: Refreshing state... [id=/subscriptions/0
+0000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mic
+rosoft.KeyVault/vaults/kv-tradefin-dev]
+azurerm_consumption_budget_resource_group.main: Refreshing state... [id=/subscri
+ptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provi
+ders/Microsoft.Consumption/budgets/budget-tradefin-dev]
+azurerm_role_assignment.pipeline_reader: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001005]
+module.storage.azurerm_role_assignment.data: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev/providers/Microsoft.Authorizat
+ion/roleAssignments/00000000-0000-0000-0000-000000001006]
+module.storage.azurerm_storage_container.zone["gold"]: Refreshing state... [id=/
+subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-de
+v/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/default
+/containers/gold]
+module.storage.azurerm_storage_container.zone["landing"]: Refreshing state... [i
+d=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin
+-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defa
+ult/containers/landing]
+module.storage.azurerm_storage_container.zone["reference"]: Refreshing state... 
+[id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradef
+in-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/de
+fault/containers/reference]
+module.storage.azurerm_storage_container.zone["silver"]: Refreshing state... [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defau
+lt/containers/silver]
+module.storage.azurerm_storage_container.zone["bronze"]: Refreshing state... [id
+=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-
+dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/blobServices/defau
+lt/containers/bronze]
+azurerm_role_assignment.pipeline_secrets: Refreshing state... [id=/subscriptions
+/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/M
+icrosoft.KeyVault/vaults/kv-tradefin-dev/providers/Microsoft.Authorization/roleA
+ssignments/00000000-0000-0000-0000-000000001007]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.storage.azurerm_storage_management_policy.lifecycle will be created
+  + resource "azurerm_storage_management_policy" "lifecycle" {
+      + id                 = (known after apply)
+      + storage_account_id = "/subscriptions/00000000-0000-0000-0000-0000000000d
+1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Storage/storageAccounts/stt
+radefindev"
+
+      + rule {
+          + enabled = true
+          + name    = "landing-batches"
+
+          + actions {
+              + base_blob {
+                  + delete_after_days_since_creation_greater_than               
+   = -1
+                  + delete_after_days_since_last_access_time_greater_than       
+   = -1
+                  + delete_after_days_since_modification_greater_than           
+   = 400
+                  + tier_to_archive_after_days_since_creation_greater_than      
+   = -1
+                  + tier_to_archive_after_days_since_last_access_time_greater_th
+an = -1
+                  + tier_to_archive_after_days_since_last_tier_change_greater_th
+an = -1
+                  + tier_to_archive_after_days_since_modification_greater_than  
+   = 90
+                  + tier_to_cold_after_days_since_creation_greater_than         
+   = -1
+                  + tier_to_cold_after_days_since_last_access_time_greater_than 
+   = -1
+                  + tier_to_cold_after_days_since_modification_greater_than     
+   = -1
+                  + tier_to_cool_after_days_since_creation_greater_than         
+   = -1
+                  + tier_to_cool_after_days_since_last_access_time_greater_than 
+   = -1
+                  + tier_to_cool_after_days_since_modification_greater_than     
+   = 30
+                }
+            }
+
+          + filters {
+              + blob_types   = [
+                  + "blockBlob",
+                ]
+              + prefix_match = [
+                  + "landing/lc_deals/",
+                ]
+            }
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+module.storage.azurerm_storage_management_policy.lifecycle: Creating...
+module.storage.azurerm_storage_management_policy.lifecycle: Creation complete af
+ter 3s [id=/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg
+-tradefin-dev/providers/Microsoft.Storage/storageAccounts/sttradefindev/manageme
+ntPolicies/default]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 $ cd ..
 $ python extract/reference.py --as-of 2026-10-31
+ 11 rows -> reference/counterparty_group/as_of=2026-10-31/counterparty_group.csv
+  5 rows -> reference/group_limits/as_of=2026-10-31/group_limits.csv
 $ ID=$(az storage account show -n sttradefindev --query id -o tsv)
 $ az role assignment list --scope $ID --query "[].roleDefinitionName" -o tsv
+Storage Blob Data Contributor
 $ az storage fs access show -f reference -p group_limits --query acl -o tsv
+user::rwx,group::r-x,other::---
 $ URL=$(python extract/share.py group_limits 2026-10-31)
 $ curl -so /dev/null -w "%{http_code}\n" "$URL"
+200
 $ curl -so /dev/null -w "%{http_code}\n" "${URL%%\?*}"
+409
