@@ -31,15 +31,14 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 `check-render` with the map-frame fit), `registry`, `shots` (also takes a bare scene id, e.g.
 `npm run shots -- preview-map-land`), `film`, the Colab notebook, `concept.json`, `titles.json`;
 `tradebook_gen` + `verify` (15 planted facts); `scripts/spine.py` (both step kinds);
-`src/scenes/ide.ts` (aws-ecommerce's), `map.ts` (`BUILT` per course; previews `#/preview-map-land`,
-`#/preview-map-finished`), `level.ts` (the verification label); installers
+`src/scenes/ide.ts` (aws-ecommerce's), `map.ts` (`BUILT` per course; previews `#/preview-map-land`; the finished map is §1.3), `level.ts` (the verification label); installers
 `install-toolchain.sh` (Python 3.14.9, Java 21), `setup-postgres.sh` (PostgreSQL 18.6, OS user
 `ana`), `install-azure-tools.sh` (Azure CLI 2.91.0, Azurite 3.37.0, Terraform 1.17.0). Not ported yet: the cover
 (`thumb-film.mjs` was Spark's own drawing), `record-all` wiring is the shell's.
 
 | # | course | sections | status |
 |---|---|---|---|
-| 1 | `intro` | 3 | planned |
+| 1 | `intro` | 3 | authored, narrated (text), 4K-checked (§1 doc-cited, §2–3 from the spine's finished Gold) |
 | 2 | `how-azure-runs` | 7 | planned |
 | 3 | `start` | 8 | authored, narrated (text), 4K-checked; §3–5, §7–8 recorded on Azure |
 | 4 | `secure` | 8 | §2–§8 authored, narrated (text), 4K-checked, recorded on Azure; §1 needs Graph permissions |

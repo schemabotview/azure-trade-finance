@@ -1,6 +1,24 @@
 {
-  "count": 51,
+  "count": 54,
   "entries": [
+    {
+      "course": "intro",
+      "section": "a-letter-of-credit",
+      "file": "intro/a-letter-of-credit.wav",
+      "narration": "An importer in London wants to buy goods from an exporter on the other side of the world. The exporter does not want to ship before being paid, and the importer does not want to pay before the goods are shipped. A letter of credit, an L C, settles that. The importer, here Woodgrove Retail, applies to its bank, Syndica Bank, which issues the letter of credit: a promise to pay the exporter, as soon as the exporter presents documents showing the goods were shipped as agreed. An advising bank on the exporter's side passes the letter of credit on, and carries the documents back. The frame draws the parties across the top and, below them, one letter of credit's life. It is issued. It may be amended, when the amount or the terms change. Documents are presented and the bank pays. And eventually it is closed, or it expires, with nothing left to pay. The note at the bottom is the reason this film exists. From the moment Syndica Bank issues a letter of credit until it closes, the bank owes that amount whatever happens to the importer. That open amount is the bank's exposure. One letter of credit is easy to follow. Syndica Bank's trade finance desk has hundreds, for many companies, changing all day. Next, the question the desk needs answered about all of them, every morning."
+    },
+    {
+      "course": "intro",
+      "section": "the-question",
+      "file": "intro/the-question.wav",
+      "narration": "Banks do not set limits on single companies alone. Three companies with one owner are one risk: if the owner fails, all three may fail together. So the risk team sorts every counterparty into a group, and sets each group a limit, in each currency it trades in. The left of the frame follows that for one group. Woodgrove has three companies applying for letters of credit. Their open letters of credit, two point two million, five million and two point five million dollars, all count against one group, Woodgrove, and one limit. The table on the right is the answer, and it is the end of this film: the finished Gold table, exactly as the pipeline we build prints it. For every group and currency: the open exposure, the limit, how much of the limit is used, and whether it is breached. Woodgrove has used ninety seven percent of its ten million dollar limit. Fabrikam is over its euro limit, at one hundred and fourteen percent. Contoso appears twice, once in euros and once in dollars, because amounts in different currencies are never added together. Every number in this table is real output. It comes from a pipeline that reads the bank's trade system, checks the data at four gates, and keeps every version of every letter of credit, so that the desk can trust it at eight in the morning. Next, the pipeline itself, on Azure, in one picture."
+    },
+    {
+      "course": "intro",
+      "section": "what-we-build",
+      "file": "intro/what-we-build.wav",
+      "narration": "This is the map of what we will build, with every part lit. It will appear again and again, with only the parts built so far lit up. On the left is Syndica Bank's own network. TradeBook, the trade finance system, is a PostgreSQL database there, and the desk that reads the answer sits beside it. On the right is an Azure subscription, with one resource group. A storage account holds the lake, in zones: landing, where each night's extract arrives, then Bronze, Silver and Gold, and the risk team's reference files. Between the zones are the gates, G one to G four, which decide whether data moves on. Beside the lake, a virtual network keeps everything private, and a runtime inside the bank carries the data out. Data Factory moves the data; Databricks turns it into Gold; Key Vault keeps the secrets; and a budget, a policy and alerts watch over the subscription. The side pane shows where it ends: Woodgrove, in dollars, nine point seven million against a limit of ten million, ninety seven percent used, three hundred thousand dollars of headroom. And it shows the order of the twelve courses. A few promises about how this is made. Every Azure resource is written in Terraform. Every output on screen was really run, either locally or recorded once on a real subscription, and each frame says which. And the subscription is emptied after every course. Next, before any of it, how Azure itself is built."
+    },
     {
       "course": "start",
       "section": "tradebook",

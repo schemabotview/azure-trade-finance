@@ -5,5 +5,4 @@ import { BUILT, mapScene } from './map'
 // course and finished. They leave this file when a section takes them.
 export const previewScenes: Record<string, SceneModel> = {
   'preview-map-land': mapScene(BUILT.land),
-  'preview-map-finished': mapScene(BUILT.operate),
 }
