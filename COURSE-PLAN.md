@@ -196,6 +196,9 @@ Two kinds of step, marked in `step.json`:
   resource group.
 - The database, landing folders, the watermark, checkpoints and Delta tables carry forward along
   the chain; a step that breaks things on purpose (a failed gate) is `"branch": true` and discarded.
+- **Built step by step, never again and again**: every step is written once, from the state the
+  step before it left (a local step's saved `state/`; the subscription for an Azure step), and only
+  the steps after an edit are written again.
 
 ## Verification levels
 

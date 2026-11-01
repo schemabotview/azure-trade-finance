@@ -1,32 +1,46 @@
 #!/usr/bin/env python3
-"""Replay the spine's LOCAL steps along one chain; check its AZURE steps without running anything.
+"""Build the spine one step at a time, each from the state the step before it left; check it all
+without running anything.
 
 The spine is the course's one project, `lc-exposure`, kept as real files: one snapshot per step in
 spine/<course>/<NN-step>/project/. Each step's session.txt is the terminal pane a scene shows — `$ `
 lines are commands, everything else is their output. Scenes import these files with Vite's `?raw`,
 so a frame can only show what a real run printed.
 
-  python scripts/spine.py                  check: replay every local step, compare; every Azure step
-                                           recorded and current (runs NOTHING on Azure)
-  python scripts/spine.py --write [steps]  replay and rewrite the local steps' session.txt / captured/
+  python scripts/spine.py                  check: every step written, current and untouched. Runs
+                                           NOTHING (< 1 s)
+  python scripts/spine.py --write <steps>  write local steps: each runs ONCE, from the saved state of
+                                           the local step before it, and saves its own state
   python scripts/spine.py --record <step>  record ONE Azure step on the owner's subscription (needs the
                                            AZURE_* environment secrets): run once, normalise, write
+  python scripts/spine.py --replay [steps] deliberate, after a tool upgrade: run the local chain from
+                                           its start and compare every transcript
   python scripts/spine.py --teardown       delete every *tradefin* resource group (after a course)
+
+STEP BY STEP, NEVER AGAIN AND AGAIN (aws-ecommerce's method, for both kinds of step). Each step is
+written once, starting from what the step before it left; nothing before it runs again.
+
+  Local   after its session, the step's whole state is saved beside it in state/: the database
+          (db.sql.gz, pg_dump), the lake (lake.tar.gz, Azurite's folder) and the working copy
+          (work.tar.gz, without .venv). `--write land/07` restores land/06's state, lays land/07's
+          files, runs land/07's commands, saves land/07's state. A branch saves none: the step
+          after it starts from the state before it.
+  Azure   recorded once (--record) against the subscription as the step before it left it.
+
+Both write recorded.json: the step's KEY and the hash of its transcript. The key hashes the step's
+step.json, files and typed commands, and every ancestor's files and RECORDED transcript, so editing
+or rewriting a step makes every step after it stale (check names them; write them again, in order,
+each from the one before). Not scripts/: improving the machine forces nothing.
 
 Ported from spark-ecommerce-analytics (local replay, data generated not committed, `volatile`) and
 aws-ecommerce (record-once, keys, normalisation in the recorder). What is this course's own:
 
 TWO KINDS OF STEP (COURSE-PLAN.md, "The spine"):
 
-  Local ({})            replayed every time, deterministically: PostgreSQL 18.6 (TradeBook), Azurite
-                        (the lake, emulated), Python 3.14.9. The pipeline's numbers all come from here.
-  Azure ({"azure": true})  recorded ONCE with --record, never replayed. recorded.json beside it holds
-                        the step's KEY (a hash of its step.json, files and typed commands, and every
-                        ancestor's) and the hash of the transcript it wrote. The check runs nothing: a
-                        key that no longer matches means the step or one before it changed (re-record
-                        it and every Azure step after it in the course, in order); a transcript that no
-                        longer matches its hash was edited by hand. An Azure step changes no local
-                        state, so the local replay passes over it.
+  Local ({})            run here, deterministically: PostgreSQL 18.6 (TradeBook), Azurite (the lake,
+                        emulated), Python 3.14.9. The pipeline's numbers all come from here.
+  Azure ({"azure": true})  run once on the owner's subscription. An Azure step changes no local
+                        state, so a local step after it starts from the last local step's state.
 
 ONE CHAIN, REAL STATE. The local steps run in ONE working copy (/home/ana/lc-exposure, as Ana, the
 path shown on screen — nothing is rewritten), against ONE database (`tradebook`) and ONE Azurite, in
@@ -180,16 +194,30 @@ def lineage_of(step: Path) -> list[Path]:
 
 
 def key_of(step: Path) -> str:
-    """An Azure step's KEY: its step.json, files and typed commands, and every ancestor's. Not scripts/:
-    improving the machine forces no re-record."""
+    """A step's KEY: its step.json, files and typed commands, and every ancestor's files and RECORDED
+    transcript (what the step started from). A local step adds tradebook_gen's source: its data is
+    the generator's. Not scripts/: improving the machine forces no re-write."""
     h = hashlib.sha256()
-    for s in lineage_of(step):
+    chain = lineage_of(step)
+    for s in chain:
         h.update(name_of(s).encode() + b'\0' + (s / 'step.json').read_bytes())
         for path, data in files(s).items():
             h.update(path.encode() + b'\0' + hashlib.sha256(data).digest())
         session = (s / 'session.txt').read_text() if (s / 'session.txt').exists() else ''
-        h.update('\n'.join(commands(session)).encode())
+        h.update((session if s != step else '\n'.join(commands(session))).encode())
+    if not config_of(step).get('azure'):
+        for p in sorted((REPO / 'tradebook_gen').glob('*.py')):
+            h.update(p.read_bytes())
     return h.hexdigest()
+
+
+def state_parent(step: Path) -> Path | None:
+    """The local step whose saved state this step starts from: the nearest ancestor that is local
+    and not a branch (an Azure step leaves local state as it found it; a branch is put back)."""
+    for s in reversed(lineage_of(step)[:-1]):
+        if not config_of(s).get('azure') and not config_of(s).get('branch'):
+            return s
+    return None
 
 
 # ── the machine ───────────────────────────────────────────────────────────────────────────────────
@@ -426,6 +454,77 @@ def fresh(lake: Lake) -> None:
     lake.reset()
 
 
+# ── saved state: one local step at a time ──────────────────────────────────────────────────────────
+
+def _tar(src: Path, dest: Path, skip: set[str] = frozenset()) -> None:
+    import tarfile
+    with tarfile.open(dest, 'w:gz') as tar:
+        for p in sorted(src.iterdir()):
+            if p.name not in skip:
+                tar.add(p, arcname=p.name)
+
+
+def _untar(src: Path, dest: Path) -> None:
+    import tarfile
+    with tarfile.open(src) as tar:
+        tar.extractall(dest, filter='tar')
+
+
+def save_state(step: Path, lake: Lake) -> None:
+    import gzip
+    d = step / 'state'
+    shutil.rmtree(d, ignore_errors=True)
+    d.mkdir()
+    dump = run(['runuser', '-u', 'postgres', '--', 'pg_dump', '-h', '/tmp', '--no-owner', '--no-privileges', DB]).stdout
+    with gzip.GzipFile(d / 'db.sql.gz', 'wb', mtime=0) as f:
+        f.write(dump.encode())
+    lake.stop()
+    _tar(lake.dir, d / 'lake.tar.gz')
+    lake.start()
+    _tar(WORK, d / 'work.tar.gz', skip={'.venv'})
+
+
+def restore_state(step: Path | None, lake: Lake) -> None:
+    """Empty database, lake and working copy; then, if there is a step, exactly what it left."""
+    import gzip
+    fresh(lake)
+    if step is None:
+        return
+    d = step / 'state'
+    sql = gzip.decompress((d / 'db.sql.gz').read_bytes()).decode()
+    r = subprocess.run(['runuser', '-u', USER, '--', 'psql', '-X', '-q', '-h', '/tmp', '-v', 'ON_ERROR_STOP=1', '-d', DB],
+                       input=sql, capture_output=True, text=True)
+    if r.returncode:
+        sys.exit(f'✗ restoring {name_of(step)}\'s database failed:\n{r.stderr}')
+    lake.stop()
+    shutil.rmtree(lake.dir, ignore_errors=True)
+    lake.dir.mkdir(parents=True)
+    _untar(d / 'lake.tar.gz', lake.dir)
+    lake.start()
+    _untar(d / 'work.tar.gz', WORK)
+    run(['chown', '-R', f'{USER}:{USER}', str(WORK)])
+
+
+def write_local(step: Path, lake: Lake) -> None:
+    parent = state_parent(step)
+    if parent is not None and not recorded_ok(parent)[0]:
+        sys.exit(f'✗ {name_of(step)} starts from {name_of(parent)}, which is {recorded_ok(parent)[1]}')
+    restore_state(parent, lake)
+    lay(step)
+    transcript, captured = session_of(step, environment())
+    (step / 'session.txt').write_text(transcript)
+    for file, text in captured.items():
+        (step / 'captured' / file).parent.mkdir(parents=True, exist_ok=True)
+        (step / 'captured' / file).write_text(text)
+    if config_of(step).get('branch'):
+        shutil.rmtree(step / 'state', ignore_errors=True)
+    else:
+        save_state(step, lake)
+    (step / 'recorded.json').write_text(json.dumps({'key': key_of(step), 'transcript': hashlib.sha256(transcript.encode()).hexdigest()},
+                                                   indent=2) + '\n')
+    print(f'wrote {name_of(step)}{" (a branch: no state saved)" if config_of(step).get("branch") else ""}')
+
+
 # ── recording an Azure step ───────────────────────────────────────────────────────────────────────
 
 FACTS = {  # COURSE-PLAN.md, "Facts": what a real id is shown as
@@ -541,14 +640,18 @@ def record(step: Path) -> int:
 
 
 def recorded_ok(step: Path) -> tuple[bool, str]:
+    azure = config_of(step).get('azure')
+    how = f'python scripts/spine.py {"--record" if azure else "--write"} {name_of(step)}'
     rec = step / 'recorded.json'
     if not rec.exists():
-        return False, 'not recorded yet (python scripts/spine.py --record ' + name_of(step) + ')'
+        return False, f'not written yet ({how})'
     data = json.loads(rec.read_text())
     if data['key'] != key_of(step):
-        return False, 'changed since it was recorded (or a step before it did): re-record it and every Azure step after it'
+        return False, f'changed since it was written, or a step before it did ({how}, then every stale step after it)'
     if data['transcript'] != hashlib.sha256((step / 'session.txt').read_bytes()).hexdigest():
-        return False, 'session.txt was edited by hand: a transcript is recorded, never typed'
+        return False, 'session.txt was edited by hand: a transcript is run, never typed'
+    if not azure and not config_of(step).get('branch') and not (step / 'state' / 'db.sql.gz').exists():
+        return False, f'its saved state is missing ({how})'
     return True, ''
 
 
@@ -580,14 +683,27 @@ def main(argv: list[str]) -> int:
         return record(ROOT / argv[argv.index('--record') + 1])
     if '--teardown' in argv:
         return teardown()
-    write = '--write' in argv
+    write, replay = '--write' in argv, '--replay' in argv
     only = [a for a in argv if not a.startswith('--')]
+    asked = lambda s: not only or any(name_of(s).startswith(o) for o in only)
     problems = [p for s in every_step() for p in lineage(s)]
+    line = chain()
+    labs = [s for s in every_step() if config_of(s).get('lab')]
+    problems += [f'{name_of(s)}: not on the chain from the first step' for s in every_step() if s not in line and s not in labs]
     for p in problems:
         print(f'✗ {p}')
-    if problems and write:
-        print('✗ the chain is broken: fix step.json or the snapshots before rewriting transcripts')
+    if problems and (write or replay):
+        print('✗ the chain is broken: fix step.json or the snapshots first')
         return 1
+    ordered = line + labs
+    if not write and not replay:  # the check: runs nothing
+        for step in (s for s in ordered if asked(s)):
+            ok, why = recorded_ok(step)
+            kind = 'Azure' if config_of(step).get('azure') else 'local'
+            print(f'{"✓" if ok else "✗"} {name_of(step)} ({kind}){"" if ok else ": " + why}')
+            problems += [] if ok else [f'{name_of(step)}: {why}']
+        print(f"{'✗' if problems else '✓'} {sum(map(asked, ordered))} step(s) checked, {len(problems)} problem(s)")
+        return 1 if problems else 0
     problem = preflight()
     if problem:
         print(f'✗ {problem}')
@@ -595,19 +711,17 @@ def main(argv: list[str]) -> int:
     SPINE_ROOT.mkdir(parents=True, exist_ok=True)
     (SPINE_ROOT / 'pip-cache').mkdir(exist_ok=True)
     run(['chown', f'{USER}:{USER}', str(SPINE_ROOT), str(SPINE_ROOT / 'pip-cache')])
-    asked = lambda s: not only or any(name_of(s).startswith(o) for o in only)
-    line = chain()
-    on_chain = set(line)
-    labs = [s for s in every_step() if config_of(s).get('lab')]
-    orphans = [s for s in every_step() if s not in on_chain and s not in labs]
-    for s in orphans:
-        problems.append(f'{name_of(s)}: not on the chain from the first step')
-        print(f'✗ {problems[-1]}')
     lake = Lake()
-    replayed = 0
     try:
+        if write:
+            for step in (s for s in ordered if asked(s)):
+                if config_of(step).get('azure'):
+                    print(f'· {name_of(step)} is an Azure step: --record it')
+                    continue
+                write_local(step, lake)
+            return 0
+        # --replay: the whole local chain from its start (labs alone), compared with what was written
         for group in [line] + [[lab] for lab in labs]:
-            # A chain is replayed from its start up to the last step asked for; a lab alone.
             wanted = [s for s in group if asked(s)]
             if not wanted:
                 continue
@@ -615,10 +729,6 @@ def main(argv: list[str]) -> int:
             for step in group[:group.index(wanted[-1]) + 1]:
                 config = config_of(step)
                 if config.get('azure'):
-                    ok, why = recorded_ok(step)
-                    if asked(step):
-                        print(f'{"✓" if ok else "✗"} {name_of(step)} (recorded on Azure){"" if ok else ": " + why}')
-                        problems += [] if ok else [why]
                     continue
                 lay(step)
                 snap = Snapshot(lake) if config.get('branch') else None
@@ -626,14 +736,6 @@ def main(argv: list[str]) -> int:
                 if snap:
                     snap.restore()
                 if not asked(step):
-                    continue
-                replayed += 1
-                if write:
-                    (step / 'session.txt').write_text(transcript)
-                    for file, text in captured.items():
-                        (step / 'captured' / file).parent.mkdir(parents=True, exist_ok=True)
-                        (step / 'captured' / file).write_text(text)
-                    print(f'wrote {name_of(step)}')
                     continue
                 before = len(problems)
                 expected = (step / 'session.txt').read_text()
@@ -646,8 +748,7 @@ def main(argv: list[str]) -> int:
                 print(f'{"✗" if len(problems) > before else "✓"} {name_of(step)}')
     finally:
         lake.stop()
-    if not write:
-        print(f"{'✗' if problems else '✓'} {replayed} local step(s) replayed, {len(problems)} problem(s)")
+    print(f"{'✗' if problems else '✓'} replayed, {len(problems)} problem(s)")
     return 1 if problems else 0
 
 

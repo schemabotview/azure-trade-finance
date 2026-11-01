@@ -76,10 +76,16 @@ See COURSE-PLAN, "The spine". The rules an author applies every step:
 
 **How the replay works here** (`scripts/spine.py`'s docstring has every key):
 
-- Run as root: the replay drives the shell as OS user `ana` in `/home/ana/lc-exposure` (the path on
-  screen, nothing rewritten) and the server as `postgres`. One chain, real state: one working copy,
-  one `tradebook` database, one Azurite, from `start/01-tradebook` on. `python scripts/spine.py`
-  replays it all (~1 min); `--write land/05` rewrites one step's transcript.
+- **Step by step, each from the one before** (both kinds). A local step saves its state in
+  `state/` (database dump, Azurite folder, working copy; ≤ 90 KB); `--write land/07` restores
+  `land/06`'s state and runs ONLY `land/07` (~15 s). An Azure step records against the subscription
+  as the step before left it. `python scripts/spine.py` runs nothing: it checks every step's key and
+  transcript hash. A key hashes the step and its ancestors' files and RECORDED transcripts, so an
+  edit marks only the steps after it stale; write them again in order. `--replay` (the whole local
+  chain, compared) is for after a tool upgrade, not for authoring.
+- `--write` and `--replay` run as root: the shell as OS user `ana` in `/home/ana/lc-exposure` (the
+  path on screen, nothing rewritten), the server as `postgres`. After a container restart, run
+  `scripts/setup-postgres.sh` again: it starts the server.
 - Off-screen events are `setup`: the desk's business day (`desk-2026-10-31.sql`, before §5.4) and
   the race (`desk-late.sql`, inside the §5.6 branch). Both are tradebook_gen's output.
 - `"branch": true` puts back the working copy, the database and the lake after the step.
