@@ -1,2 +1,10 @@
 $ python pipeline/silver.py
+WARNING: Using incubator modules: jdk.incubator.vector
+Bronze 520 rows -> Silver 418 rows
 $ python pipeline/lc.py LC-2041
+WARNING: Using incubator modules: jdk.incubator.vector
++-------+--------------+----------+-------+--------+
+|  lc_id|source_version|    amount| status|batch_id|
++-------+--------------+----------+-------+--------+
+|LC-2041|             2|2200000.00|AMENDED|      42|
++-------+--------------+----------+-------+--------+

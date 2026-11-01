@@ -14,7 +14,7 @@ const rows = outputOf(session, 'python pipeline/quarantine.py').split('\n').filt
 
 export const bronzeG2: SceneModel = ideFrame({
   tree: pipelineTree('pipeline/gates.py', ['session.py', 'bronze.py', 'versions.py', 'gates.py', 'quarantine.py'], { fresh: ['pipeline/gates.py', 'pipeline/quarantine.py'] }),
-  editor: { file: 'pipeline/gates.py', code, highlight: linesFrom(code, 'G2_RULES = {', '"currency not three capitals"') },
+  editor: { file: 'pipeline/gates.py', code, highlight: linesFrom(code, 'def g2_rules', '"currency not three capitals"') },
   session,
   side: [
     AZURITE,

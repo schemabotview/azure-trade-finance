@@ -1,2 +1,23 @@
 $ ls lake/silver/lc_current/_delta_log/
+00000000000000000000.crc
+00000000000000000000.json
+00000000000000000001.crc
+00000000000000000001.json
+00000000000000000002.crc
+00000000000000000002.json
+_staged_commits
 $ python pipeline/history.py LC-2041 1
+WARNING: Using incubator modules: jdk.incubator.vector
++-------+---------+---------------------+--------------------+
+|version|operation|numTargetRowsInserted|numTargetRowsUpdated|
++-------+---------+---------------------+--------------------+
+|      0|    WRITE|                 NULL|                NULL|
+|      1|    MERGE|                  400|                   0|
+|      2|    MERGE|                   18|                 102|
++-------+---------+---------------------+--------------------+
+
++-------+--------------+----------+
+|  lc_id|source_version|    amount|
++-------+--------------+----------+
+|LC-2041|             1|2000000.00|
++-------+--------------+----------+

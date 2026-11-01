@@ -1,1 +1,8 @@
 $ python pipeline/reference_tables.py 2026-10-31
+WARNING: Using incubator modules: jdk.incubator.vector
+  counterparty_id unique             PASS
+  every counterparty has a group     PASS
+  one limit per group and currency   PASS
+  every limit a positive amount      PASS
+  every limited group is mapped      PASS
+published: 11 mappings, 5 limits, as of 2026-10-31

@@ -1,3 +1,12 @@
 $ rm -rf lake/silver
 $ python pipeline/silver.py --through 43
+WARNING: Using incubator modules: jdk.incubator.vector
+batch 41: 400 rows, 400 inserted, 0 updated, 0 ignored
+batch 42: 120 rows, 18 inserted, 102 updated, 0 ignored
 $ python pipeline/lc.py LC-2041
+WARNING: Using incubator modules: jdk.incubator.vector
++-------+--------------+----------+-------+--------+
+|  lc_id|source_version|    amount| status|batch_id|
++-------+--------------+----------+-------+--------+
+|LC-2041|             2|2200000.00|AMENDED|      42|
++-------+--------------+----------+-------+--------+

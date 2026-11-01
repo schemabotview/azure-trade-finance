@@ -1,1 +1,21 @@
 $ python pipeline/g3.py
+Traceback (most recent call last):
+  File "/home/ana/lc-exposure/pipeline/g3.py", line 4, in <module>
+    from gates import g3
+  File "/home/ana/lc-exposure/pipeline/gates.py", line 10, in <module>
+    "no lc_id": F.col("lc_id").isNull() | (F.trim("lc_id") == ""),
+                ~~~~~^^^^^^^^^
+  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/uti
+ls.py", line 283, in wrapped
+    return f(*args, **kwargs)
+  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/errors/
+utils.py", line 344, in wrapper
+    return func(*args, **kwargs)
+  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/fun
+ctions/builtin.py", line 331, in col
+    return _invoke_function("col", col)
+  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/fun
+ctions/builtin.py", line 111, in _invoke_function
+    assert SparkContext._active_spark_context is not None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
