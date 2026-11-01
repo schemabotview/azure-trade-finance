@@ -27,8 +27,10 @@ const ZONES = [
   p('gold', 'layers', 'gold', 'G4 reconciles, then publishes'),
 ]
 const REFERENCE = p('reference', 'adls', 'reference', 'mapping, limits')
+// The self-hosted IR runs INSIDE the bank, beside TradeBook (§6.5–6.6): the course stands the bank's
+// network in for itself (vnet-bank-onprem, UK West). snet-shir, carved in §6.1, holds nothing.
+const SHIR = p('shir', 'vm', 'Self-hosted IR', 'ir-tradebook-shir')
 const SUBNETS: [string, string, Part][] = [
-  ['snet-shir', '10.30.2.0/24', p('shir', 'vm', 'Self-hosted IR', 'ir-tradebook-shir')],
   ['snet-pe', '10.30.1.0/24', p('pe-storage', 'network', 'Private endpoints', 'storage, key vault')],
   ['snet-dbx', '10.30.8.0/22 ×2', p('dbx-compute', 'databricks', 'Databricks compute', 'job clusters')],
 ]
@@ -52,7 +54,7 @@ BUILT.start = ['tradebook', 'rg', 'storage', 'budget']
 BUILT.secure = [...BUILT.start, 'entra', 'keyvault', 'policy']
 // §5.2 makes all five zones as containers; what fills bronze, silver and gold comes in Courses 8–10
 BUILT.land = [...BUILT.secure, 'landing', 'bronze', 'silver', 'gold', 'reference', 'g1']
-BUILT.network = [...BUILT.land, 'vnet', 'snet-shir', 'snet-pe', 'snet-dbx', 'shir', 'pe-storage', 'adf']
+BUILT.network = [...BUILT.land, 'vnet', 'snet-pe', 'snet-dbx', 'shir', 'pe-storage', 'adf']
 BUILT.extract = [...BUILT.network]
 BUILT.bronze = [...BUILT.extract, 'dbw', 'dbx-compute', 'connector', 'bronze', 'g2']
 BUILT.silver = [...BUILT.bronze, 'silver', 'g3']
@@ -65,7 +67,7 @@ export function pipelineMap(built: string[]): SceneNode {
   const later = (id: string) => !built.includes(id) || undefined
   const it = (part: Part): Item => ({ type: 'item', id: part.id, title: part.title, sub: part.sub, icon: part.icon, muted: later(part.id) })
   const onprem: Group = {
-    type: 'group', id: 'onprem', icon: 'building', title: 'Syndica Bank', sub: 'on-premises', dashed: true, children: [it(TRADEBOOK), it(DESK)],
+    type: 'group', id: 'onprem', icon: 'building', title: 'Syndica Bank', sub: 'on-premises', dashed: true, children: [it(TRADEBOOK), it(SHIR), it(DESK)],
   }
   const vnet: Group = {
     type: 'group', id: 'vnet', icon: 'network', title: 'vnet-tradefin-dev', sub: '10.30.0.0/16', tone: 'infra', muted: later('vnet'),

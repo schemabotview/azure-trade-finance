@@ -6,7 +6,7 @@ import { BUILT, mapFrame } from '../map'
 // network: it can reach public endpoints, not a database behind the bank's firewall. Three ways a cloud
 // service reaches a private database; the course takes the self-hosted integration runtime (§6.6).
 export const networkOnPrem: SceneModel = mapFrame({
-  built: [...BUILT.land, 'vnet', 'snet-pe', 'snet-shir', 'snet-dbx', 'pe-storage'],
+  built: [...BUILT.land, 'vnet', 'snet-pe', 'snet-dbx', 'pe-storage'],
   side: [
     level('doc-cited', 'learn.microsoft.com/azure/data-factory/concepts-integration-runtime'),
     {

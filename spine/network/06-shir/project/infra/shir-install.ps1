@@ -7,4 +7,4 @@ Invoke-WebRequest $url -OutFile $msi -UseBasicParsing
 Start-Process msiexec.exe -Wait -ArgumentList "/i `"$msi`" /quiet /norestart"
 $dir = "C:\Program Files\Microsoft Integration Runtime"
 $cmd = Get-ChildItem "$dir\*\Shared\dmgcmd.exe" | Select-Object -First 1
-& $cmd.FullName -RegisterNewNode "${key}" "vm-tradefin-shir"
+& $cmd.FullName -RegisterNewNode "${key}" "vm-bank-shir"
