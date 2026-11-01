@@ -15,6 +15,11 @@ provider "azurerm" {
       purge_soft_delete_on_destroy    = true # a teardown leaves no name behind
       recover_soft_deleted_key_vaults = true
     }
+    storage {
+      # manage storage accounts through ARM alone: no data-plane calls (the
+      # lake has no keys, and Course 6 closes its public endpoint)
+      data_plane_available = false
+    }
   }
   storage_use_azuread = true # the lake has no account keys
 }
