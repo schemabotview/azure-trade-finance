@@ -1,0 +1,1 @@
+{"from": "secure/02-identities", "changes": ["infra/main.tf"], "azure": true, "setup": ["cd infra && terraform init -input=false >/dev/null"]}

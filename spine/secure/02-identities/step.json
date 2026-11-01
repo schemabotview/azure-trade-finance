@@ -1,0 +1,1 @@
+{"from": "start/08-budget", "changes": ["infra/main.tf"], "azure": true, "setup": ["cd infra && terraform init -input=false >/dev/null"]}

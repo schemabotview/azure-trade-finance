@@ -1,0 +1,1 @@
+{"from": "secure/06-no-secret", "changes": ["infra/policy.tf"], "azure": true, "setup": ["cd infra && terraform init -input=false >/dev/null"]}

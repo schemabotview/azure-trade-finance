@@ -1,0 +1,62 @@
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+Acquiring state lock. This may take a few moments...
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+azurerm_user_assigned_identity.pipeline: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.ManagedIdentity/userAssignedIdentities/id-tradefin-pipeline]
+azurerm_monitor_action_group.risk: Refreshing state... [id=/subscriptions/000000
+00-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsof
+t.Insights/actionGroups/ag-trade-risk]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+azurerm_consumption_budget_resource_group.main: Refreshing state... [id=/subscri
+ptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provi
+ders/Microsoft.Consumption/budgets/budget-tradefin-dev]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_role_assignment.pipeline_reader will be created
+  + resource "azurerm_role_assignment" "pipeline_reader" {
+      + condition_version                = (known after apply)
+      + id                               = (known after apply)
+      + name                             = (known after apply)
+      + principal_id                     = "00000000-0000-0000-0000-000000001000
+"
+      + principal_type                   = (known after apply)
+      + role_definition_id               = (known after apply)
+      + role_definition_name             = "Reader"
+      + scope                            = "/subscriptions/00000000-0000-0000-00
+00-0000000000d1/resourceGroups/rg-tradefin-dev"
+      + skip_service_principal_aad_check = (known after apply)
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+azurerm_role_assignment.pipeline_reader: Creating...
+azurerm_role_assignment.pipeline_reader: Still creating... [00m10s elapsed]
+azurerm_role_assignment.pipeline_reader: Still creating... [00m20s elapsed]
+azurerm_role_assignment.pipeline_reader: Still creating... [00m30s elapsed]
+azurerm_role_assignment.pipeline_reader: Creation complete after 32s [id=/subscr
+iptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/prov
+iders/Microsoft.Authorization/roleAssignments/00000000-0000-0000-0000-0000000010
+01]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+$ SUB=/subscriptions/$(az account show --query id -o tsv)
+$ RG=$SUB/resourceGroups/rg-tradefin-dev Q="[].roleDefinitionName"
+$ az role assignment list --scope $SUB --query "$Q" -o tsv
+Owner
+Owner
+$ az role assignment list --scope $RG --query "$Q" -o tsv
+Reader
+$ az role assignment list --scope $RG --include-inherited --query "$Q" -o tsv
+Owner
+Owner
+Reader

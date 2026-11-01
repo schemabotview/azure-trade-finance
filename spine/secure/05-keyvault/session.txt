@@ -1,0 +1,8 @@
+$ export AZURE_STORAGE_ACCOUNT=sttradefindev AZURE_STORAGE_AUTH_MODE=login
+$ az storage blob list -c landing --query "[].name"
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+$ V=kv-tradefin-dev N=tradebook-password PW=$(openssl rand -base64 24)
+$ az keyvault secret set --vault-name $V -n $N --value "$PW" -o none
+$ unset PW
+$ az keyvault secret list --vault-name $V --query "[].name" -o tsv

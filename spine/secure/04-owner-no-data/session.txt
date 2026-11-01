@@ -1,0 +1,112 @@
+$ export AZURE_STORAGE_ACCOUNT=sttradefindev AZURE_STORAGE_AUTH_MODE=login
+$ az storage container list --query "[].name"
+[]
+$ az storage blob list -c landing --query "[].name"
+ERROR:
+You do not have the required permissions needed to perform this operation.
+Depending on your operation, you may need to be assigned one of the following ro
+les:
+    "Storage Blob Data Owner"
+    "Storage Blob Data Contributor"
+    "Storage Blob Data Reader"
+    "Storage Queue Data Contributor"
+    "Storage Queue Data Reader"
+    "Storage Table Data Contributor"
+    "Storage Table Data Reader"
+
+If you want to use the old authentication method and allow querying for the righ
+t account key, please use the "--auth-mode" parameter and "key" value.
+
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+Acquiring state lock. This may take a few moments...
+data.azurerm_client_config.me: Reading...
+data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW50Q29uZmlncy9jbG
+llbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN0SWQ9MDAwMDAwMD
+AtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDAwMDAwLTAwMDAtMD
+AwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMD
+AwMDAwYTE=]
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+module.storage.data.azurerm_client_config.me: Reading...
+module.storage.data.azurerm_client_config.me: Read complete after 0s [id=Y2xpZW5
+0Q29uZmlncy9jbGllbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDEwMDA7b2JqZWN
+0SWQ9MDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAxMDAxO3N1YnNjcmlwdGlvbklkPTAwMDA
+wMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDBkMTt0ZW5hbnRJZD0wMDAwMDAwMC0wMDAwLTAwMDA
+tMDAwMC0wMDAwMDAwMDAwYTE=]
+azurerm_user_assigned_identity.pipeline: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.ManagedIdentity/userAssignedIdentities/id-tradefin-pipeline]
+azurerm_monitor_action_group.risk: Refreshing state... [id=/subscriptions/000000
+00-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsof
+t.Insights/actionGroups/ag-trade-risk]
+azurerm_role_assignment.pipeline_reader: Refreshing state... [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Mi
+crosoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000001002]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+azurerm_consumption_budget_resource_group.main: Refreshing state... [id=/subscri
+ptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provi
+ders/Microsoft.Consumption/budgets/budget-tradefin-dev]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_role_assignment.secrets_officer will be created
+  + resource "azurerm_role_assignment" "secrets_officer" {
+      + condition_version                = (known after apply)
+      + id                               = (known after apply)
+      + name                             = (known after apply)
+      + principal_id                     = "00000000-0000-0000-0000-000000001001
+"
+      + principal_type                   = (known after apply)
+      + role_definition_id               = (known after apply)
+      + role_definition_name             = "Key Vault Secrets Officer"
+      + scope                            = "/subscriptions/00000000-0000-0000-00
+00-0000000000d1/resourceGroups/rg-tradefin-dev"
+      + skip_service_principal_aad_check = (known after apply)
+    }
+
+  # module.storage.azurerm_role_assignment.data will be created
+  + resource "azurerm_role_assignment" "data" {
+      + condition_version                = (known after apply)
+      + id                               = (known after apply)
+      + name                             = (known after apply)
+      + principal_id                     = "00000000-0000-0000-0000-000000001001
+"
+      + principal_type                   = (known after apply)
+      + role_definition_id               = (known after apply)
+      + role_definition_name             = "Storage Blob Data Contributor"
+      + scope                            = "/subscriptions/00000000-0000-0000-00
+00-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Storage/stora
+geAccounts/sttradefindev"
+      + skip_service_principal_aad_check = (known after apply)
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+azurerm_role_assignment.secrets_officer: Creating...
+azurerm_role_assignment.secrets_officer: Still creating... [00m10s elapsed]
+azurerm_role_assignment.secrets_officer: Still creating... [00m20s elapsed]
+azurerm_role_assignment.secrets_officer: Still creating... [00m30s elapsed]
+azurerm_role_assignment.secrets_officer: Creation complete after 31s [id=/subscr
+iptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/prov
+iders/Microsoft.Authorization/roleAssignments/00000000-0000-0000-0000-0000000010
+03]
+module.storage.azurerm_role_assignment.data: Creating...
+module.storage.azurerm_role_assignment.data: Still creating... [00m10s elapsed]
+module.storage.azurerm_role_assignment.data: Still creating... [00m20s elapsed]
+module.storage.azurerm_role_assignment.data: Still creating... [00m30s elapsed]
+module.storage.azurerm_role_assignment.data: Still creating... [00m40s elapsed]
+module.storage.azurerm_role_assignment.data: Still creating... [00m50s elapsed]
+module.storage.azurerm_role_assignment.data: Still creating... [01m00s elapsed]
+module.storage.azurerm_role_assignment.data: Creation complete after 1m6s [id=/s
+ubscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev
+/providers/Microsoft.Storage/storageAccounts/sttradefindev/providers/Microsoft.A
+uthorization/roleAssignments/00000000-0000-0000-0000-000000001004]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.

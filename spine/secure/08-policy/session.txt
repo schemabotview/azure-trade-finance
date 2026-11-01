@@ -1,0 +1,4 @@
+$ G="-g rg-tradefin-dev --sku Standard_LRS -o none"
+$ az storage account create -n sttradefinpolicy $G -l westeurope
+$ az storage account create -n sttradefinpolicy $G -l uksouth
+$ az storage account list -g rg-tradefin-dev --query "[].name" -o tsv

@@ -1,0 +1,5 @@
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+$ Q="[?contains(scope, 'tradefin')].[principalType, roleDefinitionName]"
+$ az role assignment list --all --query "$Q" -o tsv
+$ az policy assignment list -g rg-tradefin-dev --query "[].displayName" -o tsv

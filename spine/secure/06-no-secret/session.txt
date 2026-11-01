@@ -1,0 +1,7 @@
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+$ KV=$(az keyvault show -n kv-tradefin-dev --query id -o tsv)
+$ Q="[].[principalType, roleDefinitionName]"
+$ az role assignment list --scope $KV --include-inherited --query "$Q" -o tsv
+$ cd ..
+$ grep -rniE "password *=" infra tradebook env.sh || echo "no password here"
