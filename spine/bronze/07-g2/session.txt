@@ -1,2 +1,41 @@
 $ python pipeline/bronze.py
+Traceback (most recent call last):
+  File "/home/ana/lc-exposure/pipeline/bronze.py", line 15, in <module>
+    from gates import g2  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^
+  File "/home/ana/lc-exposure/pipeline/gates.py", line 10, in <module>
+    "no lc_id": F.col("lc_id").isNull() | (F.trim("lc_id") == ""),
+                ~~~~~^^^^^^^^^
+  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/uti
+ls.py", line 283, in wrapped
+    return f(*args, **kwargs)
+  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/errors/
+utils.py", line 344, in wrapper
+    return func(*args, **kwargs)
+  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/fun
+ctions/builtin.py", line 331, in col
+    return _invoke_function("col", col)
+  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/fun
+ctions/builtin.py", line 111, in _invoke_function
+    assert SparkContext._active_spark_context is not None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
 $ python pipeline/quarantine.py
+WARNING: Using incubator modules: jdk.incubator.vector
+Traceback (most recent call last):
+  File "/home/ana/lc-exposure/pipeline/quarantine.py", line 4, in <module>
+    table = spark_session().read.format("delta").load(
+        "lake/bronze/lc_deals_quarantine")
+  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/sql/rea
+dwriter.py", line 312, in load
+    return self._df(self._jreader.load(path))
+                    ~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/py4j/java_gatew
+ay.py", line 1362, in __call__
+    return_value = get_return_value(
+        answer, self.gateway_client, self.target_id, self.name)
+  File "/home/ana/lc-exposure/.venv/lib/python3.14/site-packages/pyspark/errors/
+exceptions/captured.py", line 257, in deco
+    raise converted from None
+pyspark.errors.exceptions.captured.AnalysisException: [PATH_NOT_FOUND] Path does
+ not exist: lake/bronze/lc_deals_quarantine. SQLSTATE: 42K03

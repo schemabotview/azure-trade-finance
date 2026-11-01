@@ -1,7 +1,5 @@
 $ B=lc_deals/batch_id=41
 $ az storage blob upload -c landing -n $B/_SUCCESS -f /dev/null -o none
-WARNING: Argument '--data' is in preview and under development. Reference and su
-pport levels: https://aka.ms/CLI_refstatus
 $ python pipeline/bronze.py
 WARNING: Using incubator modules: jdk.incubator.vector
 batch 41: 400 rows appended
