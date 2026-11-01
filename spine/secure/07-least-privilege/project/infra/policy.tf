@@ -10,6 +10,7 @@ data "azurerm_policy_definition" "tag" {
 
 resource "azurerm_resource_group_policy_assignment" "locations" {
   name                 = "allowed-locations"
+  display_name         = "lc-exposure: UK regions only"
   resource_group_id    = azurerm_resource_group.main.id
   policy_definition_id = data.azurerm_policy_definition.locations.id
   parameters = jsonencode({
@@ -19,6 +20,7 @@ resource "azurerm_resource_group_policy_assignment" "locations" {
 
 resource "azurerm_resource_group_policy_assignment" "owner_tag" {
   name                 = "require-owner-tag"
+  display_name         = "lc-exposure: every resource has an owner tag"
   resource_group_id    = azurerm_resource_group.main.id
   policy_definition_id = data.azurerm_policy_definition.tag.id
   parameters           = jsonencode({ tagName = { value = "owner" } })
