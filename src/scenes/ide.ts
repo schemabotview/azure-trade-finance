@@ -38,7 +38,7 @@ export const trim = (text: string) => text.replace(/\n+$/, '')
  * error. The replay writes plain output (already wrapped at 80 columns), so errors are marked here:
  * the Azure CLI's `ERROR: …` (with the rows it wrapped onto), Terraform's boxed `│ Error:`, psql's `ERROR:` and `DETAIL:`, a
  * Python traceback (its header through the exception line), and the pipeline's own refusals — a gate
- * that FAILs, a `refused:` write, a missing watermark: a guard doing its job is still the red line.
+ * that FAILs (a `G<n> FAIL:` exit included), a `refused:` write, a missing watermark: a guard doing its job is still the red line.
  */
 export function terminal(session: string): string {
   const out: string[] = []
@@ -51,7 +51,7 @@ export function terminal(session: string): string {
     else if (line === 'Traceback (most recent call last):') mode = 'python'
     // a CLI error is one line, wrapped: it goes on while the row before it filled the pane
     else if (mode === 'az' && previous.length !== EDITOR_COLS) mode = 'none'
-    const refusal = /^(psql:.*ERROR: |DETAIL: |refused: |no watermark|G1 FAIL)/.test(line) || / FAIL$/.test(line)
+    const refusal = /^(psql:.*ERROR: |DETAIL: |refused: |no watermark|G[1-4] FAIL)/.test(line) || / FAIL$/.test(line)
     out.push(mode === 'none' && !refusal ? line : `! ${line}`)
     if (mode === 'python' && /^[A-Za-z_][\w.]*(Error|Exception)\b/.test(line)) mode = 'none'
     if (mode === 'terraform' && line.startsWith('╵')) mode = 'none'

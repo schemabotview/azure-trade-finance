@@ -5,6 +5,7 @@ import { network } from './network'
 import { bronzeCourse } from './bronze'
 import { silver } from './silver'
 import { gold } from './gold'
+import { orchestrate } from './orchestrate'
 import type { Course, Section } from './types'
 
 // Course registry, in syllabus order. One course per chapter of COURSE-PLAN.md; a course is
@@ -17,6 +18,7 @@ export const COURSES: Record<string, Course> = {
   [bronzeCourse.id]: bronzeCourse,
   [silver.id]: silver,
   [gold.id]: gold,
+  [orchestrate.id]: orchestrate,
 }
 
 export type { Course, Section }

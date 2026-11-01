@@ -1,5 +1,5 @@
 {
-  "count": 49,
+  "count": 51,
   "entries": [
     {
       "course": "start",
@@ -294,6 +294,18 @@
       "section": "the-answer",
       "file": "gold/the-answer.wav",
       "narration": "The planted filter is gone from gold dot p y, and the run is repeated. The terminal shows G four on the fixed Gold: the fact and the aggregate agree in both currencies, and Gold is published. Then the last file of the course, answer dot p y, reads one row of the published aggregate and prints it the way the desk asked for it, for Woodgrove, in dollars. The side pane draws it as the summary card. Gross exposure: nine point seven million dollars. Limit: ten million dollars. Utilisation: ninety seven percent. Headroom: three hundred thousand dollars. Breach: no. Behind each of those numbers is the whole pipeline. The rows were extracted from TradeBook and checked at landing by G one. Bronze kept every delivery, and G two set aside what could not be trusted. Silver kept one true row per letter of credit, ignored the late older version, and G three checked it against the reference data. Gold applied the exposure rule in decimal money, per currency, and G four proved its two tables agree. Woodgrove is not in breach, but it is close: one more letter of credit above the headroom would put it over. So far, all of this has been run by hand, one command at a time. Next course, it runs every night, by itself, and we see what happens on the night it fails."
+    },
+    {
+      "course": "orchestrate",
+      "section": "gate-policy",
+      "file": "orchestrate/gate-policy.wav",
+      "narration": "Every gate so far has been run by hand, and Ana has read its result and decided what to do. A nightly run has nobody to decide, so the decision has to be written down. That is the gate policy, and it has three outcomes, drawn at the top of the side pane. A pass, and the run goes on. A warning, and the run goes on, and says so: two quarantined rows are worth someone's attention in the morning, but they are not a reason to withhold the report. A fail stops every step after it. The new file, run dot p y, is one whole night: Bronze, then G two, then Silver, then G three, then Gold, then G four. The highlighted lines are the policy in code: when G three fails, the run exits, and Gold is never written. The terminal shows tonight's run, and the side pane follows it down. No new batch has arrived, so Bronze takes nothing. G two warns, two rows in quarantine. Silver merges. G three fails, on the same unmapped counterparty, C P fifteen oh one. And Gold does not run; it keeps the last good answer. That last part matters. A failed night does not leave the desk with no report, or with a wrong one. It leaves yesterday's answer in place, clearly yesterday's, until the mapping is fixed. Next, writing every one of these results down, where it can be queried."
+    },
+    {
+      "course": "orchestrate",
+      "section": "audit-table",
+      "file": "orchestrate/audit-table.wav",
+      "narration": "Printing a gate's result to a terminal is fine while someone is watching. At two in the morning nobody is, and a week later someone will ask: when did this counterparty first fail to map, and did any night pass with it missing? So every gate writes its results to a table. Run dot p y now takes a run I D, and the highlighted lines turn each check into a row: the run, the gate, the rule, its status, and the detail. The rows are appended to the audit table, gate results, and never overwritten, so the table is the history of every night. On Azure it will be risk dot audit dot gate results, in the catalog; here it is a local Delta table. The side pane draws the flow, from the gates to one row per check, into the table, and to the question it answers. The terminal shows tonight's run again, under the run I D night forty four, failing at G three exactly as before. Then audit dot p y reads the table back, and the side pane shows its rows. The warning from G two, two rows quarantined. The failed G three check, every open L C's counterparty mapped. And the two G three checks that passed, because a pass is evidence too: it shows the check ran. With this table, what failed and when is a query, not a search through logs, and Course twelve will put an alert on it. The rest of this course runs on Azure: the job, the email, and the parent pipeline that runs it all."
     }
   ]
 }

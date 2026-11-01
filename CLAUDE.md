@@ -25,7 +25,7 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 1. Owner review of `COURSE-PLAN.md` and of `#/land-storage-and-hns` … `#/land-who-may-read`.
 2. The pilot's last piece: the ◆ RBAC full scene from Course 4 (needs Course 4's steps, or a lab).
 3. Courses 1–4, 6–12 one at a time, each reviewed on its rendered routes, then narrated.
-4. Audio (`npm run gen:audio` is current for the six sections), record, film, cover.
+4. Audio (`npm run gen:audio` is current for every authored section), record, film, cover.
 
 **Built (infra):** the app (vite, shell `ConceptApp`, `--brand` #0078d4), checks (`check-content`,
 `check-render` with the map-frame fit), `registry`, `shots` (also takes a bare scene id, e.g.
@@ -44,12 +44,12 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 | 3 | `start` | 8 | authored, narrated (text), 4K-checked; §3–5, §7–8 recorded on Azure |
 | 4 | `secure` | 8 | §2–§8 authored, narrated (text), 4K-checked, recorded on Azure; §1 needs Graph permissions |
 | 5 | `land` | 9 | authored, narrated (text), 4K-checked; §1, §2, §9 re-recorded after Courses 3–4 |
-| 6 | `network` | 7 | planned |
+| 6 | `network` | 7 | authored, narrated (text), 4K-checked, recorded on Azure (§6.6: ADF + a self-hosted IR on a Windows VM in a simulated bank network, UK West); torn down |
 | 7 | `extract` | 8 | planned |
-| 8 | `bronze` | 8 | planned |
-| 9 | `silver` | 8 | planned |
-| 10 | `gold` | 7 | planned |
-| 11 | `orchestrate` | 8 | planned |
+| 8 | `bronze` | 8 | §6–8 authored (local); §1–5 need Databricks |
+| 9 | `silver` | 8 | authored, narrated (text), 4K-checked (all local) |
+| 10 | `gold` | 7 | authored, narrated (text), 4K-checked (all local) |
+| 11 | `orchestrate` | 8 | §2–3 authored (local); §1, §4–8 need Databricks |
 | 12 | `operate` | 7 | planned |
 
 ## Spine
@@ -184,3 +184,16 @@ failure or alternative → bridge. One step per section; a failure is its own st
 **Working agreement.** Author a whole course (spine, scenes, narration), render it, LOOK, then hand
 over the routes. No silent scaffolding. Report what was built, verified and left out, and each
 frame's verification level. Commit and push to `main` per course.
+
+## Local pipeline facts (Courses 8–11, from the spine)
+
+- Batch 41 predates seals: §8.6 seals it by hand (an empty `_SUCCESS`). Batch 43 is the desk's manual
+  correction (tradebook_gen `deliveries`): 3 late amendments + 2 broken rows (empty lc_id; amount `2,0m`).
+  Batch 44 is batch 41's file re-sent: Bronze appends 400, Silver ignores 400.
+- Silver merges Bronze batch by batch (`--through N`), updating only when `s.source_version >
+  t.source_version`; Delta's operation metrics are the per-batch counts a scene quotes.
+- G3 fails on CP-1501 / LC-2299 / USD 1,200,000.00 (unmapped); an inner join loses exactly that.
+  Gold is built anyway in Course 10 (the fact is a LEFT join; the aggregate keeps mapped rows only);
+  Course 11's `run.py` is where a G3 FAIL stops Gold.
+- §10.6 plants `.where(status in ISSUED, ACTIVE)` (forgets AMENDED) in gold.py; §10.7 removes it.
+- A gate's `G<n> FAIL:` exit is a refusal line in `terminal()` (drawn red).
