@@ -1,0 +1,55 @@
+$ bash infra/bootstrap.sh
+state: sttradefintfstate/tfstate, ready
+$ cd infra
+$ terraform init -migrate-state -force-copy -input=false
+Initializing the backend...
+Acquiring state lock. This may take a few moments...
+Releasing state lock. This may take a few moments...
+
+Successfully configured the backend "azurerm"! Terraform will automatically
+use this backend unless the backend configuration changes.
+
+Initializing provider plugins...
+- Reusing version 5.12.0 of hashicorp/azurerm from the dependency lock file
+- Using previously-installed hashicorp/azurerm v5.12.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+$ export AZURE_STORAGE_AUTH_MODE=login AZURE_STORAGE_ACCOUNT=sttradefintfstate
+$ az storage blob list -c tfstate --query "[].name" -o tsv
+dev.tfstate
+$ az storage blob lease acquire -c tfstate -b dev.tfstate -o none
+$ terraform plan -lock-timeout=0s
+Acquiring state lock. This may take a few moments...
+╷
+│ Error: Error acquiring the state lock
+│
+│ Error message: state blob is already locked
+│ blob metadata "terraformlockid" was empty
+│
+│ Terraform acquires a state lock to protect the state from being written
+│ by multiple users at the same time. Please resolve the issue above and try
+│ again. For most commands, you can disable locking with the "-lock=false"
+│ flag, but this is not recommended.
+╵
+$ az storage blob lease break -c tfstate -b dev.tfstate -o none
+$ terraform plan
+Acquiring state lock. This may take a few moments...
+azurerm_resource_group.dev: Refreshing state... [id=/subscriptions/00000000-0000
+-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+azurerm_storage_account.lake: Refreshing state... [id=/subscriptions/00000000-00
+00-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft.Sto
+rage/storageAccounts/sttradefindev]
+
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+Releasing state lock. This may take a few moments...

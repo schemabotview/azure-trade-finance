@@ -41,7 +41,7 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 |---|---|---|---|
 | 1 | `intro` | 3 | planned |
 | 2 | `how-azure-runs` | 7 | planned |
-| 3 | `start` | 8 | planned |
+| 3 | `start` | 8 | authored, narrated (text), 4K-checked; §3–5, §7–8 recorded on Azure |
 | 4 | `secure` | 8 | planned |
 | 5 | `land` | 9 | pilot: authored, narrated (text), 4K-checked; §1, §2, §9 recorded on Azure |
 | 6 | `network` | 7 | planned |

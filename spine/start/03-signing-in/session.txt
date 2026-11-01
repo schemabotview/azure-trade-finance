@@ -1,0 +1,10 @@
+$ az account show --query "{subscription:name, signedInAs:user.type}"
+{
+  "signedInAs": "servicePrincipal",
+  "subscription": "sub-tradefin-dev"
+}
+$ az account list-locations --query "[?name=='uksouth'].displayName" -o tsv
+UK South
+$ az group list --query "[?contains(name, 'tradefin')].name" -o tsv
+$ az provider show -n Microsoft.Storage --query registrationState -o tsv
+Registered

@@ -104,7 +104,8 @@ PYTHON = '/usr/local/bin/python3.14'
 PG_MAJOR = 18
 AZURITE_PORT = 10000
 # Run outputs, the venv, generated data: never part of a step's snapshot, never removed by a lay.
-IGNORED = {'__pycache__', '.venv', 'data', 'reference', 'out', '.terraform'}
+# Terraform's local state and saved plans hold real ids: never in a snapshot, never in a state archive.
+IGNORED = {'__pycache__', '.venv', 'data', 'reference', 'out', '.terraform', 'terraform.tfstate', 'terraform.tfstate.backup', 'tfplan'}
 MARK = '__SPINE_MARK__'
 UUID = re.compile(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
 ANSI = re.compile(r'\x1b\[[0-9;?]*[@-~]|\x1b[=>]|\r')
@@ -478,10 +479,12 @@ def fresh(lake: Lake) -> None:
 
 def _tar(src: Path, dest: Path, skip: set[str] = frozenset()) -> None:
     import tarfile
+    # Anything named in IGNORED that can hold a real id (Terraform's state) stays out at any depth
+    secret = {'.terraform', 'terraform.tfstate', 'terraform.tfstate.backup', 'tfplan'}
     with tarfile.open(dest, 'w:gz') as tar:
         for p in sorted(src.iterdir()):
             if p.name not in skip:
-                tar.add(p, arcname=p.name)
+                tar.add(p, arcname=p.name, filter=lambda info: None if secret & set(Path(info.name).parts) else info)
 
 
 def _untar(src: Path, dest: Path) -> None:
@@ -682,6 +685,10 @@ def record(step: Path) -> int:
             'client': os.environ['AZURE_CLIENT_ID'], 'tenant_domain': shown, 'object': oid}
     suffix = os.environ.get('TRADEFIN_SUFFIX', '')  # storage names are global: the owner's carry a suffix
     names = {f'sttradefindev{suffix}': 'sttradefindev', f'sttradefinprod{suffix}': 'sttradefinprod'} if suffix else {}
+    # The subscription's display name is the owner's: shown as the plan's (Facts: "subscriptions")
+    sub_name = as_ana('az account show --query name -o tsv', env).stdout.strip()
+    if sub_name and sub_name != 'sub-tradefin-dev':
+        names[sub_name] = 'sub-tradefin-dev'
     norm = Normaliser(real, names)
     transcript, captured, _ = session_of(step, env, normalise=norm.output)
     leaks = norm.refuse(transcript + '\n'.join(captured.values()))

@@ -1,0 +1,1 @@
+{"from": "start/04-first-terraform", "changes": ["infra/backend.tf", "infra/bootstrap.sh"], "azure": true}

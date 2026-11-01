@@ -62,7 +62,7 @@ finished answer: Woodgrove | USD, 97% of its limit.
 | Azurite | **3.37.0** (npm) | blob landing, emulated (Blob API only: no hierarchical namespace) |
 | Terraform | **1.17.0** (as `aws-ecommerce`) | every resource, recorded on Azure; `.terraform.lock.hcl` committed |
 | `hashicorp/azurerm`, `databricks/databricks` providers | **5.12.0**, **1.140.0** | Azure resources; Unity Catalog objects and the job |
-| tflint, `terraform validate` | tflint pinned at its first use (3.6) | static checks, offline |
+| `terraform fmt`, `terraform validate` | (Terraform's own) | static checks, offline; tflint dropped: its GitHub download is refused from the recording environment |
 | Azure CLI | **2.91.0** (pip, its own venv) | reads, the data plane, the state bootstrap; recorded on Azure; also `az storage` against Azurite |
 | azcopy | pinned at its first use | bulk copy |
 | Databricks CLI | **1.22.1** (as `databricks-retail-bank-lakehouse`) | Azure Databricks, recorded on Azure |
@@ -252,12 +252,12 @@ and writes to the emulated lake, so the frame carries the emulated label.
 
 | # | Section | Step | Side pane | Level |
 | --- | --- | --- | --- | --- |
-| 1 | TradeBook | `psql`: `lc_deals`, `lc_amendments` | ER: deal → amendments, `source_version`, `updated_at` | L |
-| 2 | An LC's life | the history of LC-2041 | state machine ISSUED → AMENDED → CLOSED; what counts as open | L |
-| 3 | Signing in, and a resource group | `az login`, `az group create` with tags | subscription → `rg-tradefin-dev`; naming and tags | A |
+| 1 | TradeBook | `psql`: schema, load, status counts | ER: counterparty → deals → amendments, `source_version`, `updated_at` | L |
+| 2 | An LC's life | the history of LC-2052 (v1 ISSUED → v4 CLOSED; LC-2041's v2 arrives on the desk's day, after the seed); open exposure per currency | state machine; what counts as open | L |
+| 3 | Signing in | `az account show`; nothing named `*tradefin*` yet (the CLI creates nothing) | the empty map; naming and tags | A |
 | 4 | A first Terraform file | `main.tf`: the storage account; `init`, `plan`, `apply` | Terraform → azurerm → ARM → the storage account | A |
 | 5 | State, and where it lives | `backend "azurerm"`: state in `sttradefintfstate`, bootstrapped by the CLI; a second `apply` waits on the lease | code ↔ state ↔ Azure; the blob lease as the lock | A |
-| 6 | Variables and modules | `variables.tf` + `modules/`; `terraform validate`, tflint | the module tree, inputs → outputs | C |
+| 6 | Variables and modules | `variables.tf` + `modules/` + `moved` blocks; `terraform fmt -check`, `validate` | the module tree, inputs → outputs | C |
 | 7 | What `plan` does to what is not in code | a tag changed with `az` (drift); a resource removed from code (destroy) | three cases: in code, in state only, in Azure only | A |
 | 8 | Budgets | `azurerm_consumption_budget_resource_group` at 80% forecast | budget → action group → email | A |
 
@@ -394,9 +394,11 @@ and writes to the emulated lake, so the frame carries the emulated label.
   so Course 5's local steps have a source. Courses 3–4's Azure steps slot in before Course 5's when
   recorded; the local steps replay, and Course 5's Azure steps are re-recorded then (their keys hash
   every step before them).
-- The Free Trial subscription refuses the Cost Management and Consumption APIs ("doesn't have valid
+- The Free Trial subscription refuses the Cost Management query API ("doesn't have valid
   WebDirect/AIRS offer type", 2026-11-01): 12.4 needs a pay-as-you-go subscription or becomes a
-  labelled model (M).
+  labelled model (M). Budgets work (3.8 recorded one).
+- Course 4 needs Microsoft Graph application permissions for the recording service principal
+  (`Group.ReadWrite.All`, `User.Read.All`, admin-consented): 4.1 and the group in 4.7.
 - Whether the SHIR VM is kept between Courses 6 and 7 or rebuilt (cost vs a shorter chain).
 - Section 12.6 needs a GitHub repository with an OIDC federated credential: this repo, or a
   separate demo repo.

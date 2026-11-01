@@ -1,0 +1,118 @@
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+Acquiring state lock. This may take a few moments...
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+
+Terraform will perform the following actions:
+
+  # azurerm_resource_group.dev has moved to azurerm_resource_group.main
+    resource "azurerm_resource_group" "main" {
+        id         = "/subscriptions/00000000-0000-0000-0000-0000000000d1/resour
+ceGroups/rg-tradefin-dev"
+        name       = "rg-tradefin-dev"
+        tags       = {
+            "app"   = "lc-exposure"
+            "env"   = "dev"
+            "owner" = "trade-risk"
+        }
+        # (2 unchanged attributes hidden)
+    }
+
+  # azurerm_storage_account.lake has moved to module.storage.azurerm_storage_acc
+ount.lake
+    resource "azurerm_storage_account" "lake" {
+        id                                             = "/subscriptions/0000000
+0-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/Microsoft
+.Storage/storageAccounts/sttradefindev"
+        name                                           = "sttradefindev"
+        tags                                           = {
+            "app"   = "lc-exposure"
+            "env"   = "dev"
+            "owner" = "trade-risk"
+        }
+        # (100 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+Plan: 0 to add, 0 to change, 0 to destroy.
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+$ ID=$(az group show -n rg-tradefin-dev --query id -o tsv)
+$ az tag update --resource-id $ID --operation merge --tags owner=ops -o none
+$ terraform plan -var-file=envs/dev.tfvars
+Acquiring state lock. This may take a few moments...
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # azurerm_resource_group.main will be updated in-place
+  ~ resource "azurerm_resource_group" "main" {
+        id         = "/subscriptions/00000000-0000-0000-0000-0000000000d1/resour
+ceGroups/rg-tradefin-dev"
+        name       = "rg-tradefin-dev"
+      ~ tags       = {
+            "app"   = "lc-exposure"
+            "env"   = "dev"
+          ~ "owner" = "ops" -> "trade-risk"
+        }
+        # (2 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
+Releasing state lock. This may take a few moments...
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+Acquiring state lock. This may take a few moments...
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # azurerm_resource_group.main will be updated in-place
+  ~ resource "azurerm_resource_group" "main" {
+        id         = "/subscriptions/00000000-0000-0000-0000-0000000000d1/resour
+ceGroups/rg-tradefin-dev"
+        name       = "rg-tradefin-dev"
+      ~ tags       = {
+            "app"   = "lc-exposure"
+            "env"   = "dev"
+          ~ "owner" = "ops" -> "trade-risk"
+        }
+        # (2 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+azurerm_resource_group.main: Modifying... [id=/subscriptions/00000000-0000-0000-
+0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+azurerm_resource_group.main: Modifications complete after 2s [id=/subscriptions/
+00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+$ az group show -n rg-tradefin-dev --query tags.owner -o tsv
+trade-risk

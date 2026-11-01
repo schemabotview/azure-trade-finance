@@ -1,0 +1,1 @@
+{"from": "start/06-modules", "changes": [], "azure": true, "setup": ["cd infra && terraform init -input=false >/dev/null"]}

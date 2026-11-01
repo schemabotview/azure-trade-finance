@@ -1,0 +1,12 @@
+$ psql -P footer=off -v lc=LC-2052 -f tradebook/history.sql
+ v | status  |  amount   |  changed
+---+---------+-----------+------------
+ 1 | ISSUED  | 647000.00 | 2026-06-01
+ 2 | ACTIVE  | 647000.00 | 2026-08-24
+ 3 | AMENDED | 476000.00 | 2026-10-23
+ 4 | CLOSED  | 476000.00 | 2026-10-26
+$ psql -P footer=off -f tradebook/open.sql
+ currency | open_lcs |  exposure
+----------+----------+-------------
+ EUR      |       40 | 15480000.00
+ USD      |       90 | 49989000.00

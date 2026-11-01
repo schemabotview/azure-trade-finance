@@ -1,6 +1,54 @@
 {
-  "count": 9,
+  "count": 17,
   "entries": [
+    {
+      "course": "start",
+      "section": "tradebook",
+      "file": "start/tradebook.wav",
+      "narration": "Every number this pipeline will publish starts in one place: TradeBook, the trade finance desk's own database. On Ana's laptop it is a local PostgreSQL copy, filled by the course's data generator, and everything in this frame runs locally. The schema in the editor has three tables, and the side pane draws them. Counterparty holds the desk's clients, each a legal entity; notice there is no group here, because TradeBook does not know which companies belong together. L C deals holds one row per letter of credit, and only its current version: when an L C is amended, its row is overwritten. L C amendments keeps every version an L C has ever had. Two columns in L C deals carry the whole pipeline, and they are highlighted. Source version counts an L C's revisions, one, two, three. Updated at records when the row last changed, and it is indexed, because every night we will ask for the rows that changed since the night before. The terminal creates the tables, loads the seed, and counts the L Cs by status: four hundred in all, most of them already finished, expired, closed or cancelled, and the rest still open. Next, one letter of credit's whole life."
+    },
+    {
+      "course": "start",
+      "section": "an-lcs-life",
+      "file": "start/an-lcs-life.wav",
+      "narration": "To measure exposure, the pipeline needs one rule: which letters of credit still count. The side pane follows one L C through its life, read from L C amendments by a saved query. Version one: it is issued, in June, for six hundred and forty seven thousand dollars. Version two: it is advised to the exporter and becomes active. Version three: it is amended, and the amount drops to four hundred and seventy six thousand. Version four: it is closed, and from that moment the bank's promise is over. That is the rule in the editor, in open dot s q l. An L C that is issued, active or amended is open, and its amount is exposure: money the bank has promised to pay. An L C that is expired, closed or cancelled carries no exposure at all, though it stays in the data. Notice the last line, group by currency. The terminal shows why. There are forty open L Cs in euros and ninety in dollars, and their totals are printed side by side, never added together, because a sum of dollars and euros is not a number anyone can use. The pipeline will keep that rule all the way to Gold. Next, Azure, and the first sign in."
+    },
+    {
+      "course": "start",
+      "section": "signing-in",
+      "file": "start/signing-in.wav",
+      "narration": "Now Azure. Ana has signed in with a z login, and from here on every frame marked recorded on Azure was run once on a real subscription, with its identifiers replaced before anything was saved. The map is the whole pipeline we will build, and right now every part of it is grey: nothing exists yet. The terminal confirms it. The account shows the subscription, sub tradefin dev, and who is signed in. U K South is the region the pipeline will live in. The search for anything named tradefin returns nothing at all. And the storage provider is registered, so the subscription is allowed to create storage accounts. Before creating anything, two conventions, in the side pane. Every name says what it is, which app it belongs to, and which environment: r g for a resource group, s t for a storage account, k v for a key vault, a d f for Data Factory, then tradefin, then dev. A storage account's name cannot hold hyphens, so it runs together. And every resource carries three tags, each answering a question someone will ask one day: which app is this for, which environment, so can I delete it, and who owns it, so who do I call. Next, the first resource, written as code."
+    },
+    {
+      "course": "start",
+      "section": "a-first-terraform-file",
+      "file": "start/a-first-terraform-file.wav",
+      "narration": "The pipeline's infrastructure is written as code, with Terraform, and this is the first file. Main dot t f names the provider, azure r m, pinned to one exact version, and declares two resources: the resource group, with its three tags, and the storage account that will become the lake, with account keys switched off from the start. Nothing in the file says how to create them, only what should exist. The terminal runs it. Init downloads the pinned provider. Apply compares the file with what exists, finds nothing, and plans two additions; then it creates them, and the run ends with two resources added. The side pane shows the path a block of code takes. Terraform reads main dot t f; the provider turns each block into calls to Azure Resource Manager, the one A P I behind the portal, the C L I and every other tool; and Resource Manager creates the account in U K South. State list names what Terraform now manages: the resource group and the storage account. Look at the last line, the folder listing. Terraform has written a file called terraform dot t f state, on Ana's laptop, and it is how Terraform knows what it created. Next, why that file cannot stay there."
+    },
+    {
+      "course": "start",
+      "section": "state-and-where-it-lives",
+      "file": "start/state-and-where-it-lives.wav",
+      "narration": "Terraform's state is its memory: which real resource each block of code became. On a laptop it is one person's, and it can be lost. So it moves into Azure. The new file, backend dot t f, points Terraform at a container called t f state, in a storage account of its own, with one blob per environment, read with Ana's identity rather than a key. That account has to exist before Terraform can use it, so a small script, bootstrap dot s h, creates it with the C L I: the only thing in this course the C L I creates. The terminal runs it, then init with migrate state, which copies the local state into the blob; the listing shows dev dot t f state. The side pane draws what Terraform compares on every plan: the code, the state, and Azure itself. The state also needs a lock, so two people never apply at once, and the lock is the blob's lease. To see it, the session takes the lease by hand. The next plan fails at once: error acquiring the state lock, the state blob is already locked. The lease is broken, and the same plan runs, and finds no changes. Next, the code is reshaped for more than one environment."
+    },
+    {
+      "course": "start",
+      "section": "variables-and-modules",
+      "file": "start/variables-and-modules.wav",
+      "narration": "The first file named everything by hand: dev appeared in every name. Production will need the same resources with different names, so the code is reshaped, and this frame is compiled: it runs offline, and deploys nothing. Main dot t f now takes one variable, e n v, and builds every name from it: r g tradefin, then the environment. The tags are written once, in locals, and passed on. The storage account moves into a module of its own, modules slash storage, which takes four inputs: a name, a resource group, a location and tags. The dev values live in a small file, envs slash dev dot t f vars, with one line: env equals dev. The two blocks at the bottom matter more than they look. The resources now have new addresses in the code, and without being told, Terraform would destroy the old ones and create new ones. Moved blocks tell it that these are the same resources under new names. The terminal checks the work without touching Azure: format reports the files are formatted, init with no backend fetches the provider, and validate finds the configuration valid. The listing shows the new tree, and the side pane draws it: the variables file, the root module, the storage module. Next, applying it, and what plan does to change made outside the code."
+    },
+    {
+      "course": "start",
+      "section": "what-plan-does",
+      "file": "start/what-plan-does.wav",
+      "narration": "The reshaped code meets Azure, recorded once on the subscription. The first apply reads the moved blocks: the resource group and the storage account have moved to new addresses, and the plan adds nothing, changes nothing and destroys nothing. Then someone changes Azure without touching the code: an a z tag update sets the resource group's owner tag to ops. This is drift, and the next plan finds it: it shows the owner tag going from ops back to trade risk, one resource to change. Apply puts it back, and reading the tag again shows trade risk. The code wins, every time it is applied. The side pane lists the three cases plan can meet. A resource in the code and in the state, changed in Azure, is drift, and plan changes it back: that is what we just saw. A resource in the state but deleted from the code is something Terraform made and is now told to forget, and plan destroys it. And a resource made by hand in Azure, in neither the code nor the state, is invisible to Terraform altogether: plan says nothing, which is why this course makes every resource with code. Next, a budget, so the subscription warns before it spends."
+    },
+    {
+      "course": "start",
+      "section": "budgets",
+      "file": "start/budgets.wav",
+      "narration": "Last in this course, a budget, recorded on Azure. Two resources are added to main dot t f. The first is an action group, a g trade risk: a list of who to tell when something happens, here one email address for the risk team's engineers. The second is a monthly budget on the resource group. Its notification is the highlighted part: when the forecast for the month passes eighty percent of the budget, tell the action group. Forecast, not actual: the forecast is the month's spending so far, projected to the month's end, so the warning comes early enough to act on, not after the money is gone. The terminal applies both, the action group and the budget, and the budget list shows it exists. The side pane draws the chain: the budget, the forecast crossing eighty percent, the action group, and an email. Notice what is missing. A budget warns; it never stops anything. Turning resources off is a decision for a person, or for automation someone has written on purpose, and this course tears its resources down after recording each part, so that nothing waits on the subscription between recordings. Next, before the pipeline holds anything, who is allowed to touch it."
+    },
     {
       "course": "land",
       "section": "storage-and-hns",

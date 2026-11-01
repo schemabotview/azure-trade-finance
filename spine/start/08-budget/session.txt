@@ -1,0 +1,79 @@
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+Acquiring state lock. This may take a few moments...
+azurerm_resource_group.main: Refreshing state... [id=/subscriptions/00000000-000
+0-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev]
+module.storage.azurerm_storage_account.lake: Refreshing state... [id=/subscripti
+ons/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/provider
+s/Microsoft.Storage/storageAccounts/sttradefindev]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_consumption_budget_resource_group.main will be created
+  + resource "azurerm_consumption_budget_resource_group" "main" {
+      + amount            = 50
+      + etag              = (known after apply)
+      + id                = (known after apply)
+      + name              = "budget-tradefin-dev"
+      + resource_group_id = "/subscriptions/00000000-0000-0000-0000-0000000000d1
+/resourceGroups/rg-tradefin-dev"
+      + time_grain        = "Monthly"
+
+      + notification {
+          + contact_emails = []
+          + contact_groups = (known after apply)
+          + contact_roles  = []
+          + enabled        = true
+          + operator       = "GreaterThan"
+          + threshold      = 80
+          + threshold_type = "Forecasted"
+        }
+
+      + time_period {
+          + end_date   = (known after apply)
+          + start_date = "2026-11-01T09:30:00Z"
+        }
+    }
+
+  # azurerm_monitor_action_group.risk will be created
+  + resource "azurerm_monitor_action_group" "risk" {
+      + enabled             = true
+      + id                  = (known after apply)
+      + location            = "global"
+      + name                = "ag-trade-risk"
+      + resource_group_name = "rg-tradefin-dev"
+      + short_name          = "traderisk"
+      + tags                = {
+          + "app"   = "lc-exposure"
+          + "env"   = "dev"
+          + "owner" = "trade-risk"
+        }
+
+      + email_receiver {
+          + email_address = "trade-risk@syndicabank.example"
+          + name          = "trade-risk"
+        }
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+azurerm_monitor_action_group.risk: Creating...
+azurerm_monitor_action_group.risk: Creation complete after 4s [id=/subscriptions
+/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-dev/providers/M
+icrosoft.Insights/actionGroups/ag-trade-risk]
+azurerm_consumption_budget_resource_group.main: Creating...
+azurerm_consumption_budget_resource_group.main: Still creating... [00m10s elapse
+d]
+azurerm_consumption_budget_resource_group.main: Creation complete after 11s [id=
+/subscriptions/00000000-0000-0000-0000-0000000000d1/resourceGroups/rg-tradefin-d
+ev/providers/Microsoft.Consumption/budgets/budget-tradefin-dev]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+$ az consumption budget list -g rg-tradefin-dev --query "[].name" -o tsv
+WARNING: This command is in preview and under development. Reference and support
+ levels: https://aka.ms/CLI_refstatus
+budget-tradefin-dev

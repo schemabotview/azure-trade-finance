@@ -1,0 +1,1 @@
+{"from": "start/05-state", "changes": ["infra/main.tf", "infra/variables.tf", "infra/envs/", "infra/modules/"]}

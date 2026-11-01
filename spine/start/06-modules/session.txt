@@ -1,0 +1,31 @@
+$ cd infra
+$ terraform fmt -check -recursive && echo "formatted"
+formatted
+$ terraform init -backend=false -input=false
+Initializing modules...
+- storage in modules/storage
+
+Initializing provider plugins...
+- Reusing version 5.12.0 of hashicorp/azurerm from the dependency lock file
+- Installing hashicorp/azurerm v5.12.0...
+- Installed hashicorp/azurerm v5.12.0 (signed by HashiCorp)
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+$ terraform validate
+Success! The configuration is valid.
+$ find . -name '*.tf*' -not -path './.terraform/*' | sort
+./backend.tf
+./envs/dev.tfvars
+./main.tf
+./modules/storage/main.tf
+./modules/storage/outputs.tf
+./modules/storage/variables.tf
+./variables.tf
