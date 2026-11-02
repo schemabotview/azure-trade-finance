@@ -213,6 +213,10 @@ Every frame is in one level, and says so when it is not the first:
 | `doc-cited` | Azure documentation says so; the URL is in the scene |
 | `model` | a documented rule reproduced as a small program; proves nothing about Azure |
 
+Databricks is not run in this film: its sections either validate the Terraform that would deploy
+it (`compiled`), or run the same code on open-source Spark 4.2 + Delta 4.4 locally, which is what a
+Databricks cluster runs (`runs locally`, labelled as standing in for Databricks).
+
 No prices are quoted as facts: cost frames show the subscription's own Cost Management output or a
 labelled model.
 
@@ -265,7 +269,7 @@ and writes to the emulated lake, so the frame carries the emulated label.
 
 | # | Section | Step | Side pane | Level |
 | --- | --- | --- | --- | --- |
-| 1 | Entra ID | users, `grp-trade-risk-eng` | tenant → users, groups | A |
+| 1 | Entra ID | `grp-trade-risk-eng` and its members in Terraform (`azuread`), validated: applying needs Graph permissions | tenant → users, groups | C |
 | 2 | Service principals and managed identities | `id-tradefin-pipeline`, a user-assigned managed identity (ADF wears it in Course 7) | three kinds of identity, who holds the secret | A |
 | 3 | ◆ full scene: RBAC | assignments at three scopes | role × scope × principal; inheritance down the hierarchy | A |
 | 4 | Owner cannot read a blob | Owner lists containers (a management action) but is refused blobs; data roles granted narrowly | control-plane vs data-plane roles | A |
@@ -317,11 +321,11 @@ and writes to the emulated lake, so the frame carries the emulated label.
 
 | # | Section | Step | Side pane | Level |
 | --- | --- | --- | --- | --- |
-| 1 | ◆ full scene: Databricks' two planes | `dbw-tradefin-dev` (VNet-injected) | control plane (Databricks) vs compute plane (our subscription) | A |
-| 2 | Workspaces, compute, DBUs | a job cluster vs serverless | what a DBU meters | A |
-| 3 | Unity Catalog | metastore → `risk` → schemas | the three-level namespace | A |
-| 4 | Reaching the lake | access connector → storage credential → external location | identity chain, no keys | A |
-| 5 | Auto Loader | `cloudFiles`, checkpoint, `availableNow` | files → checkpoint → each file once | A |
+| 1 | ◆ full scene: Databricks' two planes | `dbw-tradefin-dev` (VNet-injected) in Terraform, validated | control plane (Databricks) vs compute plane (our subscription) | C |
+| 2 | Workspaces, compute, DBUs | a job cluster vs serverless, modelled from Azure retail prices | what a DBU meters | M |
+| 3 | Unity Catalog | metastore → `risk` → schemas in Terraform (`databricks`), validated | the three-level namespace | C |
+| 4 | Reaching the lake | access connector → storage credential → external location in Terraform, validated | identity chain, no keys | C |
+| 5 | Auto Loader | lab: open-source Spark’s file stream, checkpoint and `availableNow` (Auto Loader’s mechanism), run locally | files → checkpoint → each file once | L |
 | 6 | Bronze | `bronze.py` locally: append all versions + `src_file`, `ingest_ts` | Bronze rows with provenance | L |
 | 7 | G2 | null key, bad amount → quarantine | rows split: valid / quarantined | L |
 | 8 | A replayed file | the same records, a new file name | Bronze keeps both; why that is right | L |
@@ -355,13 +359,13 @@ and writes to the emulated lake, so the frame carries the emulated label.
 
 | # | Section | Step | Side pane | Level |
 | --- | --- | --- | --- | --- |
-| 1 | Databricks Jobs | `databricks_job.lc_exposure` applied: Bronze → G2 → Silver → G3 → Gold → G4 | task graph | A |
+| 1 | Databricks Jobs | `databricks_job.lc_exposure` in Terraform, validated: Bronze → G2 → Silver → G3 → Gold → G4 | task graph | C |
 | 2 | The gate policy | PASS / WARN / FAIL | three outcomes, what each blocks | L |
 | 3 | The audit table | `risk.audit.gate_results` | run_id, batch_id, rule, expected, actual, status | L |
-| 4 | Failure email | the job's `email_notifications { on_failure }` | failure → email | A |
-| 5 | The ADF parent | Copy → G1 → watermark → run the Databricks job | the parent pipeline | A |
-| 6 | One schedule owner | the job's own schedule paused | two schedulers → a double run | A |
-| 7 | A failed night | G3 fails; the fix; a rerun | the run, red then green | A |
+| 4 | Failure email | the job’s `email_notifications { on_failure }` in Terraform, validated | failure → email | C |
+| 5 | The ADF parent | Copy → G1 → watermark → run the Databricks job, the pipeline JSON validated | the parent pipeline | C |
+| 6 | One schedule owner | the job’s own schedule `PAUSED` in Terraform, validated | two schedulers → a double run | C |
+| 7 | A failed night | G3 fails; the risk team publishes the missing mapping; the rerun passes, run locally | the run, red then green | L |
 | 8 | ◆ full scene: three kinds of progress | lab: rerun after each failure point | watermark (extraction) / checkpoint (files) / MERGE (business state) | L |
 
 **12. `operate` · Watch it, pay for it, ship it · 7**
@@ -373,7 +377,7 @@ and writes to the emulated lake, so the frame carries the emulated label.
 | 3 | Alerts | a log alert → `ag-trade-risk` | signal → rule → action group | A |
 | 4 | Where the money goes | Cost Management by service | cost per service, the month | A |
 | 5 | Two environments | dev and prod from one root module: two `.tfvars`, a state file each | one module, two subscriptions, two states | A |
-| 6 | CI with no stored secret | GitHub Actions runs `terraform plan`/`apply` with an OIDC federated credential | GitHub → Entra → a token → deploy | A |
+| 6 | CI with no stored secret | a federated credential on a managed identity (no Graph) recorded; the workflow validated | GitHub → Entra → a token → deploy | A + C |
 | 7 | Where next | concept | hard-delete CDC, versioned Gold, FX, streaming, Fabric — each on the map | D |
 
 ## Decisions

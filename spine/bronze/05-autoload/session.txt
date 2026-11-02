@@ -1,0 +1,32 @@
+$ mkdir -p landing/b1 landing/b2
+$ head -201 data/tradebook/lc_deals.csv > landing/b1/part-00000.csv
+$ python pipeline/autoload.py
+WARNING: Using incubator modules: jdk.incubator.vector
+this run: 200 rows read; the table: 200 rows
++-------------------------+-----+
+|src_file                 |count|
++-------------------------+-----+
+|landing/b1/part-00000.csv|200  |
++-------------------------+-----+
+$ python pipeline/autoload.py
+WARNING: Using incubator modules: jdk.incubator.vector
+this run: 0 rows read; the table: 200 rows
++-------------------------+-----+
+|src_file                 |count|
++-------------------------+-----+
+|landing/b1/part-00000.csv|200  |
++-------------------------+-----+
+$ D=data/tradebook/lc_deals.csv
+$ (head -1 $D; tail -200 $D) > landing/b2/part-00000.csv
+$ python pipeline/autoload.py
+WARNING: Using incubator modules: jdk.incubator.vector
+this run: 200 rows read; the table: 400 rows
++-------------------------+-----+
+|src_file                 |count|
++-------------------------+-----+
+|landing/b1/part-00000.csv|200  |
+|landing/b2/part-00000.csv|200  |
++-------------------------+-----+
+$ ls lake/_checkpoints/autoload/sources/0/
+0
+1

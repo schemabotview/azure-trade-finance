@@ -1,0 +1,58 @@
+$ python pipeline/run.py night-45
+WARNING: Using incubator modules: jdk.incubator.vector
+batch 41: already in Bronze
+batch 42: already in Bronze
+batch 43: already in Bronze
+batch 44: already in Bronze
+G2 WARN: 2 rows in quarantine
+  G3 one row per lc_id                    PASS  0 duplicated
+  G3 every open LC's counterparty mapped  FAIL  CP-1501 LC-2299 USD 1200000.00
+  G3 every open group/currency limited    PASS  0 without a limit
+G3 FAIL: Gold does not run; it keeps the last good answer
+$ tail -2 inbox/counterparty_group.csv
+CP-1403,Northwind Energy Corp,Northwind
+CP-1501,Tailspin Imports Ltd,Northwind
+$ cp inbox/counterparty_group.csv reference/
+$ python extract/reference.py --as-of 2026-11-01
+ 12 rows -> reference/counterparty_group/as_of=2026-11-01/counterparty_group.csv
+  5 rows -> reference/group_limits/as_of=2026-11-01/group_limits.csv
+$ python pipeline/reference_tables.py 2026-11-01
+WARNING: Using incubator modules: jdk.incubator.vector
+  counterparty_id unique             PASS
+  every counterparty has a group     PASS
+  one limit per group and currency   PASS
+  every limit a positive amount      PASS
+  every limited group is mapped      PASS
+published: 12 mappings, 5 limits, as of 2026-11-01
+$ python pipeline/run.py night-45-rerun
+WARNING: Using incubator modules: jdk.incubator.vector
+batch 41: already in Bronze
+batch 42: already in Bronze
+batch 43: already in Bronze
+batch 44: already in Bronze
+G2 WARN: 2 rows in quarantine
+  G3 one row per lc_id                    PASS  0 duplicated
+  G3 every open LC's counterparty mapped  PASS  all mapped
+  G3 every open group/currency limited    PASS  0 without a limit
+lake/gold/fact_lc_exposure: 418 rows, one per LC
++----------+--------+--------------+------------+---------------+------+
+|group_name|currency|gross_exposure|limit_amount|utilisation_pct|breach|
++----------+--------+--------------+------------+---------------+------+
+|   Contoso|     EUR|    3100000.00|  4000000.00|           77.5|    No|
+|   Contoso|     USD|    4850000.00|  6000000.00|           80.8|    No|
+|  Fabrikam|     EUR|    3420000.00|  3000000.00|          114.0|   Yes|
+| Northwind|     USD|    7575000.00|  8000000.00|           94.7|    No|
+| Woodgrove|     USD|    9700000.00| 10000000.00|           97.0|    No|
++----------+--------+--------------+------------+---------------+------+
+
+  G4 EUR fact = aggregate                 PASS  6520000.00 vs 6520000.00
+  G4 USD fact = aggregate                 PASS  22125000.00 vs 22125000.00
+night complete: Gold published
+$ python pipeline/answer.py Northwind USD
+WARNING: Using incubator modules: jdk.incubator.vector
+Northwind | USD
+  gross exposure     7,575,000.00
+  limit              8,000,000.00
+  utilisation               94.7%
+  headroom             425,000.00
+  breach                       No

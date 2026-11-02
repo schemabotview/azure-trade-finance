@@ -1,0 +1,13 @@
+counterparty_id,counterparty_name,group_name
+CP-1101,Woodgrove Retail Ltd,Woodgrove
+CP-1102,Woodgrove Foods plc,Woodgrove
+CP-1103,Woodgrove Asia Pte Ltd,Woodgrove
+CP-1201,Contoso Pharmaceuticals Inc,Contoso
+CP-1202,Contoso GmbH,Contoso
+CP-1203,Contoso Logistics BV,Contoso
+CP-1301,Fabrikam Textiles SA,Fabrikam
+CP-1302,Fabrikam Iberia SL,Fabrikam
+CP-1401,Northwind Traders Inc,Northwind
+CP-1402,Northwind Marine Ltd,Northwind
+CP-1403,Northwind Energy Corp,Northwind
+CP-1501,Tailspin Imports Ltd,Northwind

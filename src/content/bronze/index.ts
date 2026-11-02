@@ -1,4 +1,5 @@
 import type { Course } from '../types'
+import { autoload } from './05-autoload'
 import { bronze } from './06-bronze'
 import { g2 } from './07-g2'
 import { aReplayedFile } from './08-a-replayed-file'
@@ -9,5 +10,5 @@ import { aReplayedFile } from './08-a-replayed-file'
 export const bronzeCourse: Course = {
   id: 'bronze',
   title: 'Azure Databricks: raw and complete',
-  sections: [bronze, g2, aReplayedFile],
+  sections: [autoload, bronze, g2, aReplayedFile],
 }
