@@ -1,4 +1,5 @@
 import type { Course } from '../types'
+import { entraId } from './01-entra-id'
 import { identities } from './02-identities'
 import { rbac } from './03-rbac'
 import { ownerCannotReadABlob } from './04-owner-cannot-read-a-blob'
@@ -12,5 +13,5 @@ import { azurePolicy } from './08-azure-policy'
 export const secure: Course = {
   id: 'secure',
   title: 'Identity first',
-  sections: [identities, rbac, ownerCannotReadABlob, keyVault, noSecretAnywhere, leastPrivilege, azurePolicy],
+  sections: [entraId, identities, rbac, ownerCannotReadABlob, keyVault, noSecretAnywhere, leastPrivilege, azurePolicy],
 }

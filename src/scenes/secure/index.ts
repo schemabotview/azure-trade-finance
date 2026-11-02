@@ -1,3 +1,4 @@
+import { secureEntra } from './entra'
 import type { SceneModel } from '@graphlearning/graphl-flow'
 import { secureIdentities } from './identities'
 import { secureRbac } from './rbac'
@@ -8,6 +9,7 @@ import { secureLeastPrivilege } from './least-privilege'
 import { securePolicy } from './policy'
 
 export const secureScenes: Record<string, SceneModel> = {
+  'secure-entra-id': secureEntra,
   'secure-identities': secureIdentities,
   'secure-rbac': secureRbac,
   'secure-owner-no-data': secureOwnerNoData,

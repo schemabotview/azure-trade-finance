@@ -1,6 +1,10 @@
 import type { Course } from '../types'
+import { databricksJobs } from './01-databricks-jobs'
 import { gatePolicy } from './02-gate-policy'
 import { auditTable } from './03-audit-table'
+import { failureEmail } from './04-failure-email'
+import { adfParent } from './05-adf-parent'
+import { oneSchedule } from './06-one-schedule'
 import { failedNight } from './07-failed-night'
 import { threeKindsOfProgress } from './08-three-kinds-of-progress'
 
@@ -10,5 +14,5 @@ import { threeKindsOfProgress } from './08-three-kinds-of-progress'
 export const orchestrate: Course = {
   id: 'orchestrate',
   title: 'Every night, and the night it fails',
-  sections: [gatePolicy, auditTable, failedNight, threeKindsOfProgress],
+  sections: [databricksJobs, gatePolicy, auditTable, failureEmail, adfParent, oneSchedule, failedNight, threeKindsOfProgress],
 }

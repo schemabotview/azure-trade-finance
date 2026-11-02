@@ -1,0 +1,52 @@
+{
+  "parameters": [
+    "batch_id",
+    "window_end",
+    "job_id"
+  ],
+  "activities": [
+    {
+      "name": "extract",
+      "type": "ExecutePipeline",
+      "typeProperties": {
+        "pipeline": {
+          "referenceName": "pl_extract",
+          "type": "PipelineReference"
+        },
+        "waitOnCompletion": true,
+        "parameters": {
+          "batch_id": {
+            "value": "@pipeline().parameters.batch_id",
+            "type": "Expression"
+          },
+          "window_end": {
+            "value": "@pipeline().parameters.window_end",
+            "type": "Expression"
+          }
+        }
+      }
+    },
+    {
+      "name": "lc_exposure",
+      "type": "DatabricksJob",
+      "dependsOn": [
+        {
+          "activity": "extract",
+          "dependencyConditions": [
+            "Succeeded"
+          ]
+        }
+      ],
+      "linkedServiceName": {
+        "referenceName": "ls_databricks",
+        "type": "LinkedServiceReference"
+      },
+      "typeProperties": {
+        "jobId": {
+          "value": "@pipeline().parameters.job_id",
+          "type": "Expression"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+$ cd infra
+$ terraform init -backend=false -input=false >/dev/null
+$ terraform validate
+Success! The configuration is valid.
+$ grep -A1 '^provider' .terraform.lock.hcl
+provider "registry.terraform.io/hashicorp/azuread" {
+  version     = "3.10.0"
+--
+provider "registry.terraform.io/hashicorp/azurerm" {
+  version     = "5.12.0"
