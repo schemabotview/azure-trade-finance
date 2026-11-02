@@ -1,5 +1,6 @@
 import type { Course } from '../types'
 import { twoPlanes } from './01-two-planes'
+import { dbus } from './02-dbus'
 import { unityCatalog } from './03-unity-catalog'
 import { reachingTheLake } from './04-reaching-the-lake'
 import { autoload } from './05-autoload'
@@ -13,5 +14,5 @@ import { aReplayedFile } from './08-a-replayed-file'
 export const bronzeCourse: Course = {
   id: 'bronze',
   title: 'Azure Databricks: raw and complete',
-  sections: [twoPlanes, unityCatalog, reachingTheLake, autoload, bronze, g2, aReplayedFile],
+  sections: [twoPlanes, dbus, unityCatalog, reachingTheLake, autoload, bronze, g2, aReplayedFile],
 }

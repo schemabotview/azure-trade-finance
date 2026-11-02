@@ -1,0 +1,6 @@
+$ python model/dbus.py
+unit prices, USD: jobs DBU 0.3, serverless DBU 0.5, D4ds v5 hour 0.262
+  job cluster: DBUs                 9.00 a month
+  job cluster: VMs (D4ds v5)        7.86 a month
+  serverless: DBUs only            15.00 a month
+  job cluster, total               16.86 a month

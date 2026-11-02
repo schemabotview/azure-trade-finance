@@ -1,5 +1,5 @@
 {
-  "count": 82,
+  "count": 83,
   "entries": [
     {
       "course": "intro",
@@ -306,6 +306,12 @@
       "section": "two-planes",
       "file": "bronze/two-planes.wav",
       "narration": "Databricks splits itself in two, and where each half runs decides what the bank has to trust. This film does not deploy Databricks, as the label says: the Terraform on screen is validated, and the Spark that later courses run is open source, on Ana's laptop, which is what a Databricks cluster runs. The frame draws the two planes. The control plane runs in Databricks' own Azure subscription: the workspace's web application and A P I, the jobs service, Unity Catalog, and the cluster manager that starts and stops machines. The compute plane is where the data is actually processed, and it runs in our subscription. The cluster's virtual machines are injected into the virtual network from Course six, into the two subnets set aside for Databricks then, with no public addresses, and they reach the lake through its private endpoint. The editor shows the workspace in Terraform: the premium tier, which Unity Catalog needs, and the highlighted lines that make it private, no public I P and our own virtual network. The lab also adds what that requires: the two subnets are delegated to Databricks, and each gets a network security group. The terminal shows the configuration validated, with the Databricks provider pinned beside azure R M. The point of the split is the arrow in the middle: Databricks' service tells our machines when to start and stop, but the letters of credit never leave our subscription. Next, the D B U, the unit Databricks charges in."
+    },
+    {
+      "course": "bronze",
+      "section": "dbus",
+      "file": "bronze/dbus.wav",
+      "narration": "Databricks charges in its own unit, the D B U: compute time, weighted by the kind of compute. How many you pay for, and what else you pay for beside them, depends on where the compute runs. This section models one month of nightly runs, and the label is honest about what that means: the usage is assumed, and every price is Azure's own, read from the public retail prices A P I when the step was recorded. The editor shows the assumptions, each named: thirty nights, half an hour a night, a driver and one worker, one D B U per node hour for this node type, and two D B Us an hour for the same work on serverless. The side pane draws the two ways to run it. A job cluster starts virtual machines in our own subscription, inside the network from Course six, and is billed twice: D B Us on Databricks' meter, and the machines on Azure's. Serverless runs on Databricks' machines, so it is billed in D B Us only, at a higher rate, and starts in seconds rather than minutes. The terminal and the table show the month. The job cluster costs nine dollars in D B Us and about seven dollars eighty six in machines, nearly seventeen dollars in all. Serverless costs fifteen. At this size the two are close; what usually decides is not price but where the machines run, and the bank wants its data processed inside its own network. Next, Unity Catalog, which decides who may read what."
     },
     {
       "course": "bronze",
