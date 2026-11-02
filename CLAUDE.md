@@ -41,15 +41,15 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 | 1 | `intro` | 3 | authored, narrated (text), 4K-checked (§1 doc-cited, §2–3 from the spine's finished Gold) |
 | 2 | `how-azure-runs` | 7 | authored, narrated (text), 4K-checked; §1–5 read-only labs recorded on Azure (no resources), §6 doc-cited, §7 a model priced from prices.azure.com |
 | 3 | `start` | 8 | authored, narrated (text), 4K-checked; §3–5, §7–8 recorded on Azure |
-| 4 | `secure` | 8 | §2–§8 authored, narrated (text), 4K-checked, recorded on Azure; §1 needs Graph permissions |
+| 4 | `secure` | 8 | authored, narrated (text), 4K-checked; §2–§8 recorded on Azure, §1 compiled (Graph permissions needed to apply) |
 | 5 | `land` | 9 | authored, narrated (text), 4K-checked; §1, §2, §9 re-recorded after Courses 3–4 |
 | 6 | `network` | 7 | authored, narrated (text), 4K-checked, recorded on Azure (§6.6: ADF + a self-hosted IR on a Windows VM in a simulated bank network, UK West); torn down |
 | 7 | `extract` | 8 | authored, narrated (text), 4K-checked, recorded on Azure (TradeBook as a PostgreSQL VM in the bank network, peered; batches 41–43 through the SHIR into the private lake); torn down |
-| 8 | `bronze` | 8 | §6–8 authored (local); §1–5 need Databricks |
+| 8 | `bronze` | 8 | authored, narrated (text), 4K-checked: §1, §3, §4 compiled; §2 a recorded price model; §5–8 local Spark (§5 standing in for Auto Loader) |
 | 9 | `silver` | 8 | authored, narrated (text), 4K-checked (all local) |
 | 10 | `gold` | 7 | authored, narrated (text), 4K-checked (all local) |
-| 11 | `orchestrate` | 8 | §2–3 and ◆ §8 authored (local); §1, §4–7 need Databricks |
-| 12 | `operate` | 7 | §5 (compiled) and §7 (concept) authored; §1–3 need the Databricks job, §4 Cost Management (refused here), §6 a federated credential (Graph) |
+| 11 | `orchestrate` | 8 | authored, narrated (text), 4K-checked: §1, §4–6 compiled; §2, §3, §7, ◆ §8 local Spark standing in for the job |
+| 12 | `operate` | 7 | authored, narrated (text), 4K-checked: §1–3, §5, §6 compiled; §4 recorded (the Consumption API: usage, no cost on this offer); §7 concept |
 
 ## Spine
 

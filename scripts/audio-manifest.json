@@ -1,5 +1,5 @@
 {
-  "count": 83,
+  "count": 88,
   "entries": [
     {
       "course": "intro",
@@ -489,9 +489,39 @@
     },
     {
       "course": "operate",
+      "section": "diagnostic-settings",
+      "file": "operate/diagnostic-settings.wav",
+      "narration": "Data Factory keeps a record of every run it makes: each pipeline run, each activity in it, each trigger firing. On its own, it keeps them for a few weeks, in its own screens. To ask questions of them, and to alert on them, they need to go somewhere that can be queried, alongside every other service's logs. That place is a Log Analytics workspace, and this section adds one, in Terraform, validated, as the label says. The editor shows the two resources. The workspace, log tradefin dev, keeps thirty days. And a diagnostic setting on the factory, highlighted, says what to send and where: three categories, pipeline runs, activity runs and trigger runs, to the workspace, one table each. The side pane draws the flow, from the factory, through the diagnostic setting, into the workspace, and the table beneath it names the three tables that appear there: A D F pipeline run, A D F activity run, and A D F trigger run. Each row in the activity table is one activity in one run: its pipeline, its name, its status, and when it failed, its error. A diagnostic setting is a small resource with a large effect. Nothing about the pipelines changes, but from now on every night's work is recorded somewhere a query can reach, and that is what the next two sections use. Next, the query itself, in K Q L."
+    },
+    {
+      "course": "operate",
+      "section": "kql",
+      "file": "operate/kql.wav",
+      "narration": "Log Analytics is queried in K Q L, the Kusto query language, and its shape is easy to read once you see it: a table at the top, then a pipeline of steps, each taking the rows from the line above. The editor shows the query this course keeps in its own file, and the side pane takes it apart line by line. It starts from the A D F activity run table: every activity in every run the factory has made. The highlighted line keeps only the failed ones. The next keeps four columns: when, which pipeline, which activity, and the error code. And the last puts the newest first. Read top to bottom, it says exactly what it does: last night's failed activities, newest first. The query is not run here, as the label says: it lives in a file in the project, and the next section's alert reads that same file, so the query an engineer runs by hand in the morning and the one that pages them at night can never drift apart. The terminal shows the lab printing the file after validating the Terraform that uses it. One thing this table does not hold is the gates' own verdicts. Those are rows in the audit table from Course eleven, with every check and its detail. This table holds what the factory saw: a copy that failed, a runtime that did not answer, a lookup that timed out. Next, turning the query into an alarm."
+    },
+    {
+      "course": "operate",
+      "section": "alerts",
+      "file": "operate/alerts.wav",
+      "narration": "A query answers when someone asks. An alert asks on its own. This section turns the last section's query into one, in Terraform, validated, as the label says, and the side pane draws its three parts. The signal is the query: failed rows in the activity table, read from the same file. The rule decides how often to ask and what counts: every fifteen minutes, it looks back over the last hour, and if there is even one failed activity, it fires. Those three settings are highlighted in the editor. And the action is the action group from Course three, a g trade risk, the same one the budget already uses, which emails the risk team's shared address. Keeping the action group separate from the rule means the people to tell are written down once, and every alarm in the subscription points at them. The table at the bottom shows why this alarm is needed even though the Databricks job already sends an email when a night fails. The job's email covers a night that reached the job and failed a gate. This alert covers everything that never reached the job at all: the extract that timed out because the runtime was down, as in Course seven, or a copy that could not reach TradeBook. Between the two, a failed night is never silent. Next, where the money goes."
+    },
+    {
+      "course": "operate",
+      "section": "where-the-money-goes",
+      "file": "operate/where-the-money-goes.wav",
+      "narration": "Every resource in this film has used something billable, and Azure records each use as a usage record: which resource, which product, how much. The Consumption A P I reads them, and the terminal does, filtered, as always, to this course's own resources. The first command counts the records by product, and the list is a fair summary of the whole film: private D N S and private link from Course six, the lake's storage, a little bandwidth between regions, the N A T gateway that gives the bank's network its way out, public addresses, and Key Vault. The second command shows one record in full, and the table in the side pane repeats it: a product, then a quantity and a cost, both reported as none. That is not a mistake in the query. This subscription is a free trial, and its offer reports what was used, but not what it cost, through this A P I. On a paid subscription the same records carry the price, and the same query, grouped by product, is the month's bill. Until then, the honest way to put numbers on it is the way Course two and Course eight did: Azure's own retail prices, multiplied by usage stated as assumptions. Either way, the lesson from Course two holds: you pay for what you leave running, which is why every course in this film ends with the subscription empty. Next, two environments from one module."
+    },
+    {
+      "course": "operate",
       "section": "two-environments",
       "file": "operate/two-environments.wav",
       "narration": "Everything so far has been built in one environment, dev. A bank will want a second, prod, and the risk is that the two drift apart, one hand edit at a time, until prod is something nobody can rebuild. With Terraform the answer is to write the infrastructure once and make the environment a parameter. The label says how far this section goes: the configuration is validated offline, which is real, but prod is not deployed, because prod belongs in its own subscription. The editor shows the one change to the code. The state backend no longer names its state file. The key now comes from a small file per environment, passed to terraform init. The terminal lists the environment folder: for each environment, a backend file naming its state blob, dev dot t f state or prod dot t f state, and a variables file setting env to dev or prod. Every resource name already includes the environment, so the same code makes r g tradefin dev in one and r g tradefin prod in the other. Then terraform validate: the configuration is valid. The side pane draws the shape. One root module, every resource written once. Two pairs of small files. Two state files, so that a plan for dev can never touch prod. And two subscriptions, each with its own access and its own bill. Promoting a change is then just applying the same commit to the other environment. Next, the last section: where this pipeline could go from here."
+    },
+    {
+      "course": "operate",
+      "section": "ci-no-secret",
+      "file": "operate/ci-no-secret.wav",
+      "narration": "Everything in this film was applied by a person at a terminal. A bank wants changes applied by a pipeline instead, from reviewed code, the same way every time. The usual risk is the credential: a pipeline that deploys to Azure needs to sign in, and a password stored in the C I system can leak. This section removes it. The editor shows a GitHub Actions workflow, and the label is precise about what is real: the Azure side is validated in Terraform, and the workflow is shown, not run. Two lines are highlighted. The workflow asks GitHub for an identity token for this run, and the Azure login step exchanges that token, instead of a secret, for access. The side pane follows it. GitHub signs a short lived token that says which repository and which branch this run is from. Entra I D trusts that token through a federated credential, on a managed identity made for deployment, and only for this repository's main branch: a fork, another branch or another repository gets nothing. The identity is allowed to change this resource group, and nothing more. Then Terraform plans and applies, exactly as at the terminal. Nothing secret is stored in GitHub at all. The three identifiers it needs are variables, because an identifier says who, but proves nothing. Next, where this pipeline could go from here."
     },
     {
       "course": "operate",

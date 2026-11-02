@@ -1,6 +1,0 @@
-$ cd infra
-$ terraform apply -var-file=envs/dev.tfvars -auto-approve
-$ cd ..
-$ I="--identity-name id-tradefin-deploy -g rg-tradefin-dev"
-$ Q="[].{issuer: issuer, subject: subject}"
-$ az identity federated-credential list $I --query "$Q"

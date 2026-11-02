@@ -1,0 +1,10 @@
+$ cd infra
+$ terraform init -backend=false -input=false >/dev/null
+$ terraform validate
+Success! The configuration is valid.
+$ cat queries/failed.kql
+// The night's failed activities, newest first.
+ADFActivityRun
+| where Status == "Failed"
+| project TimeGenerated, PipelineName, ActivityName, ErrorCode
+| order by TimeGenerated desc

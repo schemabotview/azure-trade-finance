@@ -1,0 +1,23 @@
+$ Q="[?contains(instanceName, 'tradefin')]"
+$ U="az consumption usage list --top 1000 --only-show-errors"
+$ $U --query "$Q.product" -o tsv | sort | uniq -c | sort -rn
+      6 Rtn Preference: MGN
+      5 Azure DNS - Private
+      4 Virtual Network Private Link
+      4 General Block Blob v2 Hierarchical Namespace - Hot LRS - UK South
+      4 Blob Storage - Hot LRS
+      4 Bandwidth Inter-Region - Intra Continent - Europe
+      4 Azure Data Lake Storage Gen2 Hierarchical Namespace - Hot LRS - UK South
+      3 NAT Gateway
+      2 IP Addresses - Standard IPv4
+      2 Blob Storage - Hot LRS - UK South
+      2 Bandwidth Inter-Region - Inter Continent - Intercontinental
+      1 Key Vault - Premium
+      1 Files - LRS
+$ P="{product: product, quantity: usageQuantity, cost: pretaxCost}"
+$ $U --query "$Q | [0].$P"
+{
+  "cost": "None",
+  "product": "Bandwidth Inter-Region - Intra Continent - Europe",
+  "quantity": "None"
+}

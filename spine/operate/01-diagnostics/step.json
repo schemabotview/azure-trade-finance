@@ -1,1 +1,0 @@
-{"from": "orchestrate/08-three-kinds", "changes": ["infra/monitor.tf"], "azure": true, "restore": true, "generated": ["tradebook"], "setup": ["cd infra && terraform init -input=false >/dev/null", "az vm run-command invoke -g rg-tradefin-dev -n vm-bank-tradebook --command-id RunShellScript --scripts \"cloud-init status --wait\" -o none"]}

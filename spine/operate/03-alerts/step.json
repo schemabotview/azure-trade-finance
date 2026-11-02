@@ -1,1 +1,0 @@
-{"from": "operate/02-kql", "changes": ["infra/alerts.tf"], "azure": true, "generated": ["tradebook"], "setup": ["cd infra && terraform init -input=false >/dev/null", "az extension add -n scheduled-query -y --only-show-errors"]}

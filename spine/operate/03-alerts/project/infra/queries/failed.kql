@@ -1,5 +1,0 @@
-// The night's failed activities, newest first.
-ADFActivityRun
-| where Status == "Failed"
-| project TimeGenerated, PipelineName, ActivityName, ErrorCode
-| order by TimeGenerated desc

@@ -1,5 +1,0 @@
-$ L="-g rg-tradefin-dev -n log-tradefin-dev"
-$ W=$(az monitor log-analytics workspace show $L --query customerId -o tsv)
-$ K="az monitor log-analytics query -w $W --analytics-query"
-$ bash ops/wait-for.sh $K 'ADFActivityRun | take 1' -o tsv
-$ $K "$(cat infra/queries/failed.kql)" -o table
