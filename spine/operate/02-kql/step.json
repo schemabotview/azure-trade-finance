@@ -1,0 +1,1 @@
+{"from": "operate/01-diagnostics", "changes": ["infra/queries/failed.kql", "ops/"], "azure": true, "generated": ["tradebook"], "setup": ["az extension add -n log-analytics -y --only-show-errors"]}

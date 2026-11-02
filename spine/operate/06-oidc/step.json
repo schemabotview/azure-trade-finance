@@ -1,0 +1,1 @@
+{"from": "operate/05-two-environments", "changes": [".github/", "infra/oidc.tf"], "azure": true, "generated": ["tradebook"], "setup": ["cd infra && terraform init -input=false -backend-config=envs/dev.backend.hcl >/dev/null"]}

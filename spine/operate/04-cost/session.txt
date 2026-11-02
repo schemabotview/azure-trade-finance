@@ -1,0 +1,5 @@
+$ Q="[?contains(instanceName, 'tradefin')]"
+$ U="az consumption usage list --top 1000 --only-show-errors"
+$ $U --query "$Q.product" -o tsv | sort | uniq -c | sort -rn
+$ P="{product: product, quantity: usageQuantity, cost: pretaxCost}"
+$ $U --query "$Q | [0].$P"

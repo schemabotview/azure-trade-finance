@@ -1,0 +1,11 @@
+$ cd infra
+$ terraform apply -var-file=envs/dev.tfvars -auto-approve
+$ cd ..
+$ A="-g rg-tradefin-dev -n alert-adf-activity-failed"
+$ Q="{every: evaluationFrequency, over: windowSize, severity: severity}"
+$ az monitor scheduled-query show $A --query "$Q"
+$ U="https://management.azure.com/subscriptions/{subscriptionId}/providers"
+$ U="$U/Microsoft.AlertsManagement/alerts?api-version=2019-05-05-preview"
+$ F="value[?contains(name, 'adf-activity-failed')].properties.essentials"
+$ bash ops/wait-for.sh az rest --url "$U" --query "$F" -o tsv
+$ az rest --url "$U" --query "$F | [0].{state: alertState, severity: severity}"

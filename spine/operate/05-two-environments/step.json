@@ -1,1 +1,1 @@
-{"from": "orchestrate/08-three-kinds", "changes": ["infra/backend.tf", "infra/envs/"]}
+{"from": "operate/04-cost", "changes": ["infra/backend.tf", "infra/envs/"]}

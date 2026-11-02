@@ -372,10 +372,10 @@ and writes to the emulated lake, so the frame carries the emulated label.
 
 | # | Section | Step | Side pane | Level |
 | --- | --- | --- | --- | --- |
-| 1 | Diagnostic settings | ADF and Databricks logs → Log Analytics | sources → workspace | A |
-| 2 | KQL | last night's failed gates | the query, its result table | A |
-| 3 | Alerts | a log alert → `ag-trade-risk` | signal → rule → action group | A |
-| 4 | Where the money goes | Cost Management by service | cost per service, the month | A |
+| 1 | Diagnostic settings | Data Factory’s pipeline, activity and trigger runs → Log Analytics (a diagnostic setting); a night’s runs, one failed | sources → workspace | A |
+| 2 | KQL | the night’s failed activities, in KQL (the gates’ own record is the audit table, §11.3) | the query, its result table | A |
+| 3 | Alerts | a log alert on failed activities → `ag-trade-risk`; it fires | signal → rule → action group | A |
+| 4 | Where the money goes | the Consumption API: what was used, by product (this offer reports no cost through it) | cost per service, the month | A |
 | 5 | Two environments | dev and prod from one root module: two `.tfvars`, a state file each | one module, two subscriptions, two states | A |
 | 6 | CI with no stored secret | a federated credential on a managed identity (no Graph) recorded; the workflow validated | GitHub → Entra → a token → deploy | A + C |
 | 7 | Where next | concept | hard-delete CDC, versioned Gold, FX, streaming, Fabric — each on the map | D |
