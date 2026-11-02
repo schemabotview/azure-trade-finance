@@ -1,0 +1,36 @@
+public/vendor/azure-logo.svg — the Azure mark used on the film thumbnail (`--mark azure`)
+=========================================================================================
+
+WHAT IT IS
+  Microsoft's "Azure A" icon (10018-icon-service-Azure-A), from the Azure Architecture Icons set.
+  Used by scripts/thumb-film.mjs for `--mark azure`, embedded AS SUPPLIED: never recoloured,
+  re-traced, re-proportioned or otherwise altered.
+
+WHERE IT CAME FROM
+  Extracted on 2026-11-02 from @threeveloper/azure-react-icons 1.1.1 (MIT, Sjoerd van Bommel),
+  graphl-flow's own icon dependency, which repackages the icons ZIP that Microsoft publishes at
+  https://learn.microsoft.com/en-us/azure/architecture/icons/ . The paths and gradients are the
+  component's, rendered to static SVG with react-dom/server. Two changes were made to the <svg>
+  element only, not to the mark: a `viewBox="0 0 18 18"` matching its own 18x18 size, and the
+  component's `fill="currentColor"` default was removed (every path carries its own fill).
+
+  The MIT licence covers the React wrapper, not the icon. The icon is Microsoft's.
+
+THE TERMS THAT APPLY
+  Microsoft's icon page states that it permits these icons in architectural diagrams, training
+  materials and documentation; that they may be copied, distributed and displayed only for that
+  use unless Microsoft grants explicit permission; and that they must not be cropped, flipped,
+  rotated, or have their shape distorted or changed. Read the page's current text before
+  publishing: it is the authority, and this summary is not.
+
+  A course video is training material. A thumbnail is that material's cover, on a channel that
+  may be monetised, so it is the use closest to the edge of those terms. The cover must not
+  suggest that Microsoft produced, sponsored or endorsed the course. GraphL's FULL COURSE badge and
+  the "data engineering" line are the course's own identity, and nothing on it says otherwise.
+
+  TO BE COMPLETED BY THE OWNER before this is published:
+    terms read on (date) : ................................................................
+    permission (if any)  : ................................................................
+
+  `--mark tile` (public/favicon.svg, this repo's own mark) needs none of this.
+  See output/thumbnails/README.md. This file is a design note, not legal advice.

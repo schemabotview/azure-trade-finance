@@ -25,7 +25,8 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 1. Owner review of `COURSE-PLAN.md` and of `#/land-storage-and-hns` … `#/land-who-may-read`.
 2. The pilot's last piece: the ◆ RBAC full scene from Course 4 (needs Course 4's steps, or a lab).
 3. Courses 1–4, 6–12 one at a time, each reviewed on its rendered routes, then narrated.
-4. Audio (`npm run gen:audio` is current for every authored section), record, film, cover.
+4. Audio done (88 wavs); every course recorded at 4K (2026-11-02), film, its cover and description built.
+   Open: 72 of 88 sections run under the 82 s floor (Chatterbox reads fast).
 
 **Built (infra):** the app (vite, shell `ConceptApp`, `--brand` #0078d4), checks (`check-content`,
 `check-render` with the map-frame fit), `registry`, `shots` (also takes a bare scene id, e.g.
@@ -33,8 +34,10 @@ sections, checked and shot at 4K; §1, §2, §9 recorded on Azure in Terraform, 
 `tradebook_gen` + `verify` (15 planted facts); `scripts/spine.py` (both step kinds);
 `src/scenes/ide.ts` (aws-ecommerce's), `map.ts` (`BUILT` per course; previews `#/preview-map-land`; the finished map is §1.3), `level.ts` (the verification label); installers
 `install-toolchain.sh` (Python 3.14.9, Java 21), `setup-postgres.sh` (PostgreSQL 18.6, OS user
-`ana`), `install-azure-tools.sh` (Azure CLI 2.91.0, Azurite 3.37.0, Terraform 1.17.0). Not ported yet: the cover
-(`thumb-film.mjs` was Spark's own drawing), `record-all` wiring is the shell's.
+`ana`), `install-azure-tools.sh` (Azure CLI 2.91.0, Azurite 3.37.0, Terraform 1.17.0).
+The publish kit (2026-11-02): `thumb-film.mjs` (aws-ecommerce's, card from §10.7, labelled RUNS LOCALLY),
+`output/film-description.txt` (from `scripts/out/film.txt`). The film only: no per-course covers or
+descriptions. See `output/thumbnails/README.md`.
 
 | # | course | sections | status |
 |---|---|---|---|

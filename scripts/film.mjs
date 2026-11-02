@@ -2,6 +2,9 @@
 // Combine every recorded section into the single YouTube film (COURSE-PLAN, "Packaging"): one
 // video, all 12 courses, no break in the middle.
 //
+// The loudness MEASURE pass is `-vn` (as aws-ecommerce's): decoding 2 h of 4K video to measure its
+// audio costs an hour and tells you nothing.
+//
 // The segments under scripts/segments/ are all produced by one encoder path (same SPS/PPS, 30fps
 // CFR, 90k timescale, AAC 44.1k mono), so the concat is a stream copy — no re-encode, no quality
 // loss. Chapter offsets are accumulated from each segment's PROBED duration, never from wav
@@ -75,8 +78,8 @@ await run(FFMPEG, ['-y', '-f', 'concat', '-safe', '0', '-i', listFile,
 // just over 0 dBTP, which clips through AAC. One LINEAR pass fixes both: a constant gain, so the
 // narration's own dynamics are untouched. Two-pass, because single-pass loudnorm is dynamic.
 console.log('Measuring loudness …')
-const { stderr: m } = await run(FFMPEG, ['-i', raw, '-af', 'loudnorm=I=-14:TP=-1:LRA=11:print_format=json',
-  '-f', 'null', '-'], { maxBuffer: 1 << 26 })
+const { stderr: m } = await run(FFMPEG, ['-i', raw, '-vn',
+  '-af', 'loudnorm=I=-14:TP=-1:LRA=11:print_format=json', '-f', 'null', '-'], { maxBuffer: 1 << 26 })
 const meas = JSON.parse(m.slice(m.lastIndexOf('{'), m.lastIndexOf('}') + 1))
 console.log(`  in ${meas.input_i} LUFS, tp ${meas.input_tp} dBTP → -14 LUFS, tp -1 dBTP`)
 const norm = `loudnorm=I=-14:TP=-1:LRA=11:measured_I=${meas.input_i}:measured_TP=${meas.input_tp}`

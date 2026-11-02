@@ -1,0 +1,94 @@
+Learn Azure by building a trade finance risk pipeline: full course, beginner to professional
+
+88 sections, 12 courses, 1:56:21.
+Every number is really computed, locally: PostgreSQL 18.6, Python 3.14.9 and PySpark 4.2.0 with Delta 4.4.1. Every Azure resource is Terraform. The Azure steps marked recorded were run once on a real subscription, their transcripts kept, then torn down. The rest says so on screen: emulated (Azurite), compiled (terraform validate, not deployed), doc-cited, or a model. Databricks is not run: open-source Spark and Delta stand in for it, labelled.
+
+⏱ CHAPTERS
+0:00:00 ▸ Trade finance, and what we’ll build — A letter of credit, in one picture
+0:01:16 The question: exposure by group, against its limit
+0:02:38 What we will build
+0:04:05 ▸ How Azure is built — Regions, pairs and zones
+0:05:26 The resource hierarchy
+0:06:49 Azure Resource Manager: one front door
+0:08:12 Control plane and data plane
+0:09:25 Portal, CLI, Terraform: three clients, one API
+0:10:42 IaaS, PaaS, SaaS: who runs what
+0:12:08 How Azure charges: a month, modelled
+0:13:27 ▸ The source, and a first deployment — TradeBook: the system the pipeline reads
+0:14:38 An LC’s life: what counts as open
+0:15:46 Signing in: an empty subscription and a naming rule
+0:17:01 A first Terraform file: a storage account from code
+0:18:12 State, and where it lives: a lease for a lock
+0:19:24 Variables and modules: one shape, any environment
+0:20:44 What plan does to what is not in code: drift
+0:21:54 Budgets: a warning before the money is spent
+0:23:04 ▸ Identity first — Entra ID: who exists
+0:24:34 Service principals and managed identities: who the pipeline is
+0:25:50 RBAC: who, what, and where it applies
+0:27:10 Owner cannot read a blob: control plane and data plane
+0:28:29 Key Vault: one place for the one password
+0:29:48 No secret anywhere: the identity reads, nobody types
+0:31:02 Least privilege: every role, against its job
+0:32:17 Azure Policy: rules that hold, whoever deploys
+0:33:32 ▸ ADLS Gen2, and a batch you can trust — Storage accounts and the hierarchical namespace: a lake with real folders
+0:34:52 Containers as zones: landing, bronze, silver, gold, reference
+0:36:13 Immutable batch folders: one night, one delivery
+0:37:31 Incremental by watermark: copy only what changed
+0:38:45 The manifest: a batch’s promise, written first
+0:39:59 G1 fails: the batch that came up short
+0:41:11 Retry-safe landing: overwrite until sealed
+0:42:26 Reference files: mapping and limits on their own path
+0:43:42 Who may read a batch: RBAC, ACLs, SAS, and a lifecycle
+0:45:05 ▸ Private by default — VNets and subnets: a private network, carved by job
+0:46:29 Network security groups: rules, by priority
+0:47:52 Public access off: the lake leaves the internet
+0:49:08 A private endpoint: the lake gets an address inside the network
+0:50:24 TradeBook is on-premises: why Data Factory cannot see it
+0:51:39 The self-hosted integration runtime: an agent that only calls out
+0:53:01 VPN and ExpressRoute: joining the bank to Azure
+0:54:19 ▸ Data Factory — Data Factory’s parts
+0:55:44 Integration runtimes
+0:57:06 A linked service to TradeBook
+0:58:27 The Copy activity
+0:59:52 The watermark pipeline
+1:01:14 Parameters and expressions
+1:02:34 Triggers: a window every night
+1:03:50 Monitoring a run, and rerunning from the failure
+1:05:21 ▸ Azure Databricks: raw and complete — Databricks’ two planes
+1:06:48 Compute and DBUs: what a night costs
+1:08:15 Unity Catalog: catalog, schema, table
+1:09:41 Reaching the lake with no key
+1:11:04 Auto Loader’s idea: each file once
+1:12:32 Bronze: every version, appended as received
+1:13:49 G2: a row Bronze cannot trust is set aside, not dropped
+1:15:07 A replayed file: Bronze keeps both, and that is right
+1:16:20 ▸ One true row per LC — The current row: one per LC, out of every version
+1:17:36 Deduplicate: a window, newest first, row 1 kept
+1:18:55 MERGE: insert the new, update only the newer
+1:20:16 The late older version never wins
+1:21:35 Delta keeps a log: every commit, and the table as it was
+1:22:54 Reference tables: checked first, then published
+1:24:13 G3: Silver is checked before Gold may run
+1:25:29 The join that loses money
+1:26:47 ▸ The answer — The exposure rule: open counts, closed is zero
+1:28:05 fact_lc_exposure: one row per LC
+1:29:24 Per currency: Contoso has two rows, never one
+1:30:46 Decimal money: the cent a float loses
+1:32:09 Utilisation, headroom, breach
+1:33:22 G4: Gold must add up
+1:34:41 The answer: Woodgrove, in dollars
+1:35:59 ▸ Every night, and the night it fails — Databricks Jobs: the night as a task graph
+1:37:23 The gate policy: PASS, WARN, FAIL
+1:38:40 The audit table: every check, every night
+1:40:07 Failure email
+1:41:23 The ADF parent pipeline
+1:42:45 One schedule owner
+1:44:04 A failed night, fixed at the source
+1:45:36 Three kinds of progress
+1:47:01 ▸ Watch it, pay for it, ship it — Diagnostic settings: the factory’s records, kept
+1:48:23 KQL: the night’s failed activities
+1:49:42 Alerts: from a query to someone’s phone
+1:51:00 Where the money goes
+1:52:20 Two environments from one module
+1:53:47 CI with no stored secret
+1:55:04 Where next

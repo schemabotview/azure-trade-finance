@@ -18,7 +18,8 @@
     "check:spine": "python scripts/spine.py",
     "shots": "node scripts/shots.mjs",
     "film": "node scripts/film.mjs",
-    "gen": "python -m tradebook_gen"
+    "gen": "python -m tradebook_gen",
+    "thumb:film": "node scripts/thumb-film.mjs"
   },
   "dependencies": {
     "@graphlearning/graphl-flow": "^0.8.0",

@@ -7,6 +7,6 @@
   "panelBg": "radial-gradient(118% 104% at 70% 34%, #50a8f0 0%, #0078d4 44%, #0b1220 100%)",
   "film": {
     "title": "Learn Azure by building a trade finance risk pipeline: full course, beginner to professional",
-    "blurb": "Every number is really computed (PostgreSQL 18.6, Python 3.14.9, PySpark 4.2.0 with Delta), and every Azure command was really run once on a real subscription, its transcript recorded."
+    "blurb": "Every number is really computed, locally: PostgreSQL 18.6, Python 3.14.9 and PySpark 4.2.0 with Delta 4.4.1. Every Azure resource is Terraform. The Azure steps marked recorded were run once on a real subscription, their transcripts kept, then torn down. The rest says so on screen: emulated (Azurite), compiled (terraform validate, not deployed), doc-cited, or a model. Databricks is not run: open-source Spark and Delta stand in for it, labelled."
   }
 }
