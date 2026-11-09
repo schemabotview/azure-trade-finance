@@ -33,10 +33,10 @@ export const networkShir: SceneModel = ideFrame({
     },
     {
       type: 'table', id: 'pieces', title: 'What the apply built (14)', tone: 'infra', columns: ['piece', 'where'], rows: [
-        { id: 'p-adf', cells: ['Data Factory + ir-tradebook-shir', 'UK South'] },
-        { id: 'p-net', cells: ['vnet-bank-onprem, NSG, NAT', 'UK West: “the bank”'] },
-        { id: 'p-vm', cells: ['Windows VM + install extension', 'UK West, no public IP'] },
-        { id: 'p-state', cells: [`runtime: ${state}`, 'reported by Data Factory'], tone: 'store' },
+        { id: 'p-adf', cells: ['ir-tradebook-shir', 'UK South'] },
+        { id: 'p-net', cells: ['vnet-bank-onprem', 'UK West: the bank'] },
+        { id: 'p-vm', cells: ['a Windows VM', 'UK West, no public IP'] },
+        { id: 'p-state', cells: [`runtime: ${state}`, 'per Data Factory'], tone: 'store' },
       ],
     },
   ],

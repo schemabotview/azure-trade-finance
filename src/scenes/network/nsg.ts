@@ -30,8 +30,8 @@ export const networkNsg: SceneModel = ideFrame({
       ],
     },
     {
-      type: 'table', id: 'rules', title: 'nsg-tradefin-shir, lowest priority first', tone: 'ingest', columns: ['priority', 'direction', 'access', 'rule'],
-      rows: rules.map(([p, d, a, n]) => ({ id: `r-${p}-${d}`, cells: [p, d, a, n], tone: Number(p) < 1000 ? (a === 'Deny' ? 'consume' as const : 'store' as const) : undefined })),
+      type: 'table', id: 'rules', title: 'nsg-tradefin-shir, lowest priority first', tone: 'ingest', columns: ['priority', 'dir', 'rule'],
+      rows: rules.map(([p, d, a, n]) => ({ id: `r-${p}-${d}`, cells: [p, d === 'Inbound' ? 'in' : 'out', n], tone: Number(p) < 1000 ? (a === 'Deny' ? 'consume' as const : 'store' as const) : undefined })),
     },
   ],
   edges: [
