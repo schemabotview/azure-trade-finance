@@ -137,7 +137,9 @@ every IDE frame shares one fit. The Azure portal is never screenshotted.
 **2026-11-09: IDE frame v2 on every IDE section** (COURSE-PLAN Decision 6): compact explorer 175 |
 editor over a 72-column terminal 715 | strict side pane 434. Map frames are unchanged. The recordings
 are v1. `node scripts/check-render.mjs <course>` checks one course; when a side pane runs outside its
-column, the check names the part and by how much.
+column, the check names the part and by how much. The terminal joins each row the spine wrapped at 80
+(a row exactly 80 wide) and wraps the whole line again at 72, so words are not split twice; `keep`
+still names recorded rows.
 
 ## Narration
 

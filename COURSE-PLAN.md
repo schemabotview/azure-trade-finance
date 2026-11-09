@@ -398,8 +398,8 @@ and writes to the emulated lake, so the frame carries the emulated label.
      frame shares. The explorer is kept: it is where a viewer sees the project's Terraform files and
      which one a section adds. A name too long for its row ends in `…` (as VS Code clips it); a tree
      too tall for the frame trims its biggest open folder to the active and new files. The spine
-     records 80 columns; the terminal draws 72, wrapping each longer row as a 72-column terminal
-     would (the spine is untouched). The terminal takes the rows it shows, the editor the rest.
+     records 80 columns; the terminal draws 72: it joins the rows the spine wrapped and wraps each
+     whole line again at 72, as a 72-column terminal would (the spine is untouched). The terminal takes the rows it shows, the editor the rest.
    - A side-pane table holds about 43 monospace columns across two columns, 41 across three: cells
      are shortened, or a column moves into the title; a value read from the spine is never edited
      (§4.7's role matrix takes tighter cell padding instead, in `theme.css`).
