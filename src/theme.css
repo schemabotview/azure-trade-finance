@@ -8,3 +8,8 @@
    columns): in frame v2's 434px side pane that one table takes tighter cell padding instead of a
    shortened role name. */
 .gf-table[data-id='matrix'] td { padding-inline: 4px; }
+
+/* Map frame v2 (map.ts mapFrame): the side column's terminal or editor, first or after the
+   verification label, takes the height its diagram leaves, as a terminal window does. */
+[data-id='map-side'] > .gf-body:has(> .gf-code:first-child) { grid-template-rows: 1fr; grid-auto-rows: auto; height: 100%; }
+[data-id='map-side'] > .gf-body:has(> .gf-item:first-child + .gf-code) { grid-template-rows: auto 1fr; grid-auto-rows: auto; height: 100%; }

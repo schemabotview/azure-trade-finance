@@ -19,16 +19,15 @@ export const landHns: SceneModel = mapFrame({
   built: BUILT.secure,
   side: [
     level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
-    mapEditor('infra/modules/storage/main.tf', code, [[lineOf(code, 'resource "azurerm_storage_account"'), lineOf(code, 'min_tls_version') + 1]],
+    mapEditor('infra/modules/storage/main.tf', code, [[lineOf(code, 'is_hns_enabled'), lineOf(code, 'shared_access_key_enabled')]],
       [lineOf(code, 'is_hns_enabled'), lineOf(code, 'shared_access_key_enabled')]),
-    mapTerminal(session, ['$ terraform apply', 'azurerm_storage_account.lake must be replaced', 'is_hns_enabled', 'Plan:', 'Apply complete!', ['isHnsEnabled', 'dfs.core']]),
+    mapTerminal(session, ['azurerm_storage_account.lake must be replaced', 'Plan:', ['--query isHnsEnabled', 'true']]),
     {
-      type: 'table', id: 'namespace', title: `isHnsEnabled: ${hns}`, tone: 'store', columns: ['', 'flat namespace', 'hierarchical'], rows: [
+      type: 'table', id: 'namespace', title: `isHnsEnabled: ${hns} · what it changes, doc-cited (learn.microsoft.com)`, tone: 'store', columns: ['', 'flat namespace', 'hierarchical'], rows: [
         { id: 'ns-path', cells: ['landing/lc_deals/', 'part of each blob’s name', 'a real directory'] },
         { id: 'ns-rename', cells: ['rename a folder', 'copy, then delete, every blob', 'one operation'], tone: 'store' },
         { id: 'ns-api', cells: ['endpoint', blob, dfs] },
       ],
     },
-    { type: 'note', id: 'source', tone: 'store', text: 'doc-cited: learn.microsoft.com/azure/storage/blobs/data-lake-storage-namespace' },
   ],
 })

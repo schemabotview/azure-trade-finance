@@ -11,12 +11,12 @@ export const howHierarchy: SceneModel = mapFrame({
     level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     mapTerminal(session),
     {
-      type: 'group', id: 'tree', title: 'Five levels, each inside the one above', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'h-tenant', title: 'tenant', sub: 'the organisation’s Entra ID: who exists', icon: 'users' },
-        { type: 'item', id: 'h-mg', title: 'management groups', sub: 'policy for many subscriptions (not ours to read)', icon: 'folder' },
-        { type: 'item', id: 'h-sub', title: 'subscription: sub-tradefin-dev', sub: 'the bill, and a boundary for access', icon: 'cloud' },
-        { type: 'item', id: 'h-rg', title: 'resource groups', sub: 'none yet: Course 3 makes rg-tradefin-dev', icon: 'boxes', muted: true },
-        { type: 'item', id: 'h-res', title: 'resources', sub: 'a storage account, a vault, a factory…', icon: 'storage', muted: true },
+      type: 'group', id: 'tree', title: 'Five levels, each inside the one above', icon: 'workflow', tone: 'ingest', dir: 'row', children: [
+        { type: 'item', id: 'h-tenant', title: 'tenant', sub: 'Entra ID: who exists', icon: 'users', stack: true },
+        { type: 'item', id: 'h-mg', title: 'management groups', sub: 'not ours to read', icon: 'folder', stack: true },
+        { type: 'item', id: 'h-sub', title: 'subscription', sub: 'the bill; an access boundary', icon: 'cloud', stack: true },
+        { type: 'item', id: 'h-rg', title: 'resource groups', sub: 'none yet: Course 3', icon: 'boxes', muted: true, stack: true },
+        { type: 'item', id: 'h-res', title: 'resources', sub: 'storage, a vault…', icon: 'storage', muted: true, stack: true },
       ],
     },
   ],

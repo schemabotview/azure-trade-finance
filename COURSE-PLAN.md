@@ -166,7 +166,7 @@ asserted by `python -m tradebook_gen verify`):
   drawn the Azure way — subscription → resource group, the VNet with its subnets, then Source |
   Landing | Bronze | Silver | Gold with G1–G4 as badges between them. A part not built yet is
   `muted` in place; `BUILT[course]` is what exists; what a section adds is ringed by its `focus`.
-  Every map frame shares one fit.
+  Every map frame shares the IDE frames' fit (map frame v2, Decision 6).
 - **IDE frame v2** (python-expense-tracker's columns, Decision 6): compact explorer 175 | editor over
   terminal 715 | side pane 434, on graphl-flow's shared 1344 × 756 grid. Terraform (HCL), Python, SQL,
   KQL and ADF JSON are all shown here. The side pane is STRICT (Decision 6).
@@ -407,8 +407,20 @@ and writes to the emulated lake, so the frame carries the emulated label.
      plot) and the other at most one table. The verification label rides at the top of the FIRST
      part, so the strict rule never costs it; a note that states a verification level is kept
      inside the diagram, other notes go (the narration carries them).
-   - **Map frames are unchanged for now** (the owner's decision in aws-ecommerce, where the map is
-     the same fixed diagram).
+   - **Map frame v2** (2026-11-09, approved in aws-ecommerce after its Course 5 pilot, then ported
+     here): every map frame on the IDE grid, map 619 | side 715 (the IDE workbench's width, so the
+     side terminal draws the same 72 columns). v1 was 1150 | 787 on its own 1947 × 1040 grid (median
+     text 27 px at 4K, smallest 22); v2 has the IDE frames' zoom. The map stands upright: the bank and
+     the platform's controls (Entra ID, Policy, Budget, Log Analytics, Action group) in the left
+     column; the subscription holds the resource group, the lake's zones as a column (G1–G3 on the
+     arrows) beside the VNet over the services. Subs are dropped from the parts (the names are in the
+     terminals). No area folds: the pipeline's map is small enough to stay whole. Side panes hold the
+     verification label, the editor and/or terminal (the first takes the free height) and one diagram:
+     §2.2's five levels run as a row; §2.7's table keeps the DBU row; §5.1's doc-cited note is in its
+     table's title; §5.2 lost the landing listing table, §6.1 the "for" column, §8.2 its month table
+     (each repeated the terminal), §12.4's note sits in the table's group. Narration edited (wavs to
+     regenerate): §5.1 ("in the middle of the resource group" → "in the resource group"), §6.1 (the
+     apply is told, not shown), §8.2 ("the terminal and the table" → "the terminal").
    - Piloted on Course 5 `land`, then every course's IDE sections (2026-11-09; owner review
      pending). Narration edited: none. Every course is re-recorded, because the frame changed.
 

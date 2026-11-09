@@ -222,6 +222,13 @@ try {
     if (found.panes) ide.push({ slug, panes: found.panes, fit: before })
     if (nodesOf(scene).some(({ node }) => node.id === 'map-pane')) {
       const box = await page.$eval('[data-id="map-pane"]', (e) => { const r = e.getBoundingClientRect(); return [r.x, r.y, r.width, r.height].map(Math.round) })
+      // map frame v2 (map.ts) is on the IDE grid: nothing may run outside the map's or the side's column
+      const over = await page.evaluate(() => ['map-pane', 'map-side'].flatMap((id) => {
+        const pane = document.querySelector(`[data-id="${id}"]`).getBoundingClientRect()
+        return [...document.querySelectorAll(`[data-id="${id}"] [data-id]`)].map((e) => ({ id: e.dataset.id, r: e.getBoundingClientRect() }))
+          .filter(({ r }) => r.bottom > pane.bottom + 1 || r.right > pane.right + 1).slice(0, 1).map(({ id: part }) => `${part} runs outside the ${id} column`)
+      }))
+      for (const o of over) problems.push(`${slug}  ${o} — cut it to fit`)
       maps.push({ slug, box, fit: before })
     }
   }
@@ -245,10 +252,12 @@ for (const { slug, box, fit } of maps.slice(1)) {
   if (fit !== mapRef.fit) problems.push(`${slug}  fit ${fit} differs from ${mapRef.slug}'s — a map frame must not change the zoom`)
   if (box.some((v, i) => v !== mapRef.box[i])) problems.push(`${slug}  the map is at [${box}], not [${mapRef.box}] as in ${mapRef.slug}`)
 }
+// a map frame shares the IDE frames' zoom (map frame v2)
+for (const { slug, fit } of maps) if (ref && fit !== ref.fit) problems.push(`${slug}  fit ${fit} differs from the IDE frames' ${ref.fit} — a map frame is on the IDE grid`)
 
 if (problems.length) {
   console.error(`\n✗ ${problems.length} render problem(s) at 3840×2160:`)
   for (const p of problems) console.error('  ' + p)
   process.exit(1)
 }
-console.log(`✓ ${sections.length} section(s) render cleanly at 3840×2160; ${ide.length} IDE frame(s) share one fit and one layout; ${maps.length} map frame(s) share one fit`)
+console.log(`✓ ${sections.length} section(s) render cleanly at 3840×2160; ${ide.length} IDE frame(s) share one fit and one layout; ${maps.length} map frame(s) share the IDE frames' fit`)

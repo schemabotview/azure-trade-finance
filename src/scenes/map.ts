@@ -1,5 +1,6 @@
 import type { Code, Edge, Group, Item, SceneModel, SceneNode } from '@graphlearning/graphl-flow'
-import { keepLines, terminal, trim, type Keep } from './ide'
+import { FRAME_H, FULL_W, GAP, WORK_W } from './grid'
+import { terminalRows, trim, type Keep } from './ide'
 
 // THE PIPELINE'S MAP — ported from aws-ecommerce's map.ts, drawn the way Azure draws its own: the
 // subscription and its resource group as boundaries; inside, the VNet with its subnets, the storage
@@ -62,32 +63,39 @@ BUILT.gold = [...BUILT.silver, 'gold', 'g4', 'risk-desk']
 BUILT.orchestrate = [...BUILT.gold, 'alerts']
 BUILT.operate = [...BUILT.orchestrate, 'logs']
 
-/** The map, given what exists. What a section adds is ringed by the section's `focus`. */
+/** The map, given what exists. What a section adds is ringed by the section's `focus`. Drawn upright
+ *  for the IDE grid (map frame v2): the bank on the left; the subscription holds the resource group
+ *  (the lake's zones as a column, beside the VNet over the services) above the platform's controls. */
 export function pipelineMap(built: string[]): SceneNode {
   const later = (id: string) => !built.includes(id) || undefined
-  const it = (part: Part): Item => ({ type: 'item', id: part.id, title: part.title, sub: part.sub, icon: part.icon, muted: later(part.id) })
+  // at the IDE frames' zoom a part is its mark and its name; the resource names are in the terminal
+  const it = (part: Part): Item => ({ type: 'item', id: part.id, title: part.title, icon: part.icon, muted: later(part.id) })
   const onprem: Group = {
-    type: 'group', id: 'onprem', icon: 'building', title: 'Syndica Bank', sub: 'on-premises', dashed: true, children: [it(TRADEBOOK), it(SHIR), it(DESK)],
+    type: 'group', id: 'onprem', icon: 'building', title: 'Syndica Bank', sub: 'on-premises', dashed: true,
+    children: [TRADEBOOK, SHIR, DESK].map((x) => ({ ...it(x), stack: true })),
   }
   const vnet: Group = {
-    type: 'group', id: 'vnet', icon: 'network', title: 'vnet-tradefin-dev', sub: '10.30.0.0/16', tone: 'infra', muted: later('vnet'),
-    children: SUBNETS.map(([id, cidr, part]) => ({ type: 'group', id, title: id, sub: cidr, muted: later(id), children: [it(part)] } as Group)),
+    type: 'group', id: 'vnet', icon: 'network', title: 'vnet-tradefin-dev', tone: 'infra', muted: later('vnet'),
+    children: SUBNETS.map(([id, , part]) => ({ type: 'group', id, title: id, muted: later(id), children: [it(part)] } as Group)),
   }
   const storage: Group = {
     type: 'group', id: 'storage', icon: 'storage', title: 'sttradefindev', sub: 'ADLS Gen2', tone: 'store', muted: later('storage'),
     children: [...ZONES.map(it), it(REFERENCE)],
   }
   const services: Group = { type: 'group', id: 'services', bare: true, children: SERVICES.map(it) }
+  const right: Group = { type: 'group', id: 'rg-right', bare: true, children: [vnet, services] }
   const rg: Group = {
-    type: 'group', id: 'rg', icon: 'boxes', title: 'rg-tradefin-dev', sub: 'uksouth', dir: 'row', muted: later('rg'),
-    children: [storage, vnet, services], // the lake first: the bank's runtime reaches landing directly
+    type: 'group', id: 'rg', icon: 'boxes', title: 'rg-tradefin-dev · uksouth', dir: 'row', muted: later('rg'),
+    children: [storage, right], // the lake first: the bank's runtime reaches landing directly
   }
-  const controls: Group = { type: 'group', id: 'controls', bare: true, dir: 'grid', cols: CONTROLS.length, span: 'all', children: CONTROLS.map(it) }
+  // the platform's controls (identity, policy, budget, logs, alerts) stand under the bank, in the left
+  // column the subscription leaves free: the subscription's own height is the lake's column
+  const controls: Group = { type: 'group', id: 'controls', icon: 'settings', title: 'Controls', children: CONTROLS.map(it) }
   const sub: Group = {
-    type: 'group', id: 'subscription', icon: 'cloud', title: 'sub-tradefin-dev', sub: 'subscription', dashed: true, dir: 'grid', cols: 1,
-    children: [rg, controls],
+    type: 'group', id: 'subscription', icon: 'cloud', title: 'sub-tradefin-dev', sub: 'subscription', dashed: true, children: [rg],
   }
-  return { type: 'group', id: 'map', bare: true, dir: 'row', children: [onprem, sub] }
+  const left: Group = { type: 'group', id: 'left', bare: true, children: [onprem, controls] }
+  return { type: 'group', id: 'map', bare: true, dir: 'row', children: [left, sub] }
 }
 
 /** The data's path, always drawn: an arrow into a part not built yet is still where it will run.
@@ -105,16 +113,18 @@ export function mapScene(built: string[]): SceneModel {
   return { nodes: [pipelineMap(built)], edges: MAP_EDGES }
 }
 
-// ── the map frame ─────────────────────────────────────────────────────────────────────────────────
+// ── the map frame (v2, 2026-11-09, aws-ecommerce's) ───────────────────────────────────────────────
 //
-//   the map (MAP_W × MAP_H, fixed)  |  side pane (MAP_SIDE_W): an 80-column terminal, and a diagram
+//   the map (MAP_W × FRAME_H)  |  side pane (MAP_SIDE_W = the IDE workbench's 715): terminal, diagram
 //
-// Both columns are FIXED, width AND height, so every map frame has the same natural box and the same
-// fit (check-render asserts it), and the map's parts sit at the same pixels in every section.
+// On the shared 1344 × 756 grid at a 1% margin, as every IDE frame: the same zoom (≈ 2.8× at 4K), so a
+// map frame's text is as large as an IDE frame's, and its terminal draws the same 72 columns
+// (ide.ts `terminalRows`). The side pane's terminal or editor takes the height its diagram leaves
+// (theme.css). check-render holds every map frame to the IDE fit and fails a part outside a column.
+// (v1, 2026-11-01: map 1150 × 1040 | side 787, ≈ 2× at 4K — too small.)
 
-export const MAP_W = 1150
-export const MAP_H = 1040
-export const MAP_SIDE_W = 787
+export const MAP_SIDE_W = WORK_W
+export const MAP_W = FULL_W - MAP_SIDE_W - GAP
 
 export interface MapFrame {
   built: string[]
@@ -124,22 +134,22 @@ export interface MapFrame {
 
 export function mapFrame({ built, side, edges = [] }: MapFrame): SceneModel {
   return {
-    dir: 'row',
+    dir: 'row', padding: 0.01,
     nodes: [
-      { type: 'group', id: 'map-pane', bare: true, w: MAP_W, h: MAP_H, children: [pipelineMap(built)] },
-      { type: 'group', id: 'map-side', bare: true, w: MAP_SIDE_W, h: MAP_H, children: side },
+      { type: 'group', id: 'map-pane', bare: true, spread: true, w: MAP_W, h: FRAME_H, children: [pipelineMap(built)] },
+      { type: 'group', id: 'map-side', bare: true, w: MAP_SIDE_W, h: FRAME_H, children: side },
     ],
     edges: [...MAP_EDGES, ...edges],
   }
 }
 
-/** A map side pane's terminal: an 80-column pane, the session's lines folded to `keep`. */
+/** A map side pane's terminal: 72 columns, as the IDE frame's, the session's lines folded to `keep`. */
 export function mapTerminal(session: string, keep?: Keep[]): Code {
-  const rows = terminal(session)
-  return { type: 'code', id: 'terminal', terminal: true, filename: 'terminal — lc-exposure', code: rows, fill: true, show: keep && keepLines(rows, keep) }
+  const { rows, tshow } = terminalRows(session, keep)
+  return { type: 'code', id: 'terminal', terminal: true, filename: 'terminal — lc-exposure', code: rows, fill: true, show: tshow }
 }
 
 /** A map side pane's editor: a file from the step, its lines folded to `show`. */
 export function mapEditor(file: string, code: string, show?: [number, number][], highlight?: number[]): Code {
-  return { type: 'code', id: 'editor', filename: file, lang: 'hcl', code: trim(code), show, highlight, tone: 'ingest', fill: true }
+  return { type: 'code', id: 'editor', filename: file, lang: 'hcl', code: trim(code), show, highlight, tone: 'ingest', fill: true, wrap: true }
 }

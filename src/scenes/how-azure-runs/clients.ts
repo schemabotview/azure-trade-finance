@@ -1,5 +1,6 @@
 import type { SceneModel } from '@graphlearning/graphl-flow'
 import { level } from '../level'
+import { lineOf } from '../ide'
 import { BUILT, mapEditor, mapFrame, mapTerminal } from '../map'
 import code from '../../../spine/how-azure-runs/05-three-clients/project/read/main.tf?raw'
 import session from '../../../spine/how-azure-runs/05-three-clients/session.txt?raw'
@@ -10,7 +11,7 @@ export const howClients: SceneModel = mapFrame({
   built: BUILT['how-azure-runs'],
   side: [
     level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
-    mapEditor('read/main.tf', code),
+    mapEditor('read/main.tf', code, [[lineOf(code, 'data "azurerm_subscription"'), lineOf(code, 'value = ')]]),
     mapTerminal(session),
     {
       type: 'group', id: 'three', title: 'Three clients, one answer', icon: 'workflow', tone: 'ingest', dir: 'grid', cols: 3, children: [

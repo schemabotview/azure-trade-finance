@@ -1,8 +1,7 @@
 import type { SceneModel } from '@graphlearning/graphl-flow'
-import { terminal } from '../ide'
 import { outputOf } from '../lab'
 import { level } from '../level'
-import { BUILT, mapFrame } from '../map'
+import { BUILT, mapFrame, mapTerminal } from '../map'
 import session from '../../../spine/operate/04-usage/session.txt?raw'
 
 // §12.4 — where the money goes (recorded on Azure: the Consumption API, read-only). What the course's
@@ -15,14 +14,19 @@ export const operateUsage: SceneModel = mapFrame({
   built: BUILT.operate,
   side: [
     level('recorded on Azure', 'the Consumption API, read-only; its ids are normalised'),
-    { type: 'code', id: 'terminal', terminal: true, filename: 'terminal — lc-exposure', code: terminal(session) },
+    // the products, counted (the minor ones folded); the one record's JSON is the table's
+    mapTerminal(session, ['$ $U --query "$Q.product"', ['Azure DNS - Private', 'NAT Gateway'], 'IP Addresses', 'Key Vault']),
     {
-      type: 'table', id: 'cost', title: 'One usage record, as this subscription gets it', tone: 'consume', columns: ['field', 'value'], rows: [
-        { id: 'c-p', cells: ['product', first.product] },
-        { id: 'c-q', cells: ['quantity', first.quantity] },
-        { id: 'c-c', cells: ['cost', first.cost] },
+      type: 'group', id: 'record', bare: true, children: [
+        {
+          type: 'table', id: 'cost', title: 'One usage record, as this subscription gets it', tone: 'consume', columns: ['field', 'value'], rows: [
+            { id: 'c-p', cells: ['product', first.product] },
+            { id: 'c-q', cells: ['quantity', first.quantity] },
+            { id: 'c-c', cells: ['cost', first.cost] },
+          ],
+        },
+        { type: 'note', id: 'note', tone: 'consume', text: `${products.length} products, no cost: a free trial reports use, not price.` },
       ],
     },
-    { type: 'note', id: 'note', tone: 'consume', text: `${products.length} products used, and no cost: a free-trial offer reports what was used, not what it cost. On a paid subscription the same records carry the price; until then, §2.7 and §8.2 price it from Azure’s list.` },
   ],
 })
