@@ -26,8 +26,8 @@ export const operateDiagnostics: SceneModel = ideFrame({
     },
     {
       type: 'table', id: 'tables', title: 'One table per category', tone: 'store', columns: ['category', 'table', 'one row per'], rows: [
-        { id: 't-1', cells: ['PipelineRuns', 'ADFPipelineRun', 'run of a pipeline'] },
-        { id: 't-2', cells: ['ActivityRuns', 'ADFActivityRun', 'activity in a run'] },
+        { id: 't-1', cells: ['PipelineRuns', 'ADFPipelineRun', 'pipeline run'] },
+        { id: 't-2', cells: ['ActivityRuns', 'ADFActivityRun', 'activity run'] },
         { id: 't-3', cells: ['TriggerRuns', 'ADFTriggerRun', 'trigger firing'] },
       ],
     },

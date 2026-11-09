@@ -27,7 +27,7 @@ export const operateAlerts: SceneModel = ideFrame({
     },
     {
       type: 'table', id: 'catch', title: 'What each alarm catches', tone: 'infra', columns: ['a night that…', 'who says so'], rows: [
-        { id: 'c-1', cells: ['fails a gate', 'the job’s email (§11.4)'] },
+        { id: 'c-1', cells: ['fails a gate', 'the job email, §11.4'] },
         { id: 'c-2', cells: ['never reaches the job', 'this alert'] },
       ],
     },
