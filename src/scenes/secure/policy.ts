@@ -34,8 +34,8 @@ export const securePolicy: SceneModel = ideFrame({
     {
       type: 'table', id: 'tries', title: 'Two tries, by hand', tone: 'consume', columns: ['create', 'refused by'], rows: [
         { id: 't-west', cells: ['francecentral, owner tag', 'UK regions only'], tone: 'consume' },
-        { id: 't-tag', cells: ['uksouth, no tags', 'an owner tag on everything'], tone: 'consume' },
-        { id: 't-after', cells: ['accounts in the group now', accounts.join(', ')] },
+        { id: 't-tag', cells: ['uksouth, no tags', 'owner tag required'], tone: 'consume' },
+        { id: 't-after', cells: ['in the group now', accounts.join(', ')] },
       ],
     },
   ],

@@ -24,10 +24,10 @@ export const secureIdentities: SceneModel = ideFrame({
       type: 'group', id: 'top', bare: true, children: [
         level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
         {
-          type: 'table', id: 'kinds', title: 'Three kinds of identity', tone: 'ingest', columns: ['kind', 'is', 'its secret'], rows: [
-            { id: 'k-user', cells: ['user', 'a person: Ana', 'password + MFA'] },
-            { id: 'k-sp', cells: ['service principal', 'an app: this session', 'a secret, stored'], tone: 'infra' },
-            { id: 'k-mi', cells: ['managed identity', 'code Azure runs', 'none: Azure has it'], tone: 'store' },
+          type: 'table', id: 'kinds', title: 'Three kinds of identity', tone: 'ingest', columns: ['kind', 'its secret'], rows: [
+            { id: 'k-user', cells: ['user (Ana)', 'password + MFA'] },
+            { id: 'k-sp', cells: ['service principal', 'a secret, stored'], tone: 'infra' },
+            { id: 'k-mi', cells: ['managed identity', 'none: Azure has it'], tone: 'store' },
           ],
         },
       ],

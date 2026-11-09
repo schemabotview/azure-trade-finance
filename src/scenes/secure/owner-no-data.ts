@@ -29,10 +29,10 @@ export const secureOwnerNoData: SceneModel = ideFrame({
     },
     {
       type: 'table', id: 'planes', title: 'Two planes, two kinds of role', tone: 'ingest', columns: ['', 'control plane', 'data plane'], rows: [
-        { id: 'pl-what', cells: ['acts on', 'account, containers', 'the blobs inside'] },
+        { id: 'pl-what', cells: ['acts on', 'the account', 'its blobs'] },
         { id: 'pl-owner', cells: ['Owner may', 'yes: lists → []', 'no: refused'], tone: 'consume' },
         { id: 'pl-role', cells: ['granted by', 'Owner, …', 'Blob Data …'], tone: 'store' },
-        { id: 'pl-api', cells: ['example', 'create a container', 'read a blob'] },
+        { id: 'pl-api', cells: ['example', 'make a container', 'read a blob'] },
       ],
     },
   ],

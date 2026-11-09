@@ -30,10 +30,10 @@ export const secureKeyvault: SceneModel = ideFrame({
       ],
     },
     {
-      type: 'table', id: 'settings', title: 'The vault, as the module sets it', tone: 'infra', columns: ['setting', 'value', 'why'], rows: [
-        { id: 's-rbac', cells: ['rbac_authorization_enabled', 'true', 'one model'] },
-        { id: 's-soft', cells: ['soft_delete_retention_days', '7', 'can come back'] },
-        { id: 's-purge', cells: ['purge_protection_enabled', 'false', 'torn down'] },
+      type: 'table', id: 'settings', title: 'The vault, as the module sets it', tone: 'infra', columns: ['setting', 'value'], rows: [
+        { id: 's-rbac', cells: ['rbac_authorization_enabled', 'true'] },
+        { id: 's-soft', cells: ['soft_delete_retention_days', '7'] },
+        { id: 's-purge', cells: ['purge_protection_enabled', 'false'] },
       ],
     },
   ],

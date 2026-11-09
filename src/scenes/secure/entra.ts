@@ -30,7 +30,7 @@ export const secureEntra: SceneModel = ideFrame({
       type: 'table', id: 'two', title: 'Two APIs, two kinds of permission', tone: 'infra', columns: ['', 'Azure resources', 'Entra ID objects'], rows: [
         { id: 'a-api', cells: ['API', 'Resource Manager', 'Microsoft Graph'] },
         { id: 'a-tf', cells: ['provider', 'azurerm', 'azuread'] },
-        { id: 'a-perm', cells: ['needs', 'an Azure role', 'a Graph permission'] },
+        { id: 'a-perm', cells: ['needs', 'an Azure role', 'Graph permission'] },
       ],
     },
   ],
