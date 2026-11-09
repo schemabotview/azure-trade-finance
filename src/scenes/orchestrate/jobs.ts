@@ -28,10 +28,10 @@ export const orchestrateJobs: SceneModel = ideFrame({
       ],
     },
     {
-      type: 'table', id: 'vs', title: 'run.py and the job: the same night', tone: 'infra', columns: ['', 'run.py, locally', 'the job'], rows: [
-        { id: 'v-1', cells: ['a gate fails', 'sys.exit: stops', 'task fails: stops'] },
-        { id: 'v-2', cells: ['runs on', 'Ana’s laptop', 'a cluster, per run'] },
-        { id: 'v-3', cells: ['its code', 'the working copy', 'Git, at run start'] },
+      type: 'table', id: 'vs', title: 'run.py and the job: the same night', tone: 'infra', columns: ['', 'run.py', 'the job'], rows: [
+        { id: 'v-1', cells: ['gate fails', 'sys.exit', 'task fails'] },
+        { id: 'v-2', cells: ['runs on', 'Ana’s laptop', 'a cluster'] },
+        { id: 'v-3', cells: ['its code', 'working copy', 'Git, at start'] },
       ],
     },
   ],

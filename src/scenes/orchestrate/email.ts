@@ -26,9 +26,9 @@ export const orchestrateEmail: SceneModel = ideFrame({
     },
     {
       type: 'table', id: 'ch', title: 'Three channels, three jobs', tone: 'infra', columns: ['channel', 'tells you'], rows: [
-        { id: 'c-1', cells: ['the job’s email', 'that the night failed'] },
-        { id: 'c-2', cells: ['risk.audit.gate_results', 'which check, and why'] },
-        { id: 'c-3', cells: ['a log alert (Course 12)', 'what never reached the job'] },
+        { id: 'c-1', cells: ['the job’s email', 'that it failed'] },
+        { id: 'c-2', cells: ['risk.audit.gate_results', 'which check, why'] },
+        { id: 'c-3', cells: ['a log alert (Course 12)', 'a missed night'] },
       ],
     },
   ],

@@ -29,8 +29,8 @@ export const orchestrateGatePolicy: SceneModel = ideFrame({
     {
       type: 'table', id: 'policy', title: 'three outcomes, and what each blocks', tone: 'infra', columns: ['outcome', 'the run', 'tonight'], rows: [
         { id: 'p-pass', cells: ['PASS', 'goes on', 'G3: 2 of 3 checks'] },
-        { id: 'p-warn', cells: ['WARN', 'goes on, and says so', 'G2'], tone: 'infra' },
-        { id: 'p-fail', cells: ['FAIL', 'stops every step after', 'G3'], tone: 'consume' },
+        { id: 'p-warn', cells: ['WARN', 'goes on, says so', 'G2'], tone: 'infra' },
+        { id: 'p-fail', cells: ['FAIL', 'stops all after', 'G3'], tone: 'consume' },
       ],
     },
   ],

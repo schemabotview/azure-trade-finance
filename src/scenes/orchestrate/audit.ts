@@ -26,8 +26,8 @@ export const orchestrateAudit: SceneModel = ideFrame({
       ],
     },
     {
-      type: 'table', id: 'rows', title: 'night-44, as the audit table holds it', tone: 'store', columns: t.head,
-      rows: t.rows.map((r, i) => ({ id: `r${i}`, cells: r, tone: r[3] === 'FAIL' ? 'consume' as const : r[3] === 'WARN' ? 'infra' as const : undefined })),
+      type: 'table', id: 'rows', title: `${t.rows[0][0]} in the audit table: G2, then G3`, tone: 'store', columns: [t.head[2], t.head[3]],
+      rows: t.rows.map((r, i) => ({ id: `r${i}`, cells: [r[2], r[3]], tone: r[3] === 'FAIL' ? 'consume' as const : r[3] === 'WARN' ? 'infra' as const : undefined })),
     },
   ],
   edges: [

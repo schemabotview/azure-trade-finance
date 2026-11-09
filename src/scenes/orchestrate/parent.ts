@@ -29,7 +29,7 @@ export const orchestrateParent: SceneModel = ideFrame({
     {
       type: 'table', id: 'own', title: 'Who owns which part of the night', tone: 'infra', columns: ['part', 'owns'], rows: [
         { id: 'o-1', cells: ['tr_nightly_0200', 'when, and which window'] },
-        { id: 'o-2', cells: ['pl_extract', 'the batch: landed, checked, sealed'] },
+        { id: 'o-2', cells: ['pl_extract', 'landing, G1, the seal'] },
         { id: 'o-3', cells: ['the Databricks job', 'the gates and Gold'] },
       ],
     },
