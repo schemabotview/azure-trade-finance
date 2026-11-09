@@ -9,7 +9,7 @@ import session from '../../../spine/secure/02-identities/session.txt?raw'
 // §4.2 — service principals and managed identities (recorded on Azure). The pipeline gets its own
 // identity, id-tradefin-pipeline, a user-assigned managed identity: Azure holds its credential. Ana's
 // session runs as a service principal (the recording's sign-in), which DOES have a secret somewhere.
-const [name, principal] = outputOf(session, 'az identity list -g rg-tradefin-dev --query "[].[name,principalId]" -o tsv').trim().split('\t')
+const [name] = outputOf(session, 'az identity list -g rg-tradefin-dev --query "[].[name,principalId]" -o tsv').trim().split('\t')
 const me = outputOf(session, 'az account show --query user.type -o tsv').trim()
 
 export const secureIdentities: SceneModel = ideFrame({
@@ -19,23 +19,21 @@ export const secureIdentities: SceneModel = ideFrame({
   session,
   keep: ['$ cd infra', '$ terraform apply', 'Plan: 1 to add', 'Apply complete!', ['$ az identity list', me]],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+    // the verification label rides at the top of the first part; "at the bottom", how it will be used
     {
-      type: 'table', id: 'kinds', title: 'Three kinds of identity', tone: 'ingest', columns: ['kind', 'is', 'its secret'], rows: [
-        { id: 'k-user', cells: ['user', 'a person: Ana', 'password + MFA'] },
-        { id: 'k-sp', cells: ['service principal', 'an app: this session', 'a secret, stored'], tone: 'infra' },
-        { id: 'k-mi', cells: ['managed identity', 'code Azure runs', 'none: Azure holds it'], tone: 'store' },
+      type: 'group', id: 'top', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'table', id: 'kinds', title: 'Three kinds of identity', tone: 'ingest', columns: ['kind', 'is', 'its secret'], rows: [
+            { id: 'k-user', cells: ['user', 'a person: Ana', 'password + MFA'] },
+            { id: 'k-sp', cells: ['service principal', 'an app: this session', 'a secret, stored'], tone: 'infra' },
+            { id: 'k-mi', cells: ['managed identity', 'code Azure runs', 'none: Azure has it'], tone: 'store' },
+          ],
+        },
       ],
     },
     {
-      type: 'table', id: 'record', title: name, tone: 'store', columns: ['field', 'value'], rows: [
-        { id: 'r-kind', cells: ['kind', 'user-assigned managed identity'] },
-        { id: 'r-principal', cells: ['principal id', principal] },
-        { id: 'r-me', cells: ['this session signs in as', me] },
-      ],
-    },
-    {
-      type: 'group', id: 'flow', title: 'How the pipeline will sign in', icon: 'workflow', tone: 'store', children: [
+      type: 'group', id: 'flow', title: `How the pipeline will sign in, as ${name}`, icon: 'workflow', tone: 'store', children: [
         { type: 'item', id: 'f-adf', title: 'Data Factory (Course 7)', sub: 'wears id-tradefin-pipeline', icon: 'datafactory' },
         { type: 'item', id: 'f-token', title: 'a token from Entra ID', sub: 'asked for at run time, short-lived', icon: 'key' },
         { type: 'item', id: 'f-vault', title: 'Key Vault, the lake', sub: 'accept the token, check the role', icon: 'keyvault' },

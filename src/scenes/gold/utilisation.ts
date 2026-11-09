@@ -17,10 +17,18 @@ export const goldUtilisation: SceneModel = ideFrame({
   session,
   side: [
     {
-      type: 'group', id: 'how', title: 'each aggregate row meets its limit', icon: 'workflow', tone: 'ingest', dir: 'row', children: [
-        { type: 'item', id: 'u-agg', title: 'exposure', sub: 'group + currency', icon: 'chart' },
-        { type: 'item', id: 'u-lim', title: '+ its limit', sub: 'same two keys', icon: 'shield' },
-        { type: 'item', id: 'u-out', title: '3 columns', sub: 'below', icon: 'gauge', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        {
+          type: 'group', id: 'how', title: 'each aggregate row meets its limit', icon: 'workflow', tone: 'ingest', dir: 'row', children: [
+            { type: 'item', id: 'u-agg', title: 'exposure', sub: 'group + currency', icon: 'chart' },
+            { type: 'item', id: 'u-lim', title: '+ its limit', sub: 'same two keys', icon: 'shield' },
+            { type: 'item', id: 'u-out', title: '3 columns', sub: 'below', icon: 'gauge', tone: 'store' },
+          ],
+        },
+        {
+          type: 'group', id: 'rows', title: 'Each group, against its own limit', icon: 'gauge', tone: 'store', children:
+            t.map(([g, c, x, l, u, b]) => ({ type: 'item' as const, id: `r-${g}-${c}`, title: `${g} ${c}: ${u}%`, sub: `${millions(x)} of ${millions(l)}${b === 'Yes' ? ', in breach' : ''}`, icon: b === 'Yes' ? 'bell' : 'gauge', tone: b === 'Yes' ? 'consume' as const : undefined })),
+        },
       ],
     },
     {
@@ -30,11 +38,6 @@ export const goldUtilisation: SceneModel = ideFrame({
         { id: 'f-b', cells: ['breach', 'Yes when headroom < 0'] },
       ],
     },
-    {
-      type: 'group', id: 'rows', title: 'Each group, against its own limit', icon: 'gauge', tone: 'store', children:
-        t.map(([g, c, x, l, u, b]) => ({ type: 'item' as const, id: `r-${g}-${c}`, title: `${g} ${c}: ${u}%`, sub: `${millions(x)} of ${millions(l)}${b === 'Yes' ? ', in breach' : ''}`, icon: b === 'Yes' ? 'bell' : 'gauge', tone: b === 'Yes' ? 'consume' as const : undefined })),
-    },
-    { type: 'note', id: 'note', tone: 'consume', text: 'A breach is news for the desk, not a data error: Gold reports it and never stops for it.' },
   ],
   edges: [
     { from: 'u-agg', to: 'u-lim' },

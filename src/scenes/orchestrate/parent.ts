@@ -13,13 +13,17 @@ export const orchestrateParent: SceneModel = ideFrame({
     highlight: [lineOf(code, '"type": "ExecutePipeline"'), lineOf(code, '"type": "DatabricksJob"')] },
   session,
   side: [
-    level('compiled', 'terraform validate, offline: real, not deployed'),
     {
-      type: 'group', id: 'parent', title: 'pl_nightly', icon: 'datafactory', tone: 'ingest', children: [
-        { type: 'item', id: 'p-trig', title: 'tr_nightly_0200', sub: 'the window, its batch, the job’s id', icon: 'clock' },
-        { type: 'item', id: 'p-ext', title: 'extract: pl_extract', sub: 'copy, G1, seal, watermark (Course 7)', icon: 'datafactory' },
-        { type: 'item', id: 'p-job', title: 'lc_exposure: run the Databricks job', sub: 'only if the extract succeeded', icon: 'databricks' },
-        { type: 'item', id: 'p-gold', title: 'Gold, published or held', sub: 'G2–G4 inside the job', icon: 'layers', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('compiled', 'terraform validate, offline: real, not deployed'),
+        {
+          type: 'group', id: 'parent', title: 'pl_nightly', icon: 'datafactory', tone: 'ingest', children: [
+            { type: 'item', id: 'p-trig', title: 'tr_nightly_0200', sub: 'the window, its batch, the job’s id', icon: 'clock' },
+            { type: 'item', id: 'p-ext', title: 'extract: pl_extract', sub: 'copy, G1, seal, watermark (Course 7)', icon: 'datafactory' },
+            { type: 'item', id: 'p-job', title: 'lc_exposure: run the Databricks job', sub: 'only if the extract succeeded', icon: 'databricks' },
+            { type: 'item', id: 'p-gold', title: 'Gold, published or held', sub: 'G2–G4 inside the job', icon: 'layers', tone: 'store' },
+          ],
+        },
       ],
     },
     {
@@ -29,7 +33,6 @@ export const orchestrateParent: SceneModel = ideFrame({
         { id: 'o-3', cells: ['the Databricks job', 'the gates and Gold'] },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'If the extract fails, the job never starts: Bronze never sees a half-delivered batch.' },
   ],
   edges: [
     { from: 'p-trig', to: 'p-ext' },

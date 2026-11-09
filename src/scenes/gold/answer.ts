@@ -18,24 +18,27 @@ export const goldAnswer: SceneModel = ideFrame({
   keep: ['$ python pipeline/g4.py', 'G4 PASS', ['$ python pipeline/answer.py', 'breach']],
   side: [
     {
-      type: 'group', id: 'card', title: 'Woodgrove · USD · 31 October 2026', icon: 'building', tone: 'store', dir: 'grid', cols: 2, children: [
-        { type: 'item', id: 'a-x', title: v('gross exposure'), sub: 'gross exposure', icon: 'chart' },
-        { type: 'item', id: 'a-l', title: v('limit'), sub: 'limit', icon: 'shield' },
-        { type: 'item', id: 'a-u', title: v('utilisation'), sub: 'utilisation', icon: 'gauge' },
-        { type: 'item', id: 'a-h', title: v('headroom'), sub: 'headroom', icon: 'chart' },
-        { type: 'item', id: 'a-b', title: v('breach'), sub: 'breach', icon: 'check', tone: 'store', span: 'all' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        {
+          type: 'group', id: 'card', title: 'Woodgrove · USD · 31 October 2026', icon: 'building', tone: 'store', dir: 'grid', cols: 2, children: [
+            { type: 'item', id: 'a-x', title: v('gross exposure'), sub: 'gross exposure', icon: 'chart' },
+            { type: 'item', id: 'a-l', title: v('limit'), sub: 'limit', icon: 'shield' },
+            { type: 'item', id: 'a-u', title: v('utilisation'), sub: 'utilisation', icon: 'gauge' },
+            { type: 'item', id: 'a-h', title: v('headroom'), sub: 'headroom', icon: 'chart' },
+            { type: 'item', id: 'a-b', title: v('breach'), sub: 'breach', icon: 'check', tone: 'store', span: 'all' },
+          ],
+        },
+        {
+          type: 'group', id: 'path', title: 'How the number was earned', icon: 'workflow', tone: 'ingest', children: [
+            { type: 'item', id: 'p-g1', title: 'G1 at landing', sub: 'every batch complete and sealed', icon: 'adls' },
+            { type: 'item', id: 'p-g2', title: 'G2 into Bronze', sub: 'untrusted rows set aside', icon: 'layers' },
+            { type: 'item', id: 'p-g3', title: 'G3 on Silver', sub: 'one row per LC, every LC mapped', icon: 'layers' },
+            { type: 'item', id: 'p-g4', title: 'G4 on Gold: PASS', sub: `fact = aggregate in ${g4.length} currencies`, icon: 'check', tone: 'store' },
+            { type: 'item', id: 'p-ans', title: 'answer.py', sub: 'reads the published aggregate', icon: 'code' },
+          ],
+        },
       ],
     },
-    {
-      type: 'group', id: 'path', title: 'How the number was earned', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'p-g1', title: 'G1 at landing', sub: 'every batch complete and sealed', icon: 'adls' },
-        { type: 'item', id: 'p-g2', title: 'G2 into Bronze', sub: 'untrusted rows set aside', icon: 'layers' },
-        { type: 'item', id: 'p-g3', title: 'G3 on Silver', sub: 'one row per LC, every LC mapped', icon: 'layers' },
-        { type: 'item', id: 'p-g4', title: 'G4 on Gold: PASS', sub: `fact = aggregate in ${g4.length} currencies`, icon: 'check', tone: 'store' },
-        { type: 'item', id: 'p-ans', title: 'answer.py', sub: 'reads the published aggregate', icon: 'code' },
-      ],
-    },
-    { type: 'note', id: 'note', tone: 'store', text: `Not in breach, but close: one more Woodgrove LC above ${v('headroom')} dollars would put it over.` },
   ],
   edges: [
     { from: 'p-g1', to: 'p-g2' },

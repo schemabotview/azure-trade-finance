@@ -30,13 +30,6 @@ export const goldFact: SceneModel = ideFrame({
       type: 'table', id: 'woodgrove', title: `Woodgrove’s open LCs: USD ${money(String(total))}`, tone: 'store', columns: ['lc_id', 'applicant', 'status', 'exposure'],
       rows: w.map((r) => ({ id: `w-${r[0]}`, cells: [r[0], r[1], r[3], money(r[5])] })),
     },
-    {
-      type: 'table', id: 'cols', title: 'where each column comes from', tone: 'infra', columns: ['column', 'from'], rows: [
-        { id: 'k-1', cells: ['lc_id, status, amount', 'Silver lc_current'] },
-        { id: 'k-2', cells: ['group_name', 'counterparty_group'] },
-        { id: 'k-3', cells: ['exposure', 'the rule, §10.1'] },
-      ],
-    },
   ],
   edges: [
     { from: 'b-silver', to: 'b-rule' },

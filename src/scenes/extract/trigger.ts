@@ -16,12 +16,16 @@ export const extractTrigger: SceneModel = ideFrame({
   session,
   keep: ['Apply complete!', ['$ bash adf/adf.sh get', '"startTime"']],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
-      type: 'group', id: 'line', title: `${t.type}: every ${t.window.interval} hours, ${t.state.toLowerCase()}`, icon: 'clock', tone: 'ingest', children: [
-        { type: 'item', id: 'w-42', title: 'batch 42', sub: '31 Oct 02:00 → 1 Nov 02:00', icon: 'file', tone: 'store' },
-        { type: 'item', id: 'w-43', title: 'batch 43', sub: '1 Nov → 2 Nov', icon: 'file' },
-        { type: 'item', id: 'w-44', title: 'batch 44', sub: '2 Nov → 3 Nov', icon: 'file' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'line', title: `${t.type}: every ${t.window.interval} hours, ${t.state.toLowerCase()}`, icon: 'clock', tone: 'ingest', children: [
+            { type: 'item', id: 'w-42', title: 'batch 42', sub: '31 Oct 02:00 → 1 Nov 02:00', icon: 'file', tone: 'store' },
+            { type: 'item', id: 'w-43', title: 'batch 43', sub: '1 Nov → 2 Nov', icon: 'file' },
+            { type: 'item', id: 'w-44', title: 'batch 44', sub: '2 Nov → 3 Nov', icon: 'file' },
+          ],
+        },
       ],
     },
     {
@@ -33,7 +37,6 @@ export const extractTrigger: SceneModel = ideFrame({
         { id: 'v-batch', cells: ['its batch number', 'typed by someone', 'from its window’s end'] },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: `Created stopped (state: ${t.state}): it starts when the bank does, and catches up window by window from ${t.window.startTime}.` },
   ],
   edges: [
     { from: 'w-42', to: 'w-43' },

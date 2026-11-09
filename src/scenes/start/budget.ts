@@ -19,13 +19,17 @@ export const startBudget: SceneModel = ideFrame({
   session,
   keep: ['$ cd infra', '$ terraform apply', 'Plan: 2 to add', 'actionGroups/ag-trade-risk', 'Apply complete!', '$ az consumption budget list', budget],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
-      type: 'group', id: 'chain', title: 'Before the money is spent', icon: 'gauge', tone: 'infra', children: [
-        { type: 'item', id: 'b-budget', title: budget, sub: `${amount} a month, on rg-tradefin-dev`, icon: 'gauge' },
-        { type: 'item', id: 'b-forecast', title: `forecast > ${threshold}%`, sub: 'the month’s spend, projected', icon: 'chart' },
-        { type: 'item', id: 'b-group', title: 'ag-trade-risk', sub: 'an action group', icon: 'bell' },
-        { type: 'item', id: 'b-mail', title: 'trade-risk@syndicabank.example', sub: 'an email, not a shutdown', icon: 'users', tone: 'consume' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'chain', title: 'Before the money is spent', icon: 'gauge', tone: 'infra', children: [
+            { type: 'item', id: 'b-budget', title: budget, sub: `${amount} a month, on rg-tradefin-dev`, icon: 'gauge' },
+            { type: 'item', id: 'b-forecast', title: `forecast > ${threshold}%`, sub: 'the month’s spend, projected', icon: 'chart' },
+            { type: 'item', id: 'b-group', title: 'ag-trade-risk', sub: 'an action group', icon: 'bell' },
+            { type: 'item', id: 'b-mail', title: 'trade-risk@syndicabank.example', sub: 'an email, not a shutdown', icon: 'users', tone: 'consume' },
+          ],
+        },
       ],
     },
     {
@@ -33,7 +37,6 @@ export const startBudget: SceneModel = ideFrame({
       rows: [['amount', amount], ['time_grain', /time_grain\s+=\s+"(\w+)"/.exec(code)![1]], ['threshold', `${threshold}%`],
         ['threshold_type', /threshold_type\s+=\s+"(\w+)"/.exec(code)![1]]].map(([k, v]) => ({ id: `set-${k}`, cells: [k, v] })),
     },
-    { type: 'note', id: 'note', tone: 'infra', text: 'A budget warns; it never stops a resource. Turning things off is a person’s decision, or an automation’s.' },
   ],
   edges: [
     { from: 'b-budget', to: 'b-forecast' },

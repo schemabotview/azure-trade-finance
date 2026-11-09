@@ -18,25 +18,27 @@ export const extractLinked: SceneModel = ideFrame({
   session,
   keep: ['Apply complete!', '$ az vm run-command invoke $T', 'status: done', ['$ R=$(bash adf/adf.sh run', ping.lcs + ',']],
   side: [
-    level('recorded on Azure', 'TradeBook stands in: a PostgreSQL VM in the simulated bank network'),
     {
-      type: 'group', id: 'path', title: 'How the factory reaches TradeBook', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'p-kv', title: 'kv-tradefin-dev', sub: 'tradebook-adf-password', icon: 'keyvault' },
-        { type: 'item', id: 'p-adf', title: 'adf-tradefin-dev', sub: 'pl_tradebook_ping: one Lookup', icon: 'datafactory' },
-        { type: 'item', id: 'p-shir', title: 'ir-tradebook-shir', sub: 'asks for work, runs the query', icon: 'vm' },
-        { type: 'item', id: 'p-tb', title: `TradeBook: ${ping.lcs} LCs`, sub: 'PostgreSQL, 10.10.1.10:5432', icon: 'postgresql', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'TradeBook: a PostgreSQL VM in a simulated bank network'),
+        {
+          type: 'group', id: 'path', title: 'How the factory reaches TradeBook', icon: 'workflow', tone: 'ingest', children: [
+            { type: 'item', id: 'p-kv', title: 'kv-tradefin-dev', sub: 'tradebook-adf-password', icon: 'keyvault' },
+            { type: 'item', id: 'p-adf', title: 'adf-tradefin-dev', sub: 'pl_tradebook_ping: one Lookup', icon: 'datafactory' },
+            { type: 'item', id: 'p-shir', title: 'ir-tradebook-shir', sub: 'asks for work, runs the query', icon: 'vm' },
+            { type: 'item', id: 'p-tb', title: `TradeBook: ${ping.lcs} LCs`, sub: 'PostgreSQL, 10.10.1.10:5432', icon: 'postgresql', tone: 'store' },
+          ],
+        },
       ],
     },
     {
       type: 'table', id: 'built', title: 'What the apply built (12)', tone: 'infra', columns: ['piece', 'for'], rows: [
         { id: 'b-vm', cells: ['vm-bank-tradebook, its NIC', 'TradeBook, in the bank'] },
-        { id: 'b-peer', cells: ['two peerings, two DNS links', 'the bank ↔ the lake, privately'] },
+        { id: 'b-peer', cells: ['two peerings, two DNS links', 'bank ↔ lake, privately'] },
         { id: 'b-kv', cells: ['a secret, two passwords', 'the factory’s login'] },
-        { id: 'b-adf', cells: ['ls_tradebook (ARM), a dataset', 'the factory’s view of TradeBook'] },
-        { id: 'b-pl', cells: ['pl_tradebook_ping', 'one Lookup: can we reach it?'] },
+        { id: 'b-adf', cells: ['ls_tradebook, a dataset, a ping', 'reachable? one Lookup'] },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'The password is never in the linked service: the factory reads it from the vault at run time, as the pipeline’s identity.' },
   ],
   edges: [
     { from: 'p-kv', to: 'p-adf', label: 'password' },

@@ -18,17 +18,21 @@ export const goldCurrency: SceneModel = ideFrame({
   session,
   side: [
     {
-      type: 'group', id: 'how', title: 'fact → aggregate', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'h-fact', title: 'fact_lc_exposure', sub: 'one row per LC', icon: 'layers' },
-        { type: 'item', id: 'h-where', title: 'only rows with a group', sub: 'the unmapped LC is G3’s to raise', icon: 'filter' },
-        { type: 'item', id: 'h-group', title: 'group by group_name AND currency', sub: 'sum(exposure)', icon: 'boxes' },
-        { type: 'item', id: 'h-agg', title: `agg_group_exposure: ${t.length} rows`, sub: 'one per group and currency', icon: 'layers', tone: 'store' },
-      ],
-    },
-    {
-      type: 'group', id: 'contoso', title: 'Contoso: two rows, never one', icon: 'building', tone: 'consume', dir: 'grid', cols: 2, children: [
-        ...contoso.map(([, c, x]) => ({ type: 'item' as const, id: `c-${c}`, title: `${c} ${millions(x)}`, sub: `gross exposure in ${c}`, icon: 'chart', tone: 'store' as const })),
-        { type: 'item', id: 'c-no', title: 'EUR + USD = ?', sub: 'no answer: a rate is a market price, not the desk’s', icon: 'lock', span: 'all' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        {
+          type: 'group', id: 'how', title: 'fact → aggregate', icon: 'workflow', tone: 'ingest', children: [
+            { type: 'item', id: 'h-fact', title: 'fact_lc_exposure: one row per LC', icon: 'layers' },
+            { type: 'item', id: 'h-where', title: 'only rows with a group', sub: 'the unmapped LC: G3 raises it', icon: 'filter' },
+            { type: 'item', id: 'h-group', title: 'group by group and currency', sub: 'sum(exposure)', icon: 'boxes' },
+            { type: 'item', id: 'h-agg', title: `agg_group_exposure: ${t.length} rows`, sub: 'one per group and currency', icon: 'layers', tone: 'store' },
+          ],
+        },
+        {
+          type: 'group', id: 'contoso', title: 'Contoso: two rows, never one', icon: 'building', tone: 'consume', dir: 'grid', cols: 2, children: [
+            ...contoso.map(([, c, x]) => ({ type: 'item' as const, id: `c-${c}`, title: `${c} ${millions(x)}`, sub: `gross exposure in ${c}`, icon: 'chart', tone: 'store' as const })),
+            { type: 'item', id: 'c-no', title: 'EUR + USD = ?', sub: 'no: a rate is a market price', icon: 'lock', span: 'all' },
+          ],
+        },
       ],
     },
     {

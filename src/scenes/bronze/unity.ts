@@ -13,13 +13,17 @@ export const bronzeUnity: SceneModel = ideFrame({
     highlight: [lineOf(code, 'name         = "risk"'), lineOf(code, 'for_each     = toset(["bronze"')] },
   session,
   side: [
-    level('compiled', 'terraform validate, offline: real, not deployed'),
     {
-      type: 'group', id: 'ns', title: 'catalog . schema . table', icon: 'layers', tone: 'ingest', children: [
-        { type: 'item', id: 'n-meta', title: 'the metastore', sub: 'one per region, the account’s', icon: 'databricks' },
-        { type: 'item', id: 'n-cat', title: 'risk', sub: 'the catalog: the risk team’s data', icon: 'boxes' },
-        { type: 'item', id: 'n-sch', title: 'bronze, silver, gold, audit', sub: 'schemas: one per zone, and the gates’ record', icon: 'folder' },
-        { type: 'item', id: 'n-tab', title: 'risk.gold.agg_group_exposure', sub: 'a table, by its three-part name', icon: 'layers', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('compiled', 'terraform validate, offline: real, not deployed'),
+        {
+          type: 'group', id: 'ns', title: 'catalog . schema . table', icon: 'layers', tone: 'ingest', children: [
+            { type: 'item', id: 'n-meta', title: 'the metastore', sub: 'one per region, the account’s', icon: 'databricks' },
+            { type: 'item', id: 'n-cat', title: 'risk', sub: 'the catalog: the risk team’s data', icon: 'boxes' },
+            { type: 'item', id: 'n-sch', title: 'bronze, silver, gold, audit', sub: 'schemas: one per zone, and the gates’ record', icon: 'folder' },
+            { type: 'item', id: 'n-tab', title: 'risk.gold.agg_group_exposure', sub: 'a table, by its three-part name', icon: 'layers', tone: 'store' },
+          ],
+        },
       ],
     },
     {
@@ -30,7 +34,6 @@ export const bronzeUnity: SceneModel = ideFrame({
         { id: 'm-4', cells: ['lake/audit/gate_results', 'risk.audit.gate_results'] },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'The same Delta tables, read by the same Spark: the catalog adds one place to grant access, and an audit of every read.' },
   ],
   edges: [
     { from: 'n-meta', to: 'n-cat' },

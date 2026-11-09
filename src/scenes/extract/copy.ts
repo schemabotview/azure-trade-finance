@@ -19,20 +19,23 @@ export const extractCopy: SceneModel = ideFrame({
   session,
   keep: ['Apply complete!', ['$ W=', 'commit_watermark']],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
-      type: 'group', id: 'flow', title: 'Source query → sink folder', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'f-src', title: 'TradeBook: SELECT * FROM lc_deals', sub: 'read by the bank’s runtime', icon: 'postgresql' },
-        { type: 'item', id: 'f-shir', title: 'ir-tradebook-shir', sub: 'over the peering, to the private endpoint', icon: 'vm' },
-        { type: 'item', id: 'f-sink', title: `landing/lc_deals/batch_id=41/: ${copied} rows`, sub: 'part-00000.csv, as the pipeline’s identity', icon: 'adls', tone: 'store' },
-        { type: 'item', id: 'f-wm', title: '_control/lc_deals.watermark', sub: 'where tomorrow’s extract starts', icon: 'clock' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'flow', title: 'Source query → sink folder', icon: 'workflow', tone: 'ingest', children: [
+            { type: 'item', id: 'f-src', title: 'TradeBook: SELECT * FROM lc_deals', sub: 'read by the bank’s runtime', icon: 'postgresql' },
+            { type: 'item', id: 'f-shir', title: 'ir-tradebook-shir', sub: 'over the peering, to the private endpoint', icon: 'vm' },
+            { type: 'item', id: 'f-sink', title: `landing/lc_deals/batch_id=41/: ${copied} rows`, sub: 'part-00000.csv, as the pipeline’s identity', icon: 'adls', tone: 'store' },
+            { type: 'item', id: 'f-wm', title: '_control/lc_deals.watermark', sub: 'where tomorrow’s extract starts', icon: 'clock' },
+          ],
+        },
       ],
     },
     {
       type: 'table', id: 'out', title: 'Each activity’s output', tone: 'store', columns: ['activity', 'status', 'rows'],
       rows: acts.map(([a, s, r]) => ({ id: `o-${a}`, cells: [a, s, r] })),
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'No key, no password, no public endpoint: the runtime wrote as the pipeline’s identity, over the private network.' },
   ],
   edges: [
     { from: 'f-src', to: 'f-shir' },

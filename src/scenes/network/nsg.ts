@@ -17,17 +17,21 @@ export const networkNsg: SceneModel = ideFrame({
   session,
   keep: ['$ terraform apply', ['$ az network nsg rule list', rules.at(-1)!.at(-1)!]],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+    {
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'eval', title: 'How a packet is judged', icon: 'shield', tone: 'infra', children: [
+            { type: 'item', id: 'e-sort', title: 'rules sorted by priority', sub: 'lowest number first, per direction', icon: 'filter' },
+            { type: 'item', id: 'e-first', title: 'the first rule that matches decides', sub: 'allow or deny; the rest are not read', icon: 'check' },
+            { type: 'item', id: 'e-default', title: 'Azure’s defaults catch the rest', sub: '65000 and up: VNet allowed, internet out allowed', icon: 'boxes' },
+          ],
+        },
+      ],
+    },
     {
       type: 'table', id: 'rules', title: 'nsg-tradefin-shir, lowest priority first', tone: 'ingest', columns: ['priority', 'direction', 'access', 'rule'],
       rows: rules.map(([p, d, a, n]) => ({ id: `r-${p}-${d}`, cells: [p, d, a, n], tone: Number(p) < 1000 ? (a === 'Deny' ? 'consume' as const : 'store' as const) : undefined })),
-    },
-    {
-      type: 'group', id: 'eval', title: 'How a packet is judged', icon: 'shield', tone: 'infra', children: [
-        { type: 'item', id: 'e-sort', title: 'rules sorted by priority', sub: 'lowest number first, per direction', icon: 'filter' },
-        { type: 'item', id: 'e-first', title: 'the first rule that matches decides', sub: 'allow or deny; the rest are not read', icon: 'check' },
-        { type: 'item', id: 'e-default', title: 'Azure’s defaults catch the rest', sub: '65000 and up: VNet allowed, internet out allowed', icon: 'boxes' },
-      ],
     },
   ],
   edges: [

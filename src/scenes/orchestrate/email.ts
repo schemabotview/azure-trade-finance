@@ -11,13 +11,17 @@ export const orchestrateEmail: SceneModel = ideFrame({
   editor: { file: 'infra/job.tf', code, show: [[lineOf(code, '# A failed night tells'), lineOf(code, 'on_failure = [') + 1]], highlight: [lineOf(code, 'on_failure = [')] },
   session,
   side: [
-    level('compiled', 'terraform validate, offline: real, not deployed'),
     {
-      type: 'group', id: 'flow', title: 'A failed night, told', icon: 'workflow', tone: 'consume', children: [
-        { type: 'item', id: 'e-fail', title: 'task g3 exits 1', sub: 'G3 FAIL: the run fails', icon: 'lock', tone: 'consume' },
-        { type: 'item', id: 'e-job', title: 'the jobs service', sub: 'on_failure', icon: 'databricks' },
-        { type: 'item', id: 'e-mail', title: 'trade-risk@syndicabank.example', sub: 'the run, its failed task, a link', icon: 'bell' },
-        { type: 'item', id: 'e-audit', title: 'risk.audit.gate_results', sub: 'what failed and why: §11.3', icon: 'layers', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('compiled', 'terraform validate, offline: real, not deployed'),
+        {
+          type: 'group', id: 'flow', title: 'A failed night, told', icon: 'workflow', tone: 'consume', children: [
+            { type: 'item', id: 'e-fail', title: 'task g3 exits 1', sub: 'G3 FAIL: the run fails', icon: 'lock', tone: 'consume' },
+            { type: 'item', id: 'e-job', title: 'the jobs service', sub: 'on_failure', icon: 'databricks' },
+            { type: 'item', id: 'e-mail', title: 'trade-risk@syndicabank.example', sub: 'the run, its failed task, a link', icon: 'bell' },
+            { type: 'item', id: 'e-audit', title: 'risk.audit.gate_results', sub: 'what failed and why: §11.3', icon: 'layers', tone: 'store' },
+          ],
+        },
       ],
     },
     {
@@ -27,7 +31,6 @@ export const orchestrateEmail: SceneModel = ideFrame({
         { id: 'c-3', cells: ['a log alert (Course 12)', 'what never reached the job'] },
       ],
     },
-    { type: 'note', id: 'note', tone: 'consume', text: 'The email says that it failed; the audit table says why. Course 12 puts an alert on the logs as well.' },
   ],
   edges: [
     { from: 'e-fail', to: 'e-job' },

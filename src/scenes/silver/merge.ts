@@ -17,19 +17,23 @@ export const silverMerge: SceneModel = ideFrame({
   session,
   side: [
     {
-      type: 'group', id: 'loop', title: 'For each batch, in order', icon: 'clock', tone: 'store', children: [
-        { type: 'item', id: 'l-bronze', title: 'Bronze rows', sub: 'one batch', icon: 'layers' },
-        { type: 'item', id: 'l-dedupe', title: 'deduplicate', sub: 'within it', icon: 'filter' },
-        { type: 'item', id: 'l-merge', title: 'MERGE', sub: 'a Delta commit', icon: 'layers', tone: 'store' },
-        { type: 'item', id: 'l-next', title: 'the next batch', sub: 'against Silver as this one left it', icon: 'clock' },
-      ],
-    },
-    {
-      type: 'group', id: 'paths', title: 'Each incoming row takes one path', icon: 'workflow', tone: 'ingest', dir: 'grid', cols: 3, children: [
-        { type: 'item', id: 'p-in', title: 'a row from the batch', sub: 'matched on lc_id', icon: 'file', span: 'all', fill: true },
-        { type: 'item', id: 'p-new', title: 'not matched', sub: 'insert: a new LC', icon: 'check', tone: 'store' },
-        { type: 'item', id: 'p-upd', title: 'matched, newer', sub: 'update', icon: 'settings', tone: 'infra' },
-        { type: 'item', id: 'p-old', title: 'matched, not newer', sub: 'nothing: §9.4', icon: 'lock' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        {
+          type: 'group', id: 'loop', title: 'For each batch, in order', icon: 'clock', tone: 'store', children: [
+            { type: 'item', id: 'l-bronze', title: 'Bronze rows', sub: 'one batch', icon: 'layers' },
+            { type: 'item', id: 'l-dedupe', title: 'deduplicate', sub: 'within it', icon: 'filter' },
+            { type: 'item', id: 'l-merge', title: 'MERGE', sub: 'a Delta commit', icon: 'layers', tone: 'store' },
+            { type: 'item', id: 'l-next', title: 'the next batch', sub: 'against Silver as this one left it', icon: 'clock' },
+          ],
+        },
+        {
+          type: 'group', id: 'paths', title: 'Each incoming row takes one path', icon: 'workflow', tone: 'ingest', dir: 'grid', cols: 3, children: [
+            { type: 'item', id: 'p-in', title: 'a row from the batch', sub: 'matched on lc_id', icon: 'file', span: 'all', fill: true },
+            { type: 'item', id: 'p-new', title: 'not matched', sub: 'insert: a new LC', icon: 'check', tone: 'store' },
+            { type: 'item', id: 'p-upd', title: 'matched, newer', sub: 'update', icon: 'settings', tone: 'infra' },
+            { type: 'item', id: 'p-old', title: 'matched, not newer', sub: 'nothing: §9.4', icon: 'lock' },
+          ],
+        },
       ],
     },
     {

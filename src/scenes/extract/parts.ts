@@ -20,17 +20,20 @@ export const extractParts: SceneModel = ideFrame({
   session,
   keep: ['$ terraform apply', 'Apply complete!', ['$ Q=', sets.at(-1)![0]]],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
-      type: 'group', id: 'model', title: 'How a factory is put together', icon: 'datafactory', tone: 'ingest', children: [
-        { type: 'item', id: 'm-pipe', title: 'pipeline', sub: 'a unit of work: run, scheduled, monitored', icon: 'workflow' },
-        { type: 'item', id: 'm-act', title: 'activities', sub: 'Lookup, Copy, If, Fail: one step each', icon: 'boxes' },
-        { type: 'item', id: 'm-ds', title: `datasets: ${sets.map((s) => s[0]).join(', ')}`, sub: 'named data inside a store', icon: 'file' },
-        { type: 'item', id: 'm-ls', title: `linked services: ${links.map((s) => s[0]).join(', ')}`, sub: 'how to reach a store, and as whom', icon: 'key' },
-        { type: 'item', id: 'm-ir', title: 'an integration runtime', sub: 'the compute that does the reaching', icon: 'vm', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'model', title: 'How a factory is put together', icon: 'datafactory', tone: 'ingest', children: [
+            { type: 'item', id: 'm-pipe', title: 'pipeline', sub: 'a unit of work: run, scheduled, monitored', icon: 'workflow' },
+            { type: 'item', id: 'm-act', title: 'activities', sub: 'Lookup, Copy, If, Fail: one step each', icon: 'boxes' },
+            { type: 'item', id: 'm-ds', title: `datasets: ${sets.map((s) => s[0]).join(', ')}`, sub: 'named data inside a store', icon: 'file' },
+            { type: 'item', id: 'm-ls', title: `linked services: ${links.map((s) => s[0]).join(', ')}`, sub: 'how to reach a store, and as whom', icon: 'key' },
+            { type: 'item', id: 'm-ir', title: 'an integration runtime', sub: 'the compute that does the reaching', icon: 'vm', tone: 'store' },
+          ],
+        },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'Nothing secret is written down: the credential is the pipeline’s identity, and passwords stay in Key Vault.' },
   ],
   edges: [
     { from: 'm-pipe', to: 'm-act' },

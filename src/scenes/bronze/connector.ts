@@ -13,13 +13,17 @@ export const bronzeConnector: SceneModel = ideFrame({
     highlight: [lineOf(code, 'role_definition_name = "Storage Blob Data Contributor"'), lineOf(code, 'access_connector_id =')] },
   session,
   side: [
-    level('compiled', 'terraform validate, offline: real, not deployed'),
     {
-      type: 'group', id: 'chain', title: 'From an identity to a path', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'k-ac', title: 'ac-tradefin-dev', sub: 'access connector: Databricks’ Azure identity', icon: 'key' },
-        { type: 'item', id: 'k-role', title: 'Storage Blob Data Contributor', sub: 'on the lake: Azure RBAC, as in §4.3', icon: 'shield' },
-        { type: 'item', id: 'k-cred', title: 'sc-tradefin-lake', sub: 'storage credential: Unity Catalog’s handle on it', icon: 'lock' },
-        { type: 'item', id: 'k-loc', title: 'el-landing … el-gold', sub: 'external locations: abfss://<zone>@sttradefindev', icon: 'adls', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('compiled', 'terraform validate, offline: real, not deployed'),
+        {
+          type: 'group', id: 'chain', title: 'From an identity to a path', icon: 'workflow', tone: 'ingest', children: [
+            { type: 'item', id: 'k-ac', title: 'ac-tradefin-dev', sub: 'access connector: Databricks’ Azure identity', icon: 'key' },
+            { type: 'item', id: 'k-role', title: 'Storage Blob Data Contributor', sub: 'on the lake: Azure RBAC, as in §4.3', icon: 'shield' },
+            { type: 'item', id: 'k-cred', title: 'sc-tradefin-lake', sub: 'storage credential: Unity Catalog’s handle on it', icon: 'lock' },
+            { type: 'item', id: 'k-loc', title: 'el-landing … el-gold', sub: 'external locations: abfss://<zone>@sttradefindev', icon: 'adls', tone: 'store' },
+          ],
+        },
       ],
     },
     {
@@ -30,7 +34,6 @@ export const bronzeConnector: SceneModel = ideFrame({
         { id: 'w-4', cells: ['external location', 'Unity Catalog', 'the workspace’s API'] },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'No account key and no secret: the connector is an identity Azure holds, the same idea as the pipeline’s in Course 4.' },
   ],
   edges: [
     { from: 'k-ac', to: 'k-role' },

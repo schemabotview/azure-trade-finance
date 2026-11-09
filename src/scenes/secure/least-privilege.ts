@@ -20,28 +20,22 @@ export const secureLeastPrivilege: SceneModel = ideFrame({
   session,
   keep: ['$ terraform apply', ['$ Q=', policies.at(-1)!]],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+    // the matrix is the terminal's list; its three questions are "written underneath"
     {
-      type: 'table', id: 'matrix', title: 'Every assignment on a tradefin scope', tone: 'ingest', columns: ['principal', 'role', 'on'],
-      rows: matrix.map(([who, role, on], i) => ({ id: `m-${i}`, cells: [who, role, on], tone: role.includes('Reader') || role.includes('User') ? 'store' as const : undefined })),
-    },
-    {
-      type: 'table', id: 'rule', title: 'The rule behind the matrix', tone: 'store', columns: ['ask', 'answer here'], rows: [
-        { id: 'q-what', cells: ['the narrowest role?', 'read where reading is the job'] },
-        { id: 'q-where', cells: ['the narrowest scope?', 'one account, one vault'] },
-        { id: 'q-who', cells: ['a person, or an identity?', 'the pipeline is its own'] },
+      type: 'group', id: 'top', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'table', id: 'matrix', title: `Every assignment on a tradefin scope${matrix.every(([who]) => who === matrix[0][0]) ? `: each a ${matrix[0][0]}` : ''}`, tone: 'ingest', columns: ['role', 'on'],
+          rows: matrix.map(([, role, on], i) => ({ id: `m-${i}`, cells: [role, on], tone: role.includes('Reader') || role.includes('User') ? 'store' as const : undefined })),
+        },
       ],
     },
     {
-      type: 'group', id: 'pipeline', title: 'id-tradefin-pipeline, all it holds', icon: 'key', tone: 'store', children: [
-        { type: 'item', id: 'g-reader', title: 'Reader', sub: 'on rg-tradefin-dev: see, never change', icon: 'search' },
-        { type: 'item', id: 'g-secrets', title: 'Key Vault Secrets User', sub: 'on kv-tradefin-dev: one password', icon: 'keyvault' },
-        { type: 'item', id: 'g-next', title: 'the lake’s data role', sub: 'Course 7, when Data Factory writes', icon: 'storage', tone: 'neutral' },
+      type: 'group', id: 'rule', title: 'The rule behind the matrix', icon: 'shield', tone: 'store', dir: 'row', children: [
+        { type: 'item', id: 'q-what', title: 'narrowest role?', sub: 'read where reading is the job', icon: 'search', stack: true },
+        { type: 'item', id: 'q-where', title: 'narrowest scope?', sub: 'one account, one vault', icon: 'storage', stack: true },
+        { type: 'item', id: 'q-who', title: 'person or identity?', sub: 'the pipeline is its own', icon: 'key', stack: true },
       ],
     },
-  ],
-  edges: [
-    { from: 'g-reader', to: 'g-secrets' },
-    { from: 'g-secrets', to: 'g-next', dashed: true },
   ],
 })

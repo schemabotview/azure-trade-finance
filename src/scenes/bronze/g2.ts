@@ -17,28 +17,24 @@ export const bronzeG2: SceneModel = ideFrame({
   editor: { file: 'pipeline/gates.py', code, show: [[lineOf(code, 'from pyspark.sql import DataFrame'), lineOf(code, 'checked.where("g2_reason IS NOT NULL"))')]], highlight: linesFrom(code, 'def g2_rules', '"currency not three capitals"') },
   session,
   side: [
-    AZURITE,
     {
-      type: 'table', id: 'rules', title: 'G2’s rules: a row fails on the first it breaks', tone: 'infra', columns: ['rule', 'fails when'], rows: [
-        { id: 'r-key', cells: ['no lc_id', 'the cell is empty'] },
-        { id: 'r-amount', cells: ['amount not a number', 'not digits with two decimals'] },
-        { id: 'r-ccy', cells: ['currency not three capitals', 'not like EUR, USD'] },
-      ],
-    },
-    {
-      type: 'group', id: 'split', title: 'Batch 43, through G2', icon: 'shield', tone: 'ingest', dir: 'grid', cols: 2, children: [
-        { type: 'item', id: 's-in', title: 'batch 43', sub: 'the late amendments, plus a hand-made correction', icon: 'file', span: 'all', fill: true },
-        { type: 'item', id: 's-ok', title: `${ok} rows → Bronze`, sub: 'the late amendments', icon: 'layers', tone: 'store' },
-        { type: 'item', id: 's-bad', title: `${bad} rows → quarantine`, sub: 'kept, with the reason', icon: 'lock', tone: 'consume' },
-        { type: 'item', id: 's-bronze', title: 'lake/bronze/lc_deals', sub: 'Silver reads these', icon: 'layers', tone: 'store' },
-        { type: 'item', id: 's-q', title: 'lc_deals_quarantine', sub: 'someone fixes the source', icon: 'layers', tone: 'consume' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        AZURITE,
+        {
+          type: 'group', id: 'split', title: 'Batch 43, through G2', icon: 'shield', tone: 'ingest', dir: 'grid', cols: 2, children: [
+            { type: 'item', id: 's-in', title: 'batch 43', sub: 'the late amendments, plus a hand-made correction', icon: 'file', span: 'all', fill: true },
+            { type: 'item', id: 's-ok', title: `${ok} rows → Bronze`, sub: 'the late amendments', icon: 'layers', tone: 'store' },
+            { type: 'item', id: 's-bad', title: `${bad} rows → quarantine`, sub: 'kept, with the reason', icon: 'lock', tone: 'consume' },
+            { type: 'item', id: 's-bronze', title: 'lake/bronze/lc_deals', sub: 'Silver reads these', icon: 'layers', tone: 'store' },
+            { type: 'item', id: 's-q', title: 'lc_deals_quarantine', sub: 'someone fixes the source', icon: 'layers', tone: 'consume' },
+          ],
+        },
       ],
     },
     {
       type: 'table', id: 'quarantine', title: 'lake/bronze/lc_deals_quarantine', tone: 'consume', columns: ['lc_id', 'amount', 'reason'],
       rows: rows.map((r, i) => ({ id: `q-${i}`, cells: [r[0] === 'NULL' || !r[0] ? '(empty)' : r[0], r[1], r[4]], tone: 'consume' as const })),
     },
-    { type: 'note', id: 'note', tone: 'consume', text: 'Quarantined, never dropped: each row is evidence that something upstream went wrong.' },
   ],
   edges: [
     { from: 's-in', to: 's-ok' },

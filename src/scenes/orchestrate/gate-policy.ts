@@ -18,13 +18,6 @@ export const orchestrateGatePolicy: SceneModel = ideFrame({
   session,
   side: [
     {
-      type: 'table', id: 'policy', title: 'three outcomes, and what each blocks', tone: 'infra', columns: ['outcome', 'the run', 'tonight'], rows: [
-        { id: 'p-pass', cells: ['PASS', 'goes on', 'G3: 2 of 3 checks'] },
-        { id: 'p-warn', cells: ['WARN', 'goes on, and says so', 'G2'], tone: 'infra' },
-        { id: 'p-fail', cells: ['FAIL', 'stops every step after', 'G3'], tone: 'consume' },
-      ],
-    },
-    {
       type: 'group', id: 'night', title: 'Tonight’s run', icon: 'clock', tone: 'ingest', children: [
         { type: 'item', id: 'n-bronze', title: 'Bronze', sub: 'no new batch: every one already in', icon: 'layers' },
         { type: 'item', id: 'n-g2', title: g2.split(':')[0], sub: g2.split(': ')[1], icon: 'bell', tone: 'infra' },
@@ -33,7 +26,13 @@ export const orchestrateGatePolicy: SceneModel = ideFrame({
         { type: 'item', id: 'n-gold', title: 'Gold: not run', sub: g3.split('; ')[1], icon: 'archive' },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'A failed night leaves no wrong report: yesterday’s answer stays, clearly yesterday’s, until the mapping is fixed.' },
+    {
+      type: 'table', id: 'policy', title: 'three outcomes, and what each blocks', tone: 'infra', columns: ['outcome', 'the run', 'tonight'], rows: [
+        { id: 'p-pass', cells: ['PASS', 'goes on', 'G3: 2 of 3 checks'] },
+        { id: 'p-warn', cells: ['WARN', 'goes on, and says so', 'G2'], tone: 'infra' },
+        { id: 'p-fail', cells: ['FAIL', 'stops every step after', 'G3'], tone: 'consume' },
+      ],
+    },
   ],
   edges: [
     { from: 'n-bronze', to: 'n-g2' },

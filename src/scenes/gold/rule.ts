@@ -37,7 +37,6 @@ export const goldRule: SceneModel = ideFrame({
       type: 'table', id: 'counts', title: 'lc_current by status', tone: 'infra', columns: ['status', 'LCs', 'counts as exposure'],
       rows: [...t.map((r) => ({ id: `t-${r[0]}`, cells: r })), { id: 't-all', cells: ['all', String(sum(t)), `${sum(open)} open`] }],
     },
-    { type: 'note', id: 'note', tone: 'consume', text: 'A closed LC keeps its amount in Silver; only its exposure is zero. Gold derives a new column, and never edits a fact it was given.' },
   ],
   edges: [
     { from: `o-${open.at(-1)![0]}`, to: 'o-x' },

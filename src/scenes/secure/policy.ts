@@ -19,18 +19,16 @@ export const securePolicy: SceneModel = ideFrame({
   session,
   keep: ['$ G=', '-l francecentral', 'ERROR: (RequestDisallowedByPolicy)', '-l uksouth', 'ERROR: (RequestDisallowedByPolicy)', ['$ az storage account list', accounts.at(-1)!]],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
-      type: 'group', id: 'flow', title: 'A rule, an assignment, a refusal', icon: 'shield', tone: 'consume', children: [
-        { type: 'item', id: 'p-def', title: 'a definition', sub: 'Azure’s built-in: “Allowed locations”', icon: 'file' },
-        { type: 'item', id: 'p-assign', title: 'an assignment', sub: 'on rg-tradefin-dev, with parameters', icon: 'boxes' },
-        { type: 'item', id: 'p-deny', title: `deny: ${denied} refused`, sub: 'before anything is created', icon: 'shield', tone: 'consume' },
-      ],
-    },
-    {
-      type: 'table', id: 'params', title: 'The two assignments, as the code sets them', tone: 'infra', columns: ['assignment', 'parameter'], rows: [
-        { id: 'pa-loc', cells: ['allowed-locations', /value = (\[[^\]]+\])/.exec(code)![1]] },
-        { id: 'pa-tag', cells: ['require-owner-tag', `tagName = ${/tagName = \{ value = "(\w+)"/.exec(code)![1]}`] },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'flow', title: 'A rule, an assignment, a refusal', icon: 'shield', tone: 'consume', children: [
+            { type: 'item', id: 'p-def', title: 'a definition', sub: 'Azure’s built-in: “Allowed locations”', icon: 'file' },
+            { type: 'item', id: 'p-assign', title: 'an assignment', sub: 'on rg-tradefin-dev, with parameters', icon: 'boxes' },
+            { type: 'item', id: 'p-deny', title: `deny: ${denied} refused`, sub: 'before anything is created', icon: 'shield', tone: 'consume' },
+          ],
+        },
       ],
     },
     {

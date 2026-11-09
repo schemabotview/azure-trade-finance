@@ -18,12 +18,16 @@ export const startModules: SceneModel = ideFrame({
   session,
   keep: ['$ terraform fmt', 'formatted', 'Success!', ['$ find', './variables.tf']],
   side: [
-    level('compiled', 'terraform fmt and validate: real, offline, nothing deployed'),
     {
-      type: 'group', id: 'flow', title: 'One root module, one child', icon: 'boxes', tone: 'ingest', children: [
-        { type: 'item', id: 'm-vars', title: 'envs/dev.tfvars', sub: 'env = "dev"', icon: 'file' },
-        { type: 'item', id: 'm-root', title: 'main.tf (root)', sub: 'names from env; tags in one place', icon: 'code' },
-        { type: 'item', id: 'm-storage', title: 'modules/storage', sub: 'inputs: name, group, location, tags', icon: 'storage', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('compiled', 'terraform fmt and validate: real, offline, nothing deployed'),
+        {
+          type: 'group', id: 'flow', title: 'One root module, one child', icon: 'boxes', tone: 'ingest', children: [
+            { type: 'item', id: 'm-vars', title: 'envs/dev.tfvars', sub: 'env = "dev"', icon: 'file' },
+            { type: 'item', id: 'm-root', title: 'main.tf (root)', sub: 'names from env; tags in one place', icon: 'code' },
+            { type: 'item', id: 'm-storage', title: 'modules/storage', sub: 'inputs: name, group, location, tags', icon: 'storage', tone: 'store' },
+          ],
+        },
       ],
     },
     { type: 'table', id: 'files', title: 'infra/, as found', tone: 'infra', columns: ['file'], rows: files.map((f) => ({ id: `f-${f}`, cells: [f] })) },

@@ -20,25 +20,22 @@ export const networkPublicOff: SceneModel = ideFrame({
   session,
   keep: ['$ az storage fs list', 'silver', '$ terraform apply', 'Apply complete!', ['$ az storage account show', 'blocked by network rules']],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
-      type: 'table', id: 'before', title: 'The same command, twice', tone: 'consume', columns: ['', 'from the laptop', 'result'], rows: [
-        { id: 'b-1', cells: ['before', 'az storage fs list', `${before} zones listed`] },
-        { id: 'b-2', cells: [`after (${state})`, 'az storage fs list', 'blocked by network rules'], tone: 'consume' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'layers', title: 'Two locks on the same door', icon: 'lock', tone: 'infra', children: [
+            { type: 'item', id: 'l-net', title: 'the network', sub: 'where may a request come from? (this section)', icon: 'network', tone: 'infra' },
+            { type: 'item', id: 'l-id', title: 'the identity', sub: 'who is asking? (Course 4)', icon: 'key' },
+            { type: 'item', id: 'l-role', title: 'the role', sub: 'what may they do? (Course 4)', icon: 'shield' },
+          ],
+        },
       ],
     },
     {
-      type: 'table', id: 'reach', title: 'What can still reach the lake', tone: 'infra', columns: ['who', 'through', 'now'], rows: [
-        { id: 'r-tf', cells: ['Terraform', 'ARM, the control plane', 'yes'] },
-        { id: 'r-laptop', cells: ['Ana’s laptop', 'the public endpoint', 'no'], tone: 'consume' },
-        { id: 'r-vnet', cells: ['anything in the VNet', 'a private endpoint (§6.4)', 'next'], tone: 'store' },
-      ],
-    },
-    {
-      type: 'group', id: 'layers', title: 'Two locks on the same door', icon: 'lock', tone: 'infra', children: [
-        { type: 'item', id: 'l-net', title: 'the network', sub: 'where may a request come from? (this section)', icon: 'network', tone: 'infra' },
-        { type: 'item', id: 'l-id', title: 'the identity', sub: 'who is asking? (Course 4)', icon: 'key' },
-        { type: 'item', id: 'l-role', title: 'the role', sub: 'what may they do? (Course 4)', icon: 'shield' },
+      type: 'table', id: 'before', title: 'From the laptop: az storage fs list, twice', tone: 'consume', columns: ['', 'result'], rows: [
+        { id: 'b-1', cells: ['before', `${before} zones listed`] },
+        { id: 'b-2', cells: [`after (${state})`, 'blocked by network rules'], tone: 'consume' },
       ],
     },
   ],

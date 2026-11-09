@@ -1,6 +1,5 @@
 import type { SceneModel } from '@graphlearning/graphl-flow'
 import { ideFrame, lineOf } from '../ide'
-import { outputOf } from '../lab'
 import { TRADEBOOK, startTree } from './tree'
 import code from '../../../spine/start/01-tradebook/project/tradebook/schema.sql?raw'
 import session from '../../../spine/start/01-tradebook/session.txt?raw'
@@ -8,8 +7,6 @@ import session from '../../../spine/start/01-tradebook/session.txt?raw'
 // §3.1 — TradeBook (runs locally). The desk's system of record, as a local PostgreSQL 18.6 copy seeded
 // by tradebook_gen: counterparty → lc_deals (one CURRENT row per LC) → lc_amendments (every version).
 // The status counts are the session's.
-const counts = outputOf(session, 'psql -c "SELECT status, count(*) FROM lc_deals GROUP BY 1 ORDER BY 2 DESC"')
-  .split('\n').filter((l) => /^ [A-Z]+ +\| +\d+$/.test(l)).map((l) => l.split('|').map((c) => c.trim()))
 
 export const startTradebook: SceneModel = ideFrame({
   tree: startTree(TRADEBOOK, 'tradebook/schema.sql', { fresh: [...TRADEBOOK, 'env.sh'] }),
@@ -30,7 +27,6 @@ export const startTradebook: SceneModel = ideFrame({
         { id: 'k-updated', cells: ['updated_at', 'when this row last changed'], tone: 'ingest' },
       ],
     },
-    { type: 'table', id: 'status', title: 'lc_deals by status', tone: 'source', columns: ['status', 'LCs'], rows: counts.map(([s, n]) => ({ id: `s-${s}`, cells: [s, n] })) },
   ],
   edges: [
     { from: 't-cpty', to: 't-deals', label: 'applies for' },

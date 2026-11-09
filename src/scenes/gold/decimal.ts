@@ -16,32 +16,35 @@ export const goldDecimal: SceneModel = ideFrame({
   session,
   side: [
     {
-      type: 'group', id: 'two', bare: true, dir: 'grid', cols: 2, children: [
+      type: 'group', id: 'diagram', bare: true, children: [
         {
-          type: 'group', id: 'double', title: 'as a double', icon: 'zap', tone: 'consume', children: [
-            { type: 'item', id: 'd-in', title: '0.10 + 0.20', sub: 'binary fractions', icon: 'code' },
-            { type: 'item', id: 'd-out', title: asDouble, sub: 'neither number is exact in binary', icon: 'chart', tone: 'consume' },
-            { type: 'item', id: 'd-sum', title: 'summed over many LCs', sub: 'drifts by cents: a breach can flip', icon: 'bell', tone: 'consume' },
+          type: 'group', id: 'two', bare: true, dir: 'grid', cols: 2, children: [
+            {
+              type: 'group', id: 'double', title: 'as a double', icon: 'zap', tone: 'consume', children: [
+                { type: 'item', id: 'd-in', title: '0.10 + 0.20', sub: 'binary fractions', icon: 'code' },
+                { type: 'item', id: 'd-out', title: asDouble, sub: 'neither number is exact in binary', icon: 'chart', tone: 'consume' },
+                { type: 'item', id: 'd-sum', title: 'summed over many LCs', sub: 'drifts by cents: a breach can flip', icon: 'bell', tone: 'consume' },
+              ],
+            },
+            {
+              type: 'group', id: 'decimal', title: 'as decimal(18,2)', icon: 'check', tone: 'store', children: [
+                { type: 'item', id: 'm-in', title: '0.10 + 0.20', sub: 'whole cents', icon: 'code' },
+                { type: 'item', id: 'm-out', title: asDecimal, sub: 'exactly, every time', icon: 'chart', tone: 'store' },
+                { type: 'item', id: 'm-sum', title: 'summed over many LCs', sub: 'still exact: two runs agree', icon: 'check', tone: 'store' },
+              ],
+            },
           ],
         },
         {
-          type: 'group', id: 'decimal', title: 'as decimal(18,2)', icon: 'check', tone: 'store', children: [
-            { type: 'item', id: 'm-in', title: '0.10 + 0.20', sub: 'whole cents', icon: 'code' },
-            { type: 'item', id: 'm-out', title: asDecimal, sub: 'exactly, every time', icon: 'chart', tone: 'store' },
-            { type: 'item', id: 'm-sum', title: 'summed over many LCs', sub: 'still exact: two runs agree', icon: 'check', tone: 'store' },
+          type: 'group', id: 'where', title: 'decimal(18,2) from end to end', icon: 'workflow', tone: 'store', children: [
+            { type: 'item', id: 'w-tb', title: 'TradeBook lc_deals.amount', sub: 'numeric(18,2)', icon: 'postgresql' },
+            { type: 'item', id: 'w-bronze', title: 'Bronze', sub: 'the string as received: nothing converted', icon: 'layers' },
+            { type: 'item', id: 'w-silver', title: 'Silver lc_current.amount', sub: 'decimal(18,2)', icon: 'layers' },
+            { type: 'item', id: 'w-gold', title: 'Gold fact_lc_exposure.exposure', sub: dtype, icon: 'layers', tone: 'store' },
           ],
         },
       ],
     },
-    {
-      type: 'group', id: 'where', title: 'decimal(18,2) from end to end', icon: 'workflow', tone: 'store', children: [
-        { type: 'item', id: 'w-tb', title: 'TradeBook lc_deals.amount', sub: 'numeric(18,2)', icon: 'postgresql' },
-        { type: 'item', id: 'w-bronze', title: 'Bronze', sub: 'the string as received: nothing converted', icon: 'layers' },
-        { type: 'item', id: 'w-silver', title: 'Silver lc_current.amount', sub: 'decimal(18,2)', icon: 'layers' },
-        { type: 'item', id: 'w-gold', title: 'Gold fact_lc_exposure.exposure', sub: dtype, icon: 'layers', tone: 'store' },
-      ],
-    },
-    { type: 'note', id: 'note', tone: 'consume', text: 'Money never touches a float.' },
   ],
   edges: [
     { from: 'd-in', to: 'd-out' },

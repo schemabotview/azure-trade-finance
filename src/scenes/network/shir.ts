@@ -19,12 +19,16 @@ export const networkShir: SceneModel = ideFrame({
   session,
   keep: ['$ terraform apply', 'Plan: 14 to add', 'Apply complete!', ['$ F=', '}']],
   side: [
-    level('recorded on Azure', 'the bank’s network is simulated: a VNet in UK West stands in for it'),
     {
-      type: 'group', id: 'out', title: 'Calls out, never in', icon: 'workflow', tone: 'store', children: [
-        { type: 'item', id: 'o-shir', title: `${node}`, sub: 'the runtime, beside TradeBook', icon: 'vm' },
-        { type: 'item', id: 'o-nat', title: 'NAT gateway, 443 out', sub: 'the bank’s one way out', icon: 'network' },
-        { type: 'item', id: 'o-adf', title: 'adf-tradefin-dev', sub: '“any work for me?”', icon: 'datafactory', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'the bank’s network is simulated: a VNet in UK West stands in for it'),
+        {
+          type: 'group', id: 'out', title: 'Calls out, never in', icon: 'workflow', tone: 'store', children: [
+            { type: 'item', id: 'o-shir', title: `${node}`, sub: 'the runtime, beside TradeBook', icon: 'vm' },
+            { type: 'item', id: 'o-nat', title: 'NAT gateway, 443 out', sub: 'the bank’s one way out', icon: 'network' },
+            { type: 'item', id: 'o-adf', title: 'adf-tradefin-dev', sub: '“any work for me?”', icon: 'datafactory', tone: 'store' },
+          ],
+        },
       ],
     },
     {
@@ -35,7 +39,6 @@ export const networkShir: SceneModel = ideFrame({
         { id: 'p-state', cells: [`runtime: ${state}`, 'reported by Data Factory'], tone: 'store' },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'The extension ran once on the VM: download the runtime, install it, register it with the factory’s key (sent encrypted, never printed).' },
   ],
   edges: [
     { from: 'o-shir', to: 'o-nat' },

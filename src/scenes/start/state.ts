@@ -10,7 +10,6 @@ import session from '../../../spine/start/05-state/session.txt?raw'
 // (the one thing the CLI creates); init -migrate-state moves the local file there; the blob's LEASE is
 // Terraform's lock: a lease taken by hand makes the next plan fail, breaking it lets the plan run.
 const blob = outputOf(session, 'az storage blob list -c tfstate --query "[].name" -o tsv').trim()
-const locked = /Error message: (.*)/.exec(session)![1]
 
 export const startState: SceneModel = ideFrame({
   tree: startTree([...TRADEBOOK, ...QUERIES, ...INFRA_FLAT, 'infra/backend.tf', 'infra/bootstrap.sh'], 'infra/backend.tf', { fresh: ['infra/backend.tf', 'infra/bootstrap.sh'] }),
@@ -18,12 +17,16 @@ export const startState: SceneModel = ideFrame({
   session,
   keep: ['$ bash infra/bootstrap.sh', 'state: ', ['$ az storage blob lease acquire', '$ terraform plan -lock-timeout'], 'Error message:', '$ az storage blob lease break', 'No changes.'],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
-      type: 'group', id: 'three', title: 'Three things Terraform compares', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'c-code', title: 'the code', sub: 'infra/*.tf: what should exist', icon: 'code' },
-        { type: 'item', id: 'c-state', title: 'the state', sub: `tfstate/${blob} in sttradefintfstate`, icon: 'database', tone: 'infra' },
-        { type: 'item', id: 'c-azure', title: 'Azure', sub: 'what does exist', icon: 'cloud' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'three', title: 'Three things Terraform compares', icon: 'workflow', tone: 'ingest', children: [
+            { type: 'item', id: 'c-code', title: 'the code', sub: 'infra/*.tf: what should exist', icon: 'code' },
+            { type: 'item', id: 'c-state', title: 'the state', sub: `tfstate/${blob} in sttradefintfstate`, icon: 'database', tone: 'infra' },
+            { type: 'item', id: 'c-azure', title: 'Azure', sub: 'what does exist', icon: 'cloud' },
+          ],
+        },
       ],
     },
     {
@@ -31,12 +34,6 @@ export const startState: SceneModel = ideFrame({
         { id: 'w-who', cells: ['who has it', 'one person', 'everyone who may'] },
         { id: 'w-lock', cells: ['two applies at once', 'nothing stops them', 'the lease stops one'], tone: 'infra' },
         { id: 'w-read', cells: ['read with', 'the file system', 'an identity, no key'] },
-      ],
-    },
-    {
-      type: 'table', id: 'lock', title: 'The lease is the lock', tone: 'consume', columns: ['who holds the lease', 'terraform plan'], rows: [
-        { id: 'l-hand', cells: ['someone else', locked], tone: 'consume' },
-        { id: 'l-free', cells: ['nobody', 'runs: No changes.'], tone: 'store' },
       ],
     },
   ],

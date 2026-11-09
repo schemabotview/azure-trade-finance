@@ -9,7 +9,6 @@ import session from '../../../spine/start/02-lc-life/session.txt?raw'
 // pipeline answers to: ISSUED, ACTIVE and AMENDED are open (exposure = amount); the rest carry none.
 // The open exposure per currency is the session's — two currencies, never one total.
 const history = outputOf(session, 'psql -P footer=off -v lc=LC-2052 -f tradebook/history.sql').split('\n').slice(2).map((l) => l.split('|').map((c) => c.trim()))
-const open = outputOf(session, 'psql -P footer=off -f tradebook/open.sql').split('\n').slice(2).map((l) => l.split('|').map((c) => c.trim()))
 const step = (v: string) => history.find((h) => h[0] === v)!
 
 export const startLcLife: SceneModel = ideFrame({
@@ -33,11 +32,6 @@ export const startLcLife: SceneModel = ideFrame({
         { id: 'r-done', cells: ['EXPIRED, CLOSED, CANCELLED', 'no', '0'] },
       ],
     },
-    {
-      type: 'table', id: 'open', title: 'Open exposure, per currency', tone: 'store', columns: ['currency', 'open LCs', 'exposure'],
-      rows: open.map(([c, n, e]) => ({ id: `o-${c}`, cells: [c, n, Number(e).toLocaleString('en-GB', { minimumFractionDigits: 2 })] })),
-    },
-    { type: 'note', id: 'note', tone: 'store', text: 'A closed LC is not deleted: it stays in the data, and Gold will show it with exposure 0.' },
   ],
   edges: [
     { from: 'v1', to: 'v2' },

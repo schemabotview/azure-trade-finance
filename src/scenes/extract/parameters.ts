@@ -17,7 +17,20 @@ export const extractParameters: SceneModel = ideFrame({
   editor: { file: 'adf/adf.sh', code, show: [[1, 11], [lineOf(code, 'last)'), lineOf(code, '[0].input" ;;')]], highlight: [lineOf(code, 'last)'), lineOf(code, 'input)')] },
   session,
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+    {
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'flow', title: 'One definition, a new night each run', icon: 'workflow', tone: 'ingest', children: [
+            { type: 'item', id: 'p-trigger', title: 'from §7.7: the trigger', sub: 'passes both, every night', icon: 'clock' },
+            { type: 'item', id: 'p-params', title: 'batch_id, window_end', sub: 'given when the run starts', icon: 'settings' },
+            { type: 'item', id: 'p-outputs', title: '+ an earlier activity’s output', sub: 'the watermark lookup', icon: 'clock' },
+            { type: 'item', id: 'p-query', title: 'the query and the folder', sub: 'resolved as the activity starts', icon: 'postgresql', tone: 'store' },
+          ],
+        },
+        { type: 'note', id: 'note', tone: 'infra', text: `Data Factory hands window_end back as ${params.window_end}: its own date format. The query used the value as given.` },
+      ],
+    },
     {
       type: 'table', id: 'resolve', title: 'Each expression, as copy_window ran it', tone: 'infra', columns: ['expression', 'became'], rows: [
         { id: 'r-batch', cells: ['@{pipeline().parameters.batch_id}', params.batch_id] },
@@ -26,15 +39,6 @@ export const extractParameters: SceneModel = ideFrame({
         { id: 'r-folder', cells: ['lc_deals/batch_id=@{…batch_id}', `lc_deals/batch_id=${params.batch_id}`] },
       ],
     },
-    {
-      type: 'group', id: 'flow', title: 'One definition, a new night each run', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'p-trigger', title: 'from §7.7: the trigger', sub: 'passes both, every night', icon: 'clock' },
-        { type: 'item', id: 'p-params', title: 'parameters: batch_id, window_end', sub: 'given when the run starts', icon: 'settings' },
-        { type: 'item', id: 'p-outputs', title: '+ an earlier activity’s output', sub: 'the watermark lookup', icon: 'clock' },
-        { type: 'item', id: 'p-query', title: 'the query and the folder', sub: 'resolved just before the activity runs', icon: 'postgresql', tone: 'store' },
-      ],
-    },
-    { type: 'note', id: 'note', tone: 'infra', text: `Data Factory hands window_end back as ${params.window_end}: its own date format. The query used the value as given.` },
   ],
   edges: [
     { from: 'p-trigger', to: 'p-params' },

@@ -18,27 +18,23 @@ export const startDrift: SceneModel = ideFrame({
   session,
   keep: ['$ terraform apply', 'Apply complete!', ['$ ID=', '$ terraform plan'], '"owner" = "ops" -> "trade-risk"', 'Apply complete! Resources: 0 added, 1 changed', ['$ az group show', owner]],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+    {
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'loop', title: 'The tag’s night', icon: 'clock', tone: 'infra', children: [
+            { type: 'item', id: 'd-code', title: 'code: owner = trade-risk', sub: 'what should be', icon: 'code' },
+            { type: 'item', id: 'd-hand', title: 'az tag update: owner = ops', sub: 'a change outside Terraform', icon: 'terminal', tone: 'consume' },
+            { type: 'item', id: 'd-back', title: `apply: owner = ${owner}`, sub: 'code wins', icon: 'check', tone: 'store' },
+          ],
+        },
+      ],
+    },
     {
       type: 'table', id: 'cases', title: 'Three cases plan meets', tone: 'ingest', columns: ['where it is', 'plan says', 'here'], rows: [
         { id: 'c-drift', cells: ['code + state, changed in Azure', '~ change it back', 'owner=ops'], tone: 'infra' },
         { id: 'c-removed', cells: ['state only (block deleted)', '- destroy it', ''] },
         { id: 'c-outside', cells: ['Azure only (made by hand)', 'nothing: unseen', ''] },
-      ],
-    },
-    {
-      type: 'table', id: 'symbols', title: 'How plan writes it', tone: 'infra', columns: ['mark', 'means'], rows: [
-        { id: 'y-add', cells: ['+', 'create'] },
-        { id: 'y-change', cells: ['~', 'change in place'], tone: 'infra' },
-        { id: 'y-destroy', cells: ['-', 'destroy'] },
-        { id: 'y-replace', cells: ['-/+', 'destroy, then create (replace)'] },
-      ],
-    },
-    {
-      type: 'group', id: 'loop', title: 'The tag’s night', icon: 'clock', tone: 'infra', children: [
-        { type: 'item', id: 'd-code', title: 'code: owner = trade-risk', sub: 'what should be', icon: 'code' },
-        { type: 'item', id: 'd-hand', title: 'az tag update: owner = ops', sub: 'a change outside Terraform', icon: 'terminal', tone: 'consume' },
-        { type: 'item', id: 'd-back', title: `apply: owner = ${owner}`, sub: 'code wins', icon: 'check', tone: 'store' },
       ],
     },
   ],

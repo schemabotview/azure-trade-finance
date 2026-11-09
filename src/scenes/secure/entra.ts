@@ -13,13 +13,17 @@ export const secureEntra: SceneModel = ideFrame({
     highlight: [lineOf(code, 'display_name     = "grp-trade-risk-eng"'), lineOf(code, 'members          =')] },
   session,
   side: [
-    level('compiled', 'validated offline: applying needs Graph permissions'),
     {
-      type: 'group', id: 'tenant', title: 'Who exists: the tenant', icon: 'users', tone: 'ingest', children: [
-        { type: 'item', id: 't-dir', title: 'Entra ID', sub: 'the organisation’s directory, read through Graph', icon: 'users' },
-        { type: 'item', id: 't-users', title: 'users: Ana, the desk, the risk team', sub: 'people, by sign-in name', icon: 'users' },
-        { type: 'item', id: 't-group', title: 'grp-trade-risk-eng', sub: 'a security group: its members, its owner', icon: 'shield', tone: 'store' },
-        { type: 'item', id: 't-roles', title: 'Azure roles (§4.3)', sub: 'granted to the group, never to a person', icon: 'key' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('compiled', 'validated offline: applying needs Graph permissions'),
+        {
+          type: 'group', id: 'tenant', title: 'Who exists: the tenant', icon: 'users', tone: 'ingest', children: [
+            { type: 'item', id: 't-dir', title: 'Entra ID', sub: 'the organisation’s directory, read through Graph', icon: 'users' },
+            { type: 'item', id: 't-users', title: 'users: Ana, the desk, the risk team', sub: 'people, by sign-in name', icon: 'users' },
+            { type: 'item', id: 't-group', title: 'grp-trade-risk-eng', sub: 'a security group: its members, its owner', icon: 'shield', tone: 'store' },
+            { type: 'item', id: 't-roles', title: 'Azure roles (§4.3)', sub: 'granted to the group, never to a person', icon: 'key' },
+          ],
+        },
       ],
     },
     {

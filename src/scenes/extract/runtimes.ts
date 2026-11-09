@@ -17,21 +17,25 @@ export const extractRuntimes: SceneModel = ideFrame({
     highlight: [lineOf(code, 'resource "azurerm_data_factory_integration_runtime_self_hosted"')] },
   session,
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
-      type: 'group', id: 'two', bare: true, dir: 'grid', cols: 2, children: [
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
         {
-          type: 'group', id: 'azure', title: 'Azure’s runtime', icon: 'cloud', tone: 'infra', children: [
-            { type: 'item', id: 'a-what', title: 'AutoResolveIntegrationRuntime', sub: 'always there, never listed', icon: 'cloud' },
-            { type: 'item', id: 'a-runs', title: 'runs: If, Fail, the logic', sub: 'and calls to public stores', icon: 'boxes' },
-            { type: 'item', id: 'a-not', title: 'cannot reach the bank', sub: 'nothing gets in from Azure', icon: 'lock' },
-          ],
-        },
-        {
-          type: 'group', id: 'shir', title: 'ir-tradebook-shir', icon: 'vm', tone: 'store', children: [
-            { type: 'item', id: 's-node', title: `${node}: ${state}`, sub: `runtime ${version}`, icon: 'vm' },
-            { type: 'item', id: 's-runs', title: 'runs: TradeBook queries', sub: 'and every Copy into landing', icon: 'postgresql' },
-            { type: 'item', id: 's-how', title: 'inside the bank', sub: 'it calls out; it is never called', icon: 'network' },
+          type: 'group', id: 'two', bare: true, dir: 'grid', cols: 2, children: [
+            {
+              type: 'group', id: 'azure', title: 'Azure’s runtime', icon: 'cloud', tone: 'infra', children: [
+                { type: 'item', id: 'a-what', title: 'AutoResolveIntegrationRuntime', sub: 'always there, never listed', icon: 'cloud' },
+                { type: 'item', id: 'a-runs', title: 'runs: If, Fail, the logic', sub: 'and calls to public stores', icon: 'boxes' },
+                { type: 'item', id: 'a-not', title: 'cannot reach the bank', sub: 'nothing gets in from Azure', icon: 'lock' },
+              ],
+            },
+            {
+              type: 'group', id: 'shir', title: 'ir-tradebook-shir', icon: 'vm', tone: 'store', children: [
+                { type: 'item', id: 's-node', title: `${node}: ${state}`, sub: `runtime ${version}`, icon: 'vm' },
+                { type: 'item', id: 's-runs', title: 'runs: TradeBook queries', sub: 'and every Copy into landing', icon: 'postgresql' },
+                { type: 'item', id: 's-how', title: 'inside the bank', sub: 'it calls out; it is never called', icon: 'network' },
+              ],
+            },
           ],
         },
       ],
@@ -45,7 +49,6 @@ export const extractRuntimes: SceneModel = ideFrame({
         { id: 'r-commit', cells: ['seal, commit_watermark', 'landing (private)', 'the bank’s'] },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'A linked service names its runtime (connectVia). Every activity touching TradeBook or the private lake runs on the bank’s.' },
   ],
   edges: [
     { from: 'a-what', to: 'a-runs' },

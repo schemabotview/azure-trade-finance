@@ -11,7 +11,7 @@ import { millions } from '../csv'
 // join: the inner join drops the unmapped LC without a word. Spark's own table.
 const t = shown(session, 'python pipeline/joins.py')
 // the LC G3 named, from G3's own output
-const [cp, lc, ccy, amount] = /FAIL\s+(CP-\d+) (LC-\d+) ([A-Z]{3}) ([\d.]+)/.exec(g3)!.slice(1)
+const [, lc, ccy, amount] = /FAIL\s+(CP-\d+) (LC-\d+) ([A-Z]{3}) ([\d.]+)/.exec(g3)!.slice(1)
 
 export const silverJoin: SceneModel = ideFrame({
   tree: pipelineTree('pipeline/joins.py', ['session.py', 'bronze.py', 'versions.py', 'gates.py', 'quarantine.py', 'current.py', 'silver.py', 'lc.py', 'history.py', 'reference_tables.py', 'g3.py', 'joins.py'], { fresh: ['pipeline/joins.py'] }),
@@ -45,8 +45,6 @@ export const silverJoin: SceneModel = ideFrame({
       type: 'table', id: 'sums', title: 'Open amount per currency', tone: 'store', columns: t.head,
       rows: t.rows.map((r) => ({ id: `s-${r[0]}`, cells: [r[0], ...r.slice(1).map(money)] })),
     },
-    { type: 'table', id: 'lost', title: 'the row the inner join dropped (G3 named it)', tone: 'consume', columns: ['lc_id', 'applicant_id', 'currency', 'amount'], rows: [{ id: 'x', cells: [lc, cp, ccy, money(amount)] }] },
-    { type: 'note', id: 'note', tone: 'consume', text: 'No error, no warning: the total is just smaller. G3 is what catches it.' },
   ],
   edges: [
     { from: 'l-in', to: 'l-join' },

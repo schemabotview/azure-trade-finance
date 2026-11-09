@@ -17,11 +17,10 @@ export const silverDedupe: SceneModel = ideFrame({
   session,
   side: [
     {
-      type: 'table', id: 'types', title: 'typed on the way: Bronze → Silver', tone: 'infra', columns: ['column', 'Bronze', 'Silver'], rows: [
-        { id: 't-amount', cells: ['amount', 'string', 'decimal(18,2)'] },
-        { id: 't-version', cells: ['source_version', 'string', 'int'] },
-        { id: 't-dates', cells: ['issue_date, expiry_date', 'string', 'date'] },
-        { id: 't-updated', cells: ['updated_at', 'string', 'timestamp'] },
+      type: 'group', id: 'flow', title: `${before} rows → ${after}`, icon: 'filter', tone: 'store', children: [
+        { type: 'item', id: 'f-part', title: 'partition by lc_id', sub: 'one window per LC', icon: 'boxes' },
+        { type: 'item', id: 'f-order', title: 'order by source_version desc', sub: 'then batch_id desc: a later delivery wins a tie', icon: 'filter' },
+        { type: 'item', id: 'f-keep', title: `keep row 1: v${lc[1]}, ${lc[2]}`, sub: `LC-2041, ${lc[3]}`, icon: 'check', tone: 'store' },
       ],
     },
     {
@@ -31,14 +30,6 @@ export const silverDedupe: SceneModel = ideFrame({
         { id: 'w-3', cells: ['1', '41', '3', 'no'] },
       ],
     },
-    {
-      type: 'group', id: 'flow', title: `${before} rows → ${after}`, icon: 'filter', tone: 'store', children: [
-        { type: 'item', id: 'f-part', title: 'partition by lc_id', sub: 'one window per LC', icon: 'boxes' },
-        { type: 'item', id: 'f-order', title: 'order by source_version desc', sub: 'then batch_id desc: a later delivery wins a tie', icon: 'filter' },
-        { type: 'item', id: 'f-keep', title: `keep row 1: v${lc[1]}, ${lc[2]}`, sub: `LC-2041, ${lc[3]}`, icon: 'check', tone: 'store' },
-      ],
-    },
-    { type: 'note', id: 'note', tone: 'infra', text: 'Money is decimal(18,2), never a float: every cent kept exactly.' },
   ],
   edges: [
     { from: 'f-part', to: 'f-order' },

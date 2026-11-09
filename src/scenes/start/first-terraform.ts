@@ -17,13 +17,17 @@ export const startFirstTerraform: SceneModel = ideFrame({
   session,
   keep: ['$ terraform apply', 'Plan: 2 to add', 'Apply complete!', ['$ terraform state list', 'terraform.tfstate']],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
-      type: 'group', id: 'path', title: 'From a file to a resource', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'p-tf', title: 'main.tf', sub: 'what should exist', icon: 'code' },
-        { type: 'item', id: 'p-provider', title: 'azurerm provider 5.12.0', sub: 'turns blocks into API calls', icon: 'package' },
-        { type: 'item', id: 'p-arm', title: 'Azure Resource Manager', sub: 'management.azure.com: one API for all', icon: 'cloud' },
-        { type: 'item', id: 'p-account', title: 'sttradefindev', sub: 'in rg-tradefin-dev, UK South', icon: 'storage', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'path', title: 'From a file to a resource', icon: 'workflow', tone: 'ingest', children: [
+            { type: 'item', id: 'p-tf', title: 'main.tf', sub: 'what should exist', icon: 'code' },
+            { type: 'item', id: 'p-provider', title: 'azurerm provider 5.12.0', sub: 'turns blocks into API calls', icon: 'package' },
+            { type: 'item', id: 'p-arm', title: 'Azure Resource Manager', sub: 'management.azure.com: one API for all', icon: 'cloud' },
+            { type: 'item', id: 'p-account', title: 'sttradefindev', sub: 'in rg-tradefin-dev, UK South', icon: 'storage', tone: 'store' },
+          ],
+        },
       ],
     },
     { type: 'table', id: 'state', title: 'terraform state list', tone: 'infra', columns: ['address'], rows: state.map((a) => ({ id: `s-${a}`, cells: [a] })) },

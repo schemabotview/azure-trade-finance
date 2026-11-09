@@ -17,16 +17,19 @@ export const operateCi: SceneModel = ideFrame({
     highlight: [lineOf(code, 'id-token: write'), lineOf(code, 'uses: azure/login@v2')] },
   session,
   side: [
-    level('compiled', 'the identity validated in Terraform; the workflow shown, not run'),
     {
-      type: 'group', id: 'flow', title: 'A token, not a secret', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'o-gh', title: 'GitHub Actions, on main', sub: 'asks GitHub for the run’s OIDC token', icon: 'githubactions' },
-        { type: 'item', id: 'o-entra', title: 'Entra ID', sub: `trusts it only for ${subject.endsWith('refs/heads/main') ? 'this repository’s main branch' : subject}`, icon: 'users' },
-        { type: 'item', id: 'o-id', title: 'id-tradefin-deploy', sub: 'a managed identity, with its federated credential', icon: 'key' },
-        { type: 'item', id: 'o-tf', title: 'terraform plan, apply', sub: 'Contributor on rg-tradefin-dev, nothing more', icon: 'code', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('compiled', 'the identity validated in Terraform; the workflow shown, not run'),
+        {
+          type: 'group', id: 'flow', title: 'A token, not a secret', icon: 'workflow', tone: 'ingest', children: [
+            { type: 'item', id: 'o-gh', title: 'GitHub Actions, on main', sub: 'asks GitHub for the run’s OIDC token', icon: 'githubactions' },
+            { type: 'item', id: 'o-entra', title: 'Entra ID', sub: `trusts it only for ${subject.endsWith('refs/heads/main') ? 'this repository’s main branch' : subject}`, icon: 'users' },
+            { type: 'item', id: 'o-id', title: 'id-tradefin-deploy', sub: 'a managed identity, with its federated credential', icon: 'key' },
+            { type: 'item', id: 'o-tf', title: 'terraform plan, apply', sub: 'Contributor on rg-tradefin-dev, nothing more', icon: 'code', tone: 'store' },
+          ],
+        },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'Nothing secret is stored in GitHub: the three ids are variables, and a token lives minutes, for one run.' },
   ],
   edges: [
     { from: 'o-gh', to: 'o-entra', label: 'token' },

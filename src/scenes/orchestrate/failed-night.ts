@@ -26,13 +26,17 @@ export const orchestrateFailedNight: SceneModel = ideFrame({
   session,
   keep: ['$ python pipeline/run.py night-45', 'G3 FAIL', '$ python extract/reference.py', 'published:', '$ python pipeline/run.py night-45-rerun', 'counterparty mapped', 'night complete'],
   side: [
-    level('emulated', 'open-source Spark, run locally, standing in for the Databricks job'),
     {
-      type: 'group', id: 'night', title: 'One night, failed then fixed', icon: 'clock', tone: 'ingest', children: [
-        { type: 'item', id: 'n-fail', title: 'night-45: G3 FAIL', sub: fail.split(': ')[1], icon: 'lock', tone: 'consume' },
-        { type: 'item', id: 'n-fix', title: 'the risk team maps CP-1501', sub: 'a corrected file: the fix is at the source', icon: 'users' },
-        { type: 'item', id: 'n-ref', title: 'the reference checks: PASS', sub: published, icon: 'check' },
-        { type: 'item', id: 'n-rerun', title: 'night-45-rerun: G3, G4 PASS', sub: rerun.find((l) => l.startsWith('night complete'))!, icon: 'check', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('emulated', 'open-source Spark, run locally, standing in for the Databricks job'),
+        {
+          type: 'group', id: 'night', title: 'One night, failed then fixed', icon: 'clock', tone: 'ingest', children: [
+            { type: 'item', id: 'n-fail', title: 'night-45: G3 FAIL', sub: fail.split(': ')[1], icon: 'lock', tone: 'consume' },
+            { type: 'item', id: 'n-fix', title: 'the risk team maps CP-1501', sub: 'a corrected file: the fix is at the source', icon: 'users' },
+            { type: 'item', id: 'n-ref', title: 'the reference checks: PASS', sub: published, icon: 'check' },
+            { type: 'item', id: 'n-rerun', title: 'night-45-rerun: G3, G4 PASS', sub: rerun.find((l) => l.startsWith('night complete'))!, icon: 'check', tone: 'store' },
+          ],
+        },
       ],
     },
     {
@@ -41,7 +45,6 @@ export const orchestrateFailedNight: SceneModel = ideFrame({
         { id: 'w-after', cells: ['night-45-rerun', now] },
       ],
     },
-    { type: 'note', id: 'note', tone: 'consume', text: 'The fix is at the source: the pipeline never guesses a group, and no join is edited.' },
   ],
   edges: [
     { from: 'n-fail', to: 'n-fix' },

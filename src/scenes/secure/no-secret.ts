@@ -19,19 +19,16 @@ export const secureNoSecret: SceneModel = ideFrame({
   session,
   keep: ['$ terraform apply', ['$ az role assignment list', grep]],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
-      type: 'group', id: 'chain', title: 'How the pipeline gets the password', icon: 'workflow', tone: 'store', children: [
-        { type: 'item', id: 'c-id', title: 'id-tradefin-pipeline', sub: 'a managed identity: no secret of its own', icon: 'key' },
-        { type: 'item', id: 'c-token', title: 'a token from Entra ID', sub: 'minutes long, for the vault only', icon: 'cert' },
-        { type: 'item', id: 'c-vault', title: 'kv-tradefin-dev', sub: 'role: Key Vault Secrets User → read', icon: 'keyvault', tone: 'store' },
-      ],
-    },
-    {
-      type: 'table', id: 'token', title: 'The token the identity gets', tone: 'store', columns: ['may', 'may not'], rows: [
-        { id: 't-1', cells: ['read a secret’s value', 'set, change or delete one'] },
-        { id: 't-2', cells: ['reach kv-tradefin-dev', 'reach anything else'] },
-        { id: 't-3', cells: ['last minutes', 'be written down for later'] },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'chain', title: 'How the pipeline gets the password', icon: 'workflow', tone: 'store', children: [
+            { type: 'item', id: 'c-id', title: 'id-tradefin-pipeline', sub: 'a managed identity: no secret of its own', icon: 'key' },
+            { type: 'item', id: 'c-token', title: 'a token from Entra ID', sub: 'minutes long, for the vault only', icon: 'cert' },
+            { type: 'item', id: 'c-vault', title: 'kv-tradefin-dev', sub: 'role: Key Vault Secrets User → read', icon: 'keyvault', tone: 'store' },
+          ],
+        },
       ],
     },
     {

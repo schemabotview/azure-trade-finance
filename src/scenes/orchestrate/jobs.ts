@@ -13,21 +13,25 @@ export const orchestrateJobs: SceneModel = ideFrame({
     highlight: [lineOf(code, 'tasks = ['), lineOf(code, 'for_each = task.key == 0')] },
   session,
   side: [
-    level('compiled', 'terraform validate, offline: real, not deployed'),
     {
-      type: 'group', id: 'graph', title: 'lc-exposure: the task graph', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'j-bronze', title: 'bronze', sub: 'new sealed batches; G2 sets rows aside', icon: 'layers' },
-        { type: 'item', id: 'j-silver', title: 'silver', sub: 'MERGE, batch by batch', icon: 'layers' },
-        { type: 'item', id: 'j-g3', title: 'g3', sub: 'exits 1 on FAIL: nothing after it runs', icon: 'shield', tone: 'consume' },
-        { type: 'item', id: 'j-gold', title: 'gold', sub: 'fact and aggregate', icon: 'layers' },
-        { type: 'item', id: 'j-g4', title: 'g4', sub: 'fact = aggregate, or not published', icon: 'shield', tone: 'consume' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('compiled', 'terraform validate, offline: real, not deployed'),
+        {
+          type: 'group', id: 'graph', title: 'lc-exposure: the task graph', icon: 'workflow', tone: 'ingest', children: [
+            { type: 'item', id: 'j-bronze', title: 'bronze', sub: 'new sealed batches; G2 sets rows aside', icon: 'layers' },
+            { type: 'item', id: 'j-silver', title: 'silver', sub: 'MERGE, batch by batch', icon: 'layers' },
+            { type: 'item', id: 'j-g3', title: 'g3', sub: 'exits 1 on FAIL: nothing after it runs', icon: 'shield', tone: 'consume' },
+            { type: 'item', id: 'j-gold', title: 'gold', sub: 'fact and aggregate', icon: 'layers' },
+            { type: 'item', id: 'j-g4', title: 'g4', sub: 'fact = aggregate, or not published', icon: 'shield', tone: 'consume' },
+          ],
+        },
       ],
     },
     {
       type: 'table', id: 'vs', title: 'run.py and the job: the same night', tone: 'infra', columns: ['', 'run.py, locally', 'the job'], rows: [
-        { id: 'v-1', cells: ['a gate fails', 'sys.exit: nothing after', 'task fails: nothing after'] },
+        { id: 'v-1', cells: ['a gate fails', 'sys.exit: stops', 'task fails: stops'] },
         { id: 'v-2', cells: ['runs on', 'Ana’s laptop', 'a cluster, per run'] },
-        { id: 'v-3', cells: ['its code', 'the working copy', 'Git, at the run’s start'] },
+        { id: 'v-3', cells: ['its code', 'the working copy', 'Git, at run start'] },
       ],
     },
   ],

@@ -19,10 +19,6 @@ export const silverG3: SceneModel = ideFrame({
   session,
   side: [
     {
-      type: 'table', id: 'checks', title: 'G3 on Silver', tone: 'infra', columns: ['check', 'result'],
-      rows: checks.map(([c, r], i) => ({ id: `c${i}`, cells: [c, r] })),
-    },
-    {
       type: 'group', id: 'why', title: 'The one that fails', icon: 'search', tone: 'consume', children: [
         { type: 'item', id: 'w-silver', title: 'lc_current: the open LCs', sub: 'ISSUED, ACTIVE, AMENDED', icon: 'layers' },
         { type: 'item', id: 'w-lc', title: `${lc}: ${ccy} ${millions(amount)}`, sub: `open, applicant ${cp}`, icon: 'file' },
@@ -31,7 +27,10 @@ export const silverG3: SceneModel = ideFrame({
         { type: 'item', id: 'w-stop', title: 'G3 FAIL', sub: 'Gold does not run tonight', icon: 'lock', tone: 'consume' },
       ],
     },
-    { type: 'note', id: 'note', tone: 'ingest', text: `The fix is the risk team’s: map ${cp} to its group, publish again, and rerun. The pipeline never guesses a group.` },
+    {
+      type: 'table', id: 'checks', title: 'G3 on Silver', tone: 'infra', columns: ['check', 'result'],
+      rows: checks.map(([c, r], i) => ({ id: `c${i}`, cells: [c, r] })),
+    },
   ],
   edges: [
     { from: 'w-silver', to: 'w-lc' },

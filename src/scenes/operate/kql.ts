@@ -14,10 +14,14 @@ export const operateKql: SceneModel = ideFrame({
   editor: { file: 'infra/queries/failed.kql', lang: 'sql', code, highlight: [lineOf(code, '| where Status == "Failed"')] },
   session,
   side: [
-    level('compiled', 'the query the alert runs (§12.3); validated with it, not run here'),
     {
-      type: 'group', id: 'pipe', title: 'Each line takes the rows above it', icon: 'filter', tone: 'ingest', children:
-        lines.map((l, i) => ({ type: 'item' as const, id: `k${i}`, title: l.replace(/^\| /, ''), sub: ['a table: every activity run', 'keep the failed ones', 'keep four columns', 'newest first'][i] ?? '', icon: i === 0 ? 'loganalytics' : 'filter', tone: i === lines.length - 1 ? 'store' as const : undefined })),
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('compiled', 'the query the alert runs (§12.3); validated with it, not run here'),
+        {
+          type: 'group', id: 'pipe', title: 'Each line takes the rows above it', icon: 'filter', tone: 'ingest', children:
+            lines.map((l, i) => ({ type: 'item' as const, id: `k${i}`, title: l.replace(/^\| /, ''), sub: ['a table: every activity run', 'keep the failed ones', 'keep four columns', 'newest first'][i] ?? '', icon: i === 0 ? 'loganalytics' : 'filter', tone: i === lines.length - 1 ? 'store' as const : undefined })),
+        },
+      ],
     },
     {
       type: 'table', id: 'cols', title: 'The four columns it keeps', tone: 'infra', columns: ['column', 'answers'], rows: [
@@ -27,7 +31,6 @@ export const operateKql: SceneModel = ideFrame({
         { id: 'c-4', cells: ['ErrorCode', 'what kind of failure'] },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'The gates’ own results are not here: they are rows in risk.audit.gate_results (§11.3). This table holds what the factory saw.' },
   ],
   edges: lines.slice(1).map((_, i) => ({ from: `k${i}`, to: `k${i + 1}` })),
 })

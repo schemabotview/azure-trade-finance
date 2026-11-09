@@ -22,17 +22,20 @@ export const extractWatermark: SceneModel = ideFrame({
   session,
   keep: ['Apply complete!', ['$ R=', 'commit_watermark']],
   side: [
-    level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
     {
-      type: 'group', id: 'chain', title: 'Batch 42, activity by activity', icon: 'workflow', tone: 'ingest', children: [
-        item('a-wm', `lookup_watermark: ${wm}`, 'where the last good window ended', 'clock'),
-        item('a-count', `count_window: ${n} rows`, 'TradeBook, after the watermark, up to window_end', 'postgresql'),
-        item('a-copy', `copy_window: ${copied} rows`, 'into landing/lc_deals/batch_id=42/', 'adls'),
-        item('a-g1', `G1: ${n} = ${copied}`, 'equal: seal the batch, move the watermark', 'check', 'store'),
-        item('a-commit', 'seal + commit_watermark', '_SUCCESS, then the new window end', 'lock', 'store'),
+      type: 'group', id: 'diagram', bare: true, children: [
+        level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
+        {
+          type: 'group', id: 'chain', title: 'Batch 42, activity by activity', icon: 'workflow', tone: 'ingest', children: [
+            item('a-wm', `lookup_watermark: ${wm}`, 'where the last good window ended', 'clock'),
+            item('a-count', `count_window: ${n} rows`, 'TradeBook, after the watermark, up to window_end', 'postgresql'),
+            item('a-copy', `copy_window: ${copied} rows`, 'into landing/lc_deals/batch_id=42/', 'adls'),
+            item('a-g1', `G1: ${n} = ${copied}`, 'equal: seal the batch, move the watermark', 'check', 'store'),
+            item('a-commit', 'seal + commit_watermark', '_SUCCESS, then the new window end', 'lock', 'store'),
+          ],
+        },
       ],
     },
-    { type: 'note', id: 'note', tone: 'consume', text: 'If the two counts differ, a Fail activity stops the run with G1’s message, and the watermark stays: tomorrow asks again.' },
   ],
   edges: [
     { from: 'a-wm', to: 'a-count' },

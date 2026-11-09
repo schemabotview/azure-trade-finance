@@ -29,7 +29,6 @@ export const orchestrateAudit: SceneModel = ideFrame({
       type: 'table', id: 'rows', title: 'night-44, as the audit table holds it', tone: 'store', columns: t.head,
       rows: t.rows.map((r, i) => ({ id: `r${i}`, cells: r, tone: r[3] === 'FAIL' ? 'consume' as const : r[3] === 'WARN' ? 'infra' as const : undefined })),
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'A PASS is written too: it is the evidence that the check ran.' },
   ],
   edges: [
     { from: 'f-gates', to: 'f-row' },
