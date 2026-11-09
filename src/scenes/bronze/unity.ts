@@ -27,11 +27,11 @@ export const bronzeUnity: SceneModel = ideFrame({
       ],
     },
     {
-      type: 'table', id: 'map', title: 'Local Delta folder → its name in the catalog', tone: 'store', columns: ['on Ana’s laptop', 'in Unity Catalog'], rows: [
-        { id: 'm-1', cells: ['lake/bronze/lc_deals', 'risk.bronze.lc_deals'] },
-        { id: 'm-2', cells: ['lake/silver/lc_current', 'risk.silver.lc_current'] },
-        { id: 'm-3', cells: ['lake/gold/agg_group_exposure', 'risk.gold.agg_group_exposure'] },
-        { id: 'm-4', cells: ['lake/audit/gate_results', 'risk.audit.gate_results'] },
+      type: 'table', id: 'map', title: 'lake/<layer>/<table> → risk.<layer>.<table>', tone: 'store', columns: ['layer', 'table'], rows: [
+        { id: 'm-1', cells: ['bronze', 'lc_deals'] },
+        { id: 'm-2', cells: ['silver', 'lc_current'] },
+        { id: 'm-3', cells: ['gold', 'agg_group_exposure'] },
+        { id: 'm-4', cells: ['audit', 'gate_results'] },
       ],
     },
   ],

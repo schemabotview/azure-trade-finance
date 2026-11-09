@@ -25,7 +25,7 @@ export const bronzeG2: SceneModel = ideFrame({
             { type: 'item', id: 's-in', title: 'batch 43', sub: 'the late amendments, plus a hand-made correction', icon: 'file', span: 'all', fill: true },
             { type: 'item', id: 's-ok', title: `${ok} rows → Bronze`, sub: 'the late amendments', icon: 'layers', tone: 'store' },
             { type: 'item', id: 's-bad', title: `${bad} rows → quarantine`, sub: 'kept, with the reason', icon: 'lock', tone: 'consume' },
-            { type: 'item', id: 's-bronze', title: 'lake/bronze/lc_deals', sub: 'Silver reads these', icon: 'layers', tone: 'store' },
+            { type: 'item', id: 's-bronze', title: 'bronze/lc_deals', sub: 'Silver reads these', icon: 'layers', tone: 'store' },
             { type: 'item', id: 's-q', title: 'lc_deals_quarantine', sub: 'someone fixes the source', icon: 'layers', tone: 'consume' },
           ],
         },

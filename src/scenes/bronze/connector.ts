@@ -27,11 +27,11 @@ export const bronzeConnector: SceneModel = ideFrame({
       ],
     },
     {
-      type: 'table', id: 'where', title: 'Where each piece lives', tone: 'infra', columns: ['piece', 'kind', 'managed by'], rows: [
-        { id: 'w-1', cells: ['access connector', 'Azure resource', 'Resource Manager'] },
-        { id: 'w-2', cells: ['data role', 'Azure RBAC', 'Resource Manager'] },
-        { id: 'w-3', cells: ['storage credential', 'Unity Catalog', 'the workspace’s API'] },
-        { id: 'w-4', cells: ['external location', 'Unity Catalog', 'the workspace’s API'] },
+      type: 'table', id: 'where', title: 'Where each piece lives', tone: 'infra', columns: ['piece', 'lives in'], rows: [
+        { id: 'w-1', cells: ['access connector', 'Azure (ARM)'] },
+        { id: 'w-2', cells: ['data role', 'Azure RBAC (ARM)'] },
+        { id: 'w-3', cells: ['storage credential', 'Unity Catalog (API)'] },
+        { id: 'w-4', cells: ['external location', 'Unity Catalog (API)'] },
       ],
     },
   ],

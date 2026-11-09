@@ -31,8 +31,8 @@ export const bronzeReplay: SceneModel = ideFrame({
     {
       type: 'table', id: 'why', title: 'Why Bronze keeps the duplicate', tone: 'store', columns: ['layer', 'answers'], rows: [
         { id: 'w-bronze', cells: ['Bronze', 'what arrived, when, from where'] },
-        { id: 'w-silver', cells: ['Silver (Course 9)', 'what is true now, per LC'], tone: 'store' },
-        { id: 'w-audit', cells: ['an auditor', '“was batch 44 a re-send?” — yes, here'] },
+        { id: 'w-silver', cells: ['Silver', 'what is true now, per LC'], tone: 'store' },
+        { id: 'w-audit', cells: ['an auditor', 'was 44 a re-send? yes, here'] },
       ],
     },
   ],
