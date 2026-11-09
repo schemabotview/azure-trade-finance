@@ -20,21 +20,17 @@ export const landBatchFolders: SceneModel = ideFrame({
   editor: { file: 'extract/extract.py', code, show: [[lineOf(code, 'def main'), lineOf(code, 'print(f"batch')]], highlight: [lineOf(code, 'path = f"lc_deals'), lineOf(code, 'try:'), lineOf(code, 'overwrite=False'), lineOf(code, 'except ResourceExistsError')] },
   session,
   side: [
-    AZURITE,
     {
-      type: 'group', id: 'runs', title: 'Two runs of batch 41', icon: 'workflow', tone: 'ingest', dir: 'grid', cols: 2, children: [
-        { type: 'item', id: 'run1', title: 'first run', sub: 'night of 31 October', icon: 'terminal' },
-        { type: 'item', id: 'b41', title: 'batch_id=41/', sub: `part-00000.csv · ${rowsOf(batch41)} rows`, icon: 'folder', tone: 'store' },
-        { type: 'item', id: 'run2', title: 'the same run again', sub: 'a retry, a double click', icon: 'terminal' },
-        { type: 'item', id: 'refused', title: 'refused', sub: 'the blob already exists', icon: 'lock', tone: 'consume' },
-      ],
-    },
-    {
-      type: 'table', id: 'path', title: 'landing/lc_deals/batch_id=41/part-00000.csv', tone: 'ingest', columns: ['part', 'names'], rows: [
-        { id: 'p-zone', cells: ['landing', 'the zone: a container'] },
-        { id: 'p-table', cells: ['lc_deals/', 'the source table'] },
-        { id: 'p-batch', cells: ['batch_id=41/', 'the delivery'], tone: 'store' },
-        { id: 'p-file', cells: ['part-00000.csv', 'the rows, as CSV'] },
+      type: 'group', id: 'diagram', bare: true, children: [
+        AZURITE,
+        {
+          type: 'group', id: 'runs', title: 'Two runs of batch 41', icon: 'workflow', tone: 'ingest', dir: 'grid', cols: 2, children: [
+            { type: 'item', id: 'run1', title: 'first run', sub: 'night of 31 October', icon: 'terminal' },
+            { type: 'item', id: 'b41', title: 'batch_id=41/', sub: `part-00000.csv · ${rowsOf(batch41)} rows`, icon: 'folder', tone: 'store' },
+            { type: 'item', id: 'run2', title: 'the same run again', sub: 'a retry, a double click', icon: 'terminal' },
+            { type: 'item', id: 'refused', title: 'refused', sub: 'the blob already exists', icon: 'lock', tone: 'consume' },
+          ],
+        },
       ],
     },
     {
@@ -43,7 +39,6 @@ export const landBatchFolders: SceneModel = ideFrame({
         { id: 'n-v2', cells: [v2.lc_id, v2.source_version, millions(v2.amount), '42, tomorrow'] },
       ],
     },
-    { type: 'note', id: 'note', tone: 'store', text: 'A batch_id names a delivery: one night’s copy, written once. source_version is TradeBook’s number for one LC’s revision. Bronze will keep both.' },
   ],
   edges: [
     { from: 'run1', to: 'b41', label: 'write' },

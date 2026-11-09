@@ -11,7 +11,7 @@
 | teaches | Azure, by building `lc-exposure`: a nightly batch from Syndica Bank's TradeBook (PostgreSQL) to a Gold table of LC exposure by counterparty group, with quality gates G1–G4 |
 | cast | Ana (data engineer), Syndica Bank's trade finance desk; groups Woodgrove, Contoso, Fabrikam, Northwind |
 | reference repos | all public under `github.com/schemabotview` — clone them beside this one, port, do not reinvent: **`spark-ecommerce-analytics`** (IDE frame, `spine.py`, the seeded generator, checks, registry, shots, film), **`aws-ecommerce`** (the map frame, `map.ts` with `BUILT`/`muted`, the record-once spine, verification levels), **`sql-bank`** (`setup-postgres.sh`, psql consoles), **`databricks-retail-bank-lakehouse`** (normalising a real cloud account, credentials as secrets), **`python-expense-tracker`** (the original templates) |
-| engine / shell | `@graphlearning/graphl-flow` ^0.8.0, `@graphlearning/shell` ^1.1.0, from npm. graphl-flow's Azure icon keys: `adls`, `datafactory`, `databricks`, `keyvault`, `loganalytics`, `monitor`, `storage`, `vm`, `devops`; brand `postgresql`, `github`, `githubactions`; Delta has no mark (lucide `layers`) |
+| engine / shell | `@graphlearning/graphl-flow` 0.11.0, `@graphlearning/shell` 1.1.0, pinned exactly (frame v2, COURSE-PLAN Decision 6). graphl-flow's Azure icon keys: `adls`, `datafactory`, `databricks`, `keyvault`, `loganalytics`, `monitor`, `storage`, `vm`, `devops`; brand `postgresql`, `github`, `githubactions`; Delta has no mark (lucide `layers`) |
 | toolchain | see COURSE-PLAN, "Stack and pins": PostgreSQL 18.6, Python 3.14.9, PySpark 4.2.0 + delta-spark 4.4.1 on Java 21, Azurite, Terraform 1.17.0 (`azurerm` + `databricks` providers, tflint), Azure CLI + azcopy, Databricks CLI 1.22.1 |
 | frames | map (from aws-ecommerce), IDE (from spark-ecommerce-analytics), ◆ full scenes; `--brand` Azure blue |
 | secrets | `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET` (a service principal for recording), `DATABRICKS_HOST`, `DATABRICKS_TOKEN`: environment secrets, never committed, never printed |
@@ -133,6 +133,10 @@ See COURSE-PLAN, "The spine". The rules an author applies every step:
 
 The map frame's parts are the COURSE-PLAN map; never rename a part. Every map frame shares one fit;
 every IDE frame shares one fit. The Azure portal is never screenshotted.
+
+**2026-11-09: IDE frame v2, piloted on Course 5 `land`** (COURSE-PLAN Decision 6); the other courses
+are NOT yet ported and fail check-content (strict side pane) and check-render (side panes wider than
+574). `node scripts/check-render.mjs <course>` checks one course. Map frames are unchanged.
 
 ## Narration
 

@@ -19,21 +19,19 @@ export const landReference: SceneModel = ideFrame({
   editor: { file: 'extract/reference.py', code, show: [[lineOf(code, 'FILES ='), lineOf(code, 'print(f"')]], highlight: [lineOf(code, 'path = f"'), lineOf(code, 'zone.upload_blob')] },
   session,
   side: [
-    AZURITE,
     {
-      type: 'group', id: 'paths', title: 'Two ways into Silver', icon: 'workflow', tone: 'ingest', dir: 'grid', cols: 2, children: [
-        { type: 'item', id: 'p-tradebook', title: 'TradeBook', sub: 'the desk’s LCs', icon: 'postgresql' },
-        { type: 'item', id: 'p-risk', title: 'the risk team', sub: 'mapping, limits', icon: 'users' },
-        { type: 'item', id: 'p-landing', title: 'landing', sub: 'batch_id=42/', icon: 'adls' },
-        { type: 'item', id: 'p-reference', title: 'reference', sub: 'as_of=2026-10-31/', icon: 'adls', tone: 'store' },
-        { type: 'item', id: 'p-bronze', title: 'Bronze', sub: 'every version, raw', icon: 'layers', muted: true },
-        { type: 'item', id: 'p-silver', title: 'Silver', sub: 'checked, then joined', icon: 'layers', muted: true },
-      ],
-    },
-    {
-      type: 'table', id: 'zones', title: 'Two zones, two keys', tone: 'ingest', columns: ['zone', 'holds', 'keyed by'], rows: [
-        { id: 'z-landing', cells: ['landing', 'TradeBook’s deliveries', 'batch_id'] },
-        { id: 'z-reference', cells: ['reference', 'the risk team’s files', 'as_of date'], tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        AZURITE,
+        {
+          type: 'group', id: 'paths', title: 'Two ways into Silver', icon: 'workflow', tone: 'ingest', dir: 'grid', cols: 2, children: [
+            { type: 'item', id: 'p-tradebook', title: 'TradeBook', sub: 'the desk’s LCs', icon: 'postgresql' },
+            { type: 'item', id: 'p-risk', title: 'the risk team', sub: 'mapping, limits', icon: 'users' },
+            { type: 'item', id: 'p-landing', title: 'landing', sub: 'batch_id=42/', icon: 'adls' },
+            { type: 'item', id: 'p-reference', title: 'reference', sub: 'as_of=2026-10-31/', icon: 'adls', tone: 'store' },
+            { type: 'item', id: 'p-bronze', title: 'Bronze', sub: 'every version, raw', icon: 'layers', muted: true },
+            { type: 'item', id: 'p-silver', title: 'Silver', sub: 'checked, then joined', icon: 'layers', muted: true },
+          ],
+        },
       ],
     },
     {

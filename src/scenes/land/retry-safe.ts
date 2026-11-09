@@ -19,12 +19,16 @@ export const landRetrySafe: SceneModel = ideFrame({
   },
   session,
   side: [
-    AZURITE,
     {
-      type: 'group', id: 'life', title: 'A batch folder’s life', icon: 'workflow', tone: 'ingest', children: [
-        { type: 'item', id: 'l-open', title: 'open: manifest, no _SUCCESS', sub: 'copy may run again: same path, overwritten', icon: 'folder' },
-        { type: 'item', id: 'l-commit', title: 'commit: G1 PASS', sub: 'seal first, then move the watermark', icon: 'shield', tone: 'store' },
-        { type: 'item', id: 'l-sealed', title: 'sealed: _SUCCESS', sub: 'every later write is refused', icon: 'lock', tone: 'store' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        AZURITE,
+        {
+          type: 'group', id: 'life', title: 'A batch folder’s life', icon: 'workflow', tone: 'ingest', children: [
+            { type: 'item', id: 'l-open', title: 'open: manifest, no _SUCCESS', sub: 'copy may run again: same path, overwritten', icon: 'folder' },
+            { type: 'item', id: 'l-commit', title: 'commit: G1 PASS', sub: 'seal first, then move the watermark', icon: 'shield', tone: 'store' },
+            { type: 'item', id: 'l-sealed', title: 'sealed: _SUCCESS', sub: 'every later write is refused', icon: 'lock', tone: 'store' },
+          ],
+        },
       ],
     },
     {
@@ -32,12 +36,6 @@ export const landRetrySafe: SceneModel = ideFrame({
         { id: 'f-manifest', cells: ['_manifest.json', 'lookup'] },
         { id: 'f-part', cells: ['part-00000.csv', `copy, twice · ${rowsOf(batch42)} rows`] },
         { id: 'f-success', cells: ['_SUCCESS', 'commit: sealed'], tone: 'store' },
-      ],
-    },
-    {
-      type: 'table', id: 'steps', title: 'Each step, against each state', tone: 'ingest', columns: ['step', 'open batch', 'sealed batch'], rows: [
-        { id: 's-copy', cells: ['copy', 'overwrites the part', 'refused'] },
-        { id: 's-commit', cells: ['commit', 'G1, seal, watermark', 'G1, seal again: same result'] },
       ],
     },
   ],

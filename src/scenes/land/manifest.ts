@@ -10,23 +10,27 @@ import manifest from '../../../spine/land/05-manifest/captured/landing/lc_deals/
 // window, the row count, the files and the columns with their PostgreSQL types — what the copy must
 // deliver. The JSON in the side pane is the blob itself, read back from the lake by the replay.
 const m = manifest.trimEnd()
-const fold = [[1, lineOf(m, '"columns"') + 3], [lineOf(m, '"updated_at"'), lineOf(m, '"updated_at"') + 2]] as [number, number][]
+const fold = [[1, lineOf(m, '"columns"')], [lineOf(m, '"updated_at"'), lineOf(m, '"updated_at"') + 2]] as [number, number][]
 
 export const landManifest: SceneModel = ideFrame({
   tree: landTree('extract/extract.py'),
   editor: { file: 'extract/extract.py', code, show: [[lineOf(code, 'def lookup'), lineOf(code, 'print(f"manifest')]], highlight: linesFrom(code, 'manifest = {', 'container("landing").upload_blob(path') },
   session,
   side: [
-    AZURITE,
     {
-      type: 'group', id: 'order', title: 'Batch 42, in order', icon: 'workflow', tone: 'ingest', dir: 'grid', cols: 2, children: [
-        { type: 'item', id: 'o-lookup', title: 'lookup', sub: 'counts the window', icon: 'search' },
-        { type: 'item', id: 'o-manifest', title: '_manifest.json', sub: 'the promise, written first', icon: 'file', tone: 'store' },
-        { type: 'item', id: 'o-copy', title: 'copy', sub: 'writes part-00000.csv', icon: 'database', muted: true },
-        { type: 'item', id: 'o-g1', title: 'G1', sub: 'holds the folder to the promise', icon: 'shield', muted: true },
+      type: 'group', id: 'diagram', bare: true, children: [
+        AZURITE,
+        {
+          type: 'group', id: 'order', title: 'Batch 42, in order', icon: 'workflow', tone: 'ingest', dir: 'grid', cols: 2, children: [
+            { type: 'item', id: 'o-lookup', title: 'lookup', sub: 'counts the window', icon: 'search' },
+            { type: 'item', id: 'o-manifest', title: '_manifest.json', sub: 'the promise, written first', icon: 'file', tone: 'store' },
+            { type: 'item', id: 'o-copy', title: 'copy', sub: 'writes part-00000.csv', icon: 'database', muted: true },
+            { type: 'item', id: 'o-g1', title: 'G1', sub: 'holds the folder to the promise', icon: 'shield', muted: true },
+          ],
+        },
+        { type: 'code', id: 'manifest', filename: 'landing/lc_deals/batch_id=42/_manifest.json', lang: 'js', code: m, show: fold, tone: 'store', fill: true },
       ],
     },
-    { type: 'code', id: 'manifest', filename: 'landing/lc_deals/batch_id=42/_manifest.json', lang: 'js', code: m, show: fold, tone: 'store', fill: true },
   ],
   edges: [
     { from: 'o-lookup', to: 'o-manifest' },

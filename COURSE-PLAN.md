@@ -167,8 +167,9 @@ asserted by `python -m tradebook_gen verify`):
   Landing | Bronze | Silver | Gold with G1–G4 as badges between them. A part not built yet is
   `muted` in place; `BUILT[course]` is what exists; what a section adds is ringed by its `focus`.
   Every map frame shares one fit.
-- **IDE frame** (ported from `spark-ecommerce-analytics`' `ide.ts`): explorer | editor over terminal |
-  fixed side pane. Terraform (HCL), Python, SQL, KQL and ADF JSON are all shown here.
+- **IDE frame v2** (aws-ecommerce's frame v2, Decision 6): editor over an 80-column terminal (760) |
+  side pane 574, no explorer, on graphl-flow's shared 1344 × 756 grid. Terraform (HCL), Python, SQL,
+  KQL and ADF JSON are all shown here. The side pane is STRICT (Decision 6).
 - **◆ full scene**: a canonical big picture (the resource hierarchy, RBAC inheritance, a private
   endpoint's packet path, Databricks' two planes, Delta's log, three kinds of progress), its own
   section, with real output inside it.
@@ -390,6 +391,20 @@ and writes to the emulated lake, so the frame carries the emulated label.
 4. Infrastructure as Terraform, not Bicep: one tool across `aws-ecommerce` and this film, and it
    declares the Databricks job too (2026-11-01, replacing "Bicep, not Terraform").
 5. Repo `azure-trade-finance`, public, under `schemabotview`.
+6. **Frame v2** (2026-11-09). The v1 IDE frame was its own 1736 × 976 grid (≈ 2.0× at 4K) with side
+   panes of three to five parts; the sister repos moved to graphl-flow 0.10's shared grid (1344 × 756
+   at a 1% margin, ≈ 2.8× at 4K), and this film follows: engine 0.11.0, shell 1.1.0, pinned exactly.
+   - Editor over terminal (760: the spine records at 80 columns; the editor soft-wraps at ~74) | side
+     pane 574. No explorer: the 130px it would get cannot hold `.terraform.lock.hcl`, and no
+     narration points at it. The terminal takes the rows it shows, the editor the rest.
+   - **The side pane is STRICT**: at most two parts, and with two, one is a diagram (a group or a
+     plot) and the other at most one table. The verification label rides at the top of the FIRST
+     part, so the strict rule never costs it; a note that states a verification level is kept
+     inside the diagram, other notes go (the narration carries them).
+   - **Map frames are unchanged for now** (the owner's decision in aws-ecommerce, where the map is
+     the same fixed diagram).
+   - Piloted on Course 5 `land` (owner review pending). Narration edited: none. Every course is
+     re-recorded once ported, because the frame changed.
 
 ## Open
 

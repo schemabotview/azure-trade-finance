@@ -19,13 +19,17 @@ export const landWatermark: SceneModel = ideFrame({
   editor: { file: 'extract/extract.py', code, show: [[lineOf(code, 'WATERMARK ='), lineOf(code, 'WATERMARK =')], [lineOf(code, 'def lookup'), lineOf(code, 'print(f"{changed}')]], highlight: [lineOf(code, 'WATERMARK ='), ...linesFrom(code, 'changed, total = db.execute(', '[start, window_end]')] },
   session,
   side: [
-    AZURITE,
     {
-      type: 'group', id: 'line', title: 'updated_at, on one line', icon: 'clock', tone: 'ingest', children: [
-        { type: 'item', id: 't-41', title: 'batch 41: up to 31 Oct 02:00', sub: `the full load · ${full} LCs`, icon: 'folder' },
-        { type: 'item', id: 't-old', title: 'the watermark', sub: '2026-10-31T02:00:00Z · where the last good window ended', icon: 'key', tone: 'infra' },
-        { type: 'item', id: 't-42', title: 'batch 42’s window', sub: `(31 Oct 02:00, 1 Nov 02:00] · ${changed} of ${total} LCs changed`, icon: 'filter', tone: 'store' },
-        { type: 'item', id: 't-new', title: 'the next watermark', sub: '2026-11-01T02:00:00Z · once batch 42 is good', icon: 'key', tone: 'infra', muted: true },
+      type: 'group', id: 'diagram', bare: true, children: [
+        AZURITE,
+        {
+          type: 'group', id: 'line', title: 'updated_at, on one line', icon: 'clock', tone: 'ingest', children: [
+            { type: 'item', id: 't-41', title: 'batch 41: up to 31 Oct 02:00', sub: `the full load · ${full} LCs`, icon: 'folder' },
+            { type: 'item', id: 't-old', title: 'the watermark', sub: '2026-10-31T02:00:00Z · where the last good window ended', icon: 'key', tone: 'infra' },
+            { type: 'item', id: 't-42', title: 'batch 42’s window', sub: `(31 Oct 02:00, 1 Nov 02:00] · ${changed} of ${total} LCs changed`, icon: 'filter', tone: 'store' },
+            { type: 'item', id: 't-new', title: 'the next watermark', sub: '2026-11-01T02:00:00Z · once batch 42 is good', icon: 'key', tone: 'infra', muted: true },
+          ],
+        },
       ],
     },
     {

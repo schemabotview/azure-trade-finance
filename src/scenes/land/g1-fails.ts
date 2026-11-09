@@ -20,13 +20,17 @@ export const landG1Fails: SceneModel = ideFrame({
   editor: { file: 'extract/g1.py', code, show: [[lineOf(code, 'def check'), lineOf(code, 'return all(')]], highlight: [...linesFrom(code, 'results = [', '("rows", rows'), lineOf(code, 'return all(')] },
   session,
   side: [
-    AZURITE,
     {
-      type: 'group', id: 'night', title: '⑂ The night batch 42 came up short', icon: 'clock', tone: 'consume', children: [
-        { type: 'item', id: 'n-lookup', title: '02:00:00 lookup', sub: '120 LCs in the window: the manifest says 120', icon: 'search' },
-        { type: 'item', id: 'n-desk', title: '02:00:07 the desk amends three LCs', sub: `${late.join(', ')}: now past the window’s end`, icon: 'users', tone: 'infra' },
-        { type: 'item', id: 'n-copy', title: 'copy reads the window', sub: `${copied} rows land in part-00000.csv`, icon: 'database' },
-        { type: 'item', id: 'n-g1', title: 'G1 FAIL', sub: 'not published · the watermark stays', icon: 'shield', tone: 'consume' },
+      type: 'group', id: 'diagram', bare: true, children: [
+        AZURITE,
+        {
+          type: 'group', id: 'night', title: '⑂ The night batch 42 came up short', icon: 'clock', tone: 'consume', children: [
+            { type: 'item', id: 'n-lookup', title: '02:00:00 lookup', sub: '120 LCs in the window: the manifest says 120', icon: 'search' },
+            { type: 'item', id: 'n-desk', title: '02:00:07 the desk amends three LCs', sub: `${late.join(', ')}: now past the window’s end`, icon: 'users', tone: 'infra' },
+            { type: 'item', id: 'n-copy', title: 'copy reads the window', sub: `${copied} rows land in part-00000.csv`, icon: 'database' },
+            { type: 'item', id: 'n-g1', title: 'G1 FAIL', sub: 'not published · the watermark stays', icon: 'shield', tone: 'consume' },
+          ],
+        },
       ],
     },
     {
