@@ -134,9 +134,10 @@ See COURSE-PLAN, "The spine". The rules an author applies every step:
 The map frame's parts are the COURSE-PLAN map; never rename a part. Every map frame shares one fit;
 every IDE frame shares one fit. The Azure portal is never screenshotted.
 
-**2026-11-09: IDE frame v2, piloted on Course 5 `land`** (COURSE-PLAN Decision 6); the other courses
-are NOT yet ported and fail check-content (strict side pane) and check-render (side panes wider than
-574). `node scripts/check-render.mjs <course>` checks one course. Map frames are unchanged.
+**2026-11-09: IDE frame v2 on every IDE section** (COURSE-PLAN Decision 6): compact explorer 175 |
+editor over a 72-column terminal 715 | strict side pane 434. Map frames are unchanged. The recordings
+are v1. `node scripts/check-render.mjs <course>` checks one course; when a side pane runs outside its
+column, the check names the part and by how much.
 
 ## Narration
 

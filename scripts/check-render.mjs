@@ -196,7 +196,7 @@ try {
       // --- the IDE template -----------------------------------------------------------------------------
       let panes = null
       if (ide) {
-        panes = Object.fromEntries(['workbench', 'side'] /* frame v2: the editor/terminal divider moves with the transcript */.map((p) => [p, node(p) && Object.values(R(node(p))).map((v) => Math.round(v))]))
+        panes = Object.fromEntries(['explorer', 'workbench', 'side'] /* frame v2: the editor/terminal divider moves with the transcript */.map((p) => [p, node(p) && Object.values(R(node(p))).map((v) => Math.round(v))]))
         const pane = R(node('side'))
         const leaves = [...node('side').querySelectorAll(LEAVES)].map(R)
         const top = Math.min(...leaves.map((r) => r.y)), bottom = Math.max(...leaves.map((r) => r.y + r.h))
@@ -234,7 +234,7 @@ try {
 const [ref] = ide
 for (const { slug, panes, fit } of ide.slice(1)) {
   if (fit !== ref.fit) problems.push(`${slug}  fit ${fit} differs from ${ref.slug}'s ${ref.fit} — an IDE frame must not change the zoom`)
-  for (const pane of ['workbench', 'side'] /* frame v2: the editor/terminal divider moves with the transcript */) {
+  for (const pane of ['explorer', 'workbench', 'side'] /* frame v2: the editor/terminal divider moves with the transcript */) {
     const a = ref.panes[pane], b = panes[pane]
     if (!a || !b || a.some((v, i) => v !== b[i])) problems.push(`${slug}  the ${pane} pane is at [${b}], not [${a}] as in ${ref.slug}`)
   }

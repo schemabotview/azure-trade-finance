@@ -3,3 +3,8 @@
 :root {
   --brand: #0078d4;
 }
+
+/* §4.7's role matrix quotes the terminal's role names and scopes as they are (the widest pair is 46
+   columns): in frame v2's 434px side pane that one table takes tighter cell padding instead of a
+   shortened role name. */
+.gf-table[data-id='matrix'] td { padding-inline: 4px; }
