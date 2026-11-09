@@ -33,10 +33,10 @@ export const extractParameters: SceneModel = ideFrame({
     },
     {
       type: 'table', id: 'resolve', title: 'Each expression, as copy_window ran it', tone: 'infra', columns: ['expression', 'became'], rows: [
-        { id: 'r-batch', cells: ['@{pipeline().parameters.batch_id}', params.batch_id] },
-        { id: 'r-wm', cells: ['@{activity(\'lookup_watermark\')…Prop_0}', after] },
-        { id: 'r-end', cells: ['@{pipeline().parameters.window_end}', upto] },
-        { id: 'r-folder', cells: ['lc_deals/batch_id=@{…batch_id}', `lc_deals/batch_id=${params.batch_id}`] },
+        { id: 'r-batch', cells: ['…parameters.batch_id', params.batch_id] },
+        { id: 'r-wm', cells: ['…lookup_watermark…', after] },
+        { id: 'r-end', cells: ['…parameters.window_end', upto] },
+        { id: 'r-folder', cells: ['batch_id=@{…batch_id}', `batch_id=${params.batch_id}`] },
       ],
     },
   ],

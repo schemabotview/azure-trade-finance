@@ -33,10 +33,10 @@ export const extractLinked: SceneModel = ideFrame({
     },
     {
       type: 'table', id: 'built', title: 'What the apply built (12)', tone: 'infra', columns: ['piece', 'for'], rows: [
-        { id: 'b-vm', cells: ['vm-bank-tradebook, its NIC', 'TradeBook, in the bank'] },
-        { id: 'b-peer', cells: ['two peerings, two DNS links', 'bank ↔ lake, privately'] },
-        { id: 'b-kv', cells: ['a secret, two passwords', 'the factory’s login'] },
-        { id: 'b-adf', cells: ['ls_tradebook, a dataset, a ping', 'reachable? one Lookup'] },
+        { id: 'b-vm', cells: ['vm-bank-tradebook + NIC', 'TradeBook'] },
+        { id: 'b-peer', cells: ['two peerings, two DNS links', 'bank ↔ lake'] },
+        { id: 'b-kv', cells: ['a secret, two passwords', 'factory login'] },
+        { id: 'b-adf', cells: ['ls_tradebook, dataset, ping', 'one Lookup'] },
       ],
     },
   ],

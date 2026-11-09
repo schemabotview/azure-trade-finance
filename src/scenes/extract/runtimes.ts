@@ -24,7 +24,7 @@ export const extractRuntimes: SceneModel = ideFrame({
           type: 'group', id: 'two', bare: true, dir: 'grid', cols: 2, children: [
             {
               type: 'group', id: 'azure', title: 'Azure’s runtime', icon: 'cloud', tone: 'infra', children: [
-                { type: 'item', id: 'a-what', title: 'AutoResolveIntegrationRuntime', sub: 'always there, never listed', icon: 'cloud' },
+                { type: 'item', id: 'a-what', title: 'AutoResolve\u200bIntegration\u200bRuntime' /* break points: the name is one word */, sub: 'always there, never listed', icon: 'cloud' },
                 { type: 'item', id: 'a-runs', title: 'runs: If, Fail, the logic', sub: 'and calls to public stores', icon: 'boxes' },
                 { type: 'item', id: 'a-not', title: 'cannot reach the bank', sub: 'nothing gets in from Azure', icon: 'lock' },
               ],
@@ -41,12 +41,13 @@ export const extractRuntimes: SceneModel = ideFrame({
       ],
     },
     {
-      type: 'table', id: 'who', title: 'Which runtime runs each of the extract’s activities', tone: 'infra', columns: ['activity', 'touches', 'runs on'], rows: [
-        { id: 'r-wm', cells: ['lookup_watermark', 'landing (private)', 'the bank’s'] },
-        { id: 'r-count', cells: ['count_window', 'TradeBook', 'the bank’s'] },
-        { id: 'r-copy', cells: ['copy_window', 'TradeBook → landing', 'the bank’s'] },
-        { id: 'r-g1', cells: ['g1 (if), g1_fail', 'nothing outside', 'Azure’s'] },
-        { id: 'r-commit', cells: ['seal, commit_watermark', 'landing (private)', 'the bank’s'] },
+      type: 'table', id: 'who', title: 'Which runtime runs each of the extract’s activities', tone: 'infra', columns: ['activity', 'touches', 'runtime'], rows: [
+        { id: 'r-wm', cells: ['lookup_watermark', 'landing, private', 'bank'] },
+        { id: 'r-count', cells: ['count_window', 'TradeBook', 'bank'] },
+        { id: 'r-copy', cells: ['copy_window', 'TradeBook → landing', 'bank'] },
+        { id: 'r-g1', cells: ['g1 (if), g1_fail', 'nothing outside', 'Azure'] },
+        { id: 'r-seal', cells: ['seal', 'landing, private', 'bank'] },
+        { id: 'r-commit', cells: ['commit_watermark', 'landing, private', 'bank'] },
       ],
     },
   ],

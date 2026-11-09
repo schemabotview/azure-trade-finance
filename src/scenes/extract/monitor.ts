@@ -26,13 +26,13 @@ export const extractMonitor: SceneModel = ideFrame({
       type: 'group', id: 'diagram', bare: true, children: [
         level('recorded on Azure', 'the night’s fault is staged: the runtime’s service was stopped before the run'),
         {
-          type: 'group', id: 'runs', bare: true, dir: 'grid', cols: 2, children: [
+          type: 'group', id: 'runs', bare: true, children: [
             {
-              type: 'group', id: 'first', title: 'the night’s run: Failed', icon: 'lock', tone: 'consume', children:
+              type: 'group', id: 'first', title: 'night: Failed', icon: 'lock', tone: 'consume', children:
                 failed.map(([a, s]) => ({ type: 'item' as const, id: `f-${a}`, title: a, sub: s, icon: 'clock', tone: 'consume' as const })),
             },
             {
-              type: 'group', id: 'second', title: 'rerun from the failure', icon: 'check', tone: 'store', children:
+              type: 'group', id: 'second', title: 'the rerun', icon: 'check', tone: 'store', children:
                 again.filter(([a]) => ['lookup_watermark', 'count_window', 'copy_window', 'g1'].includes(a))
                   .map(([a, s]) => ({ type: 'item' as const, id: `s-${a}`, title: a, sub: s, icon: 'check', tone: 'store' as const })),
             },
@@ -41,15 +41,15 @@ export const extractMonitor: SceneModel = ideFrame({
       ],
     },
     {
-      type: 'table', id: 'when', title: 'Rerun from the failure, or not', tone: 'infra', columns: ['the failure', 'what helps'], rows: [
-        { id: 'w-1', cells: [`runtime offline (now ${state})`, 'rerun the failed activity'] },
-        { id: 'w-2', cells: ['a gate’s FAIL (§5.6)', 'fix the data, not a rerun'] },
+      type: 'table', id: 'when', title: `Rerun from the failure, or not (runtime now ${state})`, tone: 'infra', columns: ['the failure', 'what helps'], rows: [
+        { id: 'w-1', cells: ['runtime offline', 'rerun the failed step'] },
+        { id: 'w-2', cells: ['a gate’s FAIL (§5.6)', 'fix the data, no rerun'] },
         { id: 'w-3', cells: ['a window that failed', 'the trigger reruns it'] },
-        { id: 'w-4', cells: ['TradeBook not answering', 'rerun once it answers'] },
+        { id: 'w-4', cells: ['TradeBook down', 'rerun once it answers'] },
       ],
     },
   ],
   edges: [
-    { from: `f-${failed[0][0]}`, to: 's-lookup_watermark', label: 'rerun' },
+    { from: `f-${failed[0][0]}`, to: 'second' },
   ],
 })

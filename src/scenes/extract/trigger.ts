@@ -30,11 +30,11 @@ export const extractTrigger: SceneModel = ideFrame({
     },
     {
       type: 'table', id: 'vs', title: 'Two kinds of trigger', tone: 'infra', columns: ['', 'schedule', 'tumbling window'], rows: [
-        { id: 'v-what', cells: ['fires', 'at a time', 'for a window of time'] },
-        { id: 'v-miss', cells: ['a missed night', 'skipped', 'run later, in order'] },
-        { id: 'v-pass', cells: ['knows its window', 'no', 'start and end'] },
-        { id: 'v-rerun', cells: ['rerun one night', 'by hand', 'that window alone'] },
-        { id: 'v-batch', cells: ['its batch number', 'typed by someone', 'from its window’s end'] },
+        { id: 'v-what', cells: ['fires', 'at a time', 'per window']  },
+        { id: 'v-miss', cells: ['missed night', 'skipped', 'run later']  },
+        { id: 'v-pass', cells: ['knows window', 'no', 'start, end']  },
+        { id: 'v-rerun', cells: ['rerun a night', 'by hand', 'that window']  },
+        { id: 'v-batch', cells: ['batch number', 'typed', 'its window end']  },
       ],
     },
   ],
