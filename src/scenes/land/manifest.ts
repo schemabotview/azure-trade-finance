@@ -10,7 +10,8 @@ import manifest from '../../../spine/land/05-manifest/captured/landing/lc_deals/
 // window, the row count, the files and the columns with their PostgreSQL types — what the copy must
 // deliver. The JSON in the side pane is the blob itself, read back from the lake by the replay.
 const m = manifest.trimEnd()
-const fold = [[1, lineOf(m, '"columns"')], [lineOf(m, '"updated_at"'), lineOf(m, '"updated_at"') + 2]] as [number, number][]
+// the columns fold whole (the narration: "ten typed columns, folded in the middle"); their closing braces end it
+const fold = [[1, lineOf(m, '"columns"')], [lineOf(m, '"updated_at"') + 1, lineOf(m, '"updated_at"') + 2]] as [number, number][]
 
 export const landManifest: SceneModel = ideFrame({
   tree: landTree('extract/extract.py'),
@@ -28,7 +29,7 @@ export const landManifest: SceneModel = ideFrame({
             { type: 'item', id: 'o-g1', title: 'G1', sub: 'holds the folder to the promise', icon: 'shield', muted: true },
           ],
         },
-        { type: 'code', id: 'manifest', filename: 'landing/lc_deals/batch_id=42/_manifest.json', lang: 'js', code: m, show: fold, tone: 'store', fill: true },
+        { type: 'code', id: 'manifest', filename: 'landing/lc_deals/batch_id=42/_manifest.json', lang: 'js', code: m, show: fold, tone: 'store', fill: true, wrap: true },
       ],
     },
   ],

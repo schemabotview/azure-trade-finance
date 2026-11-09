@@ -33,10 +33,10 @@ export const landWhoMayRead: SceneModel = ideFrame({
       type: 'group', id: 'access', bare: true, children: [
         level('recorded on Azure', 'run once on the course’s subscription; its ids are normalised'),
         {
-          type: 'table', id: 'ways', title: 'Three ways into a batch', tone: 'ingest', columns: ['way, granted on', 'here'], rows: [
-            { id: 'w-rbac', cells: ['RBAC role: the account', role] },
-            { id: 'w-acl', cells: ['ACL: one directory', acl] },
-            { id: 'w-sas', cells: ['SAS link: one file, 4 h', `${withSas}; unsigned ${without}`], tone: 'store' },
+          type: 'table', id: 'ways', title: 'Three ways in: the account, a directory, a file', tone: 'ingest', columns: ['way', 'here'], rows: [
+            { id: 'w-rbac', cells: ['RBAC', role] },
+            { id: 'w-acl', cells: ['ACL', acl] },
+            { id: 'w-sas', cells: ['SAS, 4 h', `${withSas}; unsigned ${without}`], tone: 'store' },
           ],
         },
       ],
