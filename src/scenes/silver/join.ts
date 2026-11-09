@@ -24,7 +24,7 @@ export const silverJoin: SceneModel = ideFrame({
         {
           type: 'group', id: 'left', title: 'left join', icon: 'check', tone: 'store', children: [
             { type: 'item', id: 'l-in', title: 'open LCs', sub: 'ISSUED, ACTIVE, AMENDED', icon: 'layers' },
-            { type: 'item', id: 'l-join', title: 'join counterparty_group', sub: 'no match: the row stays', icon: 'workflow' },
+            { type: 'item', id: 'l-join', title: 'join the mapping', sub: 'no match: the row stays', icon: 'workflow' },
             { type: 'item', id: 'l-lc', title: `${lc}: kept`, sub: 'group_name NULL', icon: 'file' },
             { type: 'item', id: 'l-sum', title: `${ccy} ${money(t.rows.find((r) => r[0] === ccy)![1])}`, sub: 'every open LC counted', icon: 'chart', tone: 'store' },
             { type: 'item', id: 'l-gold', title: 'Gold: a NULL group', sub: 'visible, someone asks why', icon: 'search' },
@@ -33,7 +33,7 @@ export const silverJoin: SceneModel = ideFrame({
         {
           type: 'group', id: 'inner', title: 'inner join', icon: 'filter', tone: 'consume', children: [
             { type: 'item', id: 'i-in', title: 'open LCs', sub: 'ISSUED, ACTIVE, AMENDED', icon: 'layers' },
-            { type: 'item', id: 'i-join', title: 'join counterparty_group', sub: 'no match: the row goes', icon: 'workflow' },
+            { type: 'item', id: 'i-join', title: 'join the mapping', sub: 'no match: the row goes', icon: 'workflow' },
             { type: 'item', id: 'i-lc', title: `${lc}: dropped`, sub: 'no row, no message', icon: 'file', tone: 'consume' },
             { type: 'item', id: 'i-sum', title: `${ccy} ${money(t.rows.find((r) => r[0] === ccy)![2])}`, sub: `${ccy} ${millions(amount)} smaller`, icon: 'chart', tone: 'consume' },
             { type: 'item', id: 'i-gold', title: 'Gold: money missing', sub: 'nothing to see, nobody asks', icon: 'search', tone: 'consume' },
@@ -42,8 +42,8 @@ export const silverJoin: SceneModel = ideFrame({
       ],
     },
     {
-      type: 'table', id: 'sums', title: 'Open amount per currency', tone: 'store', columns: t.head,
-      rows: t.rows.map((r) => ({ id: `s-${r[0]}`, cells: [r[0], ...r.slice(1).map(money)] })),
+      type: 'table', id: 'sums', title: `Open amount per currency: the inner join loses ${t.rows.filter((r) => Number(r[3]) > 0).map((r) => `${r[0]} ${money(r[3])}`).join(', ')}`, tone: 'store', columns: t.head.slice(0, 3),
+      rows: t.rows.map((r) => ({ id: `s-${r[0]}`, cells: [r[0], ...r.slice(1, 3).map(money)] })),
     },
   ],
   edges: [

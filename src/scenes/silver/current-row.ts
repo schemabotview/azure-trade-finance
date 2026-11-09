@@ -24,8 +24,8 @@ export const silverCurrentRow: SceneModel = ideFrame({
     },
     {
       type: 'table', id: 'extra', title: 'Every extra row is one of two kinds', tone: 'infra', columns: ['kind', 'example'], rows: [
-        { id: 'x-old', cells: ['an older version', 'v1, amended since to v2'] },
-        { id: 'x-again', cells: ['a version delivered again', 'batch 44, a re-send of 41'] },
+        { id: 'x-old', cells: ['an older version', 'v1, since amended'] },
+        { id: 'x-again', cells: ['delivered again', 'batch 44 = 41'] },
       ],
     },
   ],

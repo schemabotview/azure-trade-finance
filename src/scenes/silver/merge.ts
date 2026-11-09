@@ -19,11 +19,10 @@ export const silverMerge: SceneModel = ideFrame({
     {
       type: 'group', id: 'diagram', bare: true, children: [
         {
-          type: 'group', id: 'loop', title: 'For each batch, in order', icon: 'clock', tone: 'store', children: [
-            { type: 'item', id: 'l-bronze', title: 'Bronze rows', sub: 'one batch', icon: 'layers' },
-            { type: 'item', id: 'l-dedupe', title: 'deduplicate', sub: 'within it', icon: 'filter' },
-            { type: 'item', id: 'l-merge', title: 'MERGE', sub: 'a Delta commit', icon: 'layers', tone: 'store' },
-            { type: 'item', id: 'l-next', title: 'the next batch', sub: 'against Silver as this one left it', icon: 'clock' },
+          type: 'group', id: 'loop', title: 'For each batch, in order', icon: 'clock', tone: 'store', dir: 'row', children: [
+            { type: 'item', id: 'l-bronze', title: 'Bronze', sub: 'one batch', icon: 'layers', stack: true },
+            { type: 'item', id: 'l-dedupe', title: 'dedupe', sub: 'within it', icon: 'filter', stack: true },
+            { type: 'item', id: 'l-merge', title: 'MERGE', sub: 'a commit', icon: 'layers', tone: 'store', stack: true },
           ],
         },
         {
@@ -44,7 +43,6 @@ export const silverMerge: SceneModel = ideFrame({
   edges: [
     { from: 'l-bronze', to: 'l-dedupe' },
     { from: 'l-dedupe', to: 'l-merge' },
-    { from: 'l-merge', to: 'l-next' },
     { from: 'p-in', to: 'p-new' },
     { from: 'p-in', to: 'p-upd' },
     { from: 'p-in', to: 'p-old' },
