@@ -31,10 +31,10 @@ export const startDrift: SceneModel = ideFrame({
       ],
     },
     {
-      type: 'table', id: 'cases', title: 'Three cases plan meets', tone: 'ingest', columns: ['where it is', 'plan says', 'here'], rows: [
-        { id: 'c-drift', cells: ['code + state, changed in Azure', '~ change it back', 'owner=ops'], tone: 'infra' },
-        { id: 'c-removed', cells: ['state only (block deleted)', '- destroy it', ''] },
-        { id: 'c-outside', cells: ['Azure only (made by hand)', 'nothing: unseen', ''] },
+      type: 'table', id: 'cases', title: 'Three cases plan meets', tone: 'ingest', columns: ['case', 'plan says', 'here'], rows: [
+        { id: 'c-drift', cells: ['changed in Azure', '~ change back', 'owner=ops'], tone: 'infra' },
+        { id: 'c-removed', cells: ['deleted from code', '- destroy', ''] },
+        { id: 'c-outside', cells: ['made by hand', 'nothing: unseen', ''] },
       ],
     },
   ],

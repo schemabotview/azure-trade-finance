@@ -30,10 +30,10 @@ export const startState: SceneModel = ideFrame({
       ],
     },
     {
-      type: 'table', id: 'where', title: 'Where the state lives', tone: 'infra', columns: ['', 'on a laptop (§3.4)', 'in a blob (now)'], rows: [
-        { id: 'w-who', cells: ['who has it', 'one person', 'everyone who may'] },
-        { id: 'w-lock', cells: ['two applies at once', 'nothing stops them', 'the lease stops one'], tone: 'infra' },
-        { id: 'w-read', cells: ['read with', 'the file system', 'an identity, no key'] },
+      type: 'table', id: 'where', title: 'Where the state lives', tone: 'infra', columns: ['', 'laptop, §3.4', 'blob, now'], rows: [
+        { id: 'w-who', cells: ['who has it', 'one person', 'all who may'] },
+        { id: 'w-lock', cells: ['two applies', 'nothing stops', 'one waits'], tone: 'infra' },
+        { id: 'w-read', cells: ['read with', 'file system', 'an identity'] },
       ],
     },
   ],
