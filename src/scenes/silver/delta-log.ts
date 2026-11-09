@@ -17,9 +17,9 @@ export const silverDeltaLog: SceneModel = {
   dir: 'row',
   nodes: [
     {
-      type: 'group', id: 'log', bare: true, children: [
+      type: 'group', id: 'log', bare: true, spread: true, children: [
         {
-          type: 'group', id: 'commits', title: 'lake/silver/lc_current/_delta_log/', icon: 'folder', tone: 'ingest', children:
+          type: 'group', id: 'commits', title: 'lake/silver/lc_current/_delta_log/', icon: 'folder', tone: 'ingest', spread: true, minH: 640, children:
             hist.map(([v, op, ins, upd]) => ({ type: 'item' as const, id: `c-${v}`, title: `${commits[Number(v)] ?? v}`, sub: `v${v} ${op}${ins !== 'NULL' ? `: ${ins} inserted, ${upd} updated` : ': the empty table'}`, icon: 'file' })),
         },
         { type: 'table', id: 'travel', title: 'versionAsOf 1: LC-2041 back then', tone: 'store', columns: ['lc_id', 'source_version', 'amount'], rows: [{ id: 't', cells: then }] },
