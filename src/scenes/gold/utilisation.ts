@@ -20,9 +20,9 @@ export const goldUtilisation: SceneModel = ideFrame({
       type: 'group', id: 'diagram', bare: true, children: [
         {
           type: 'group', id: 'how', title: 'each aggregate row meets its limit', icon: 'workflow', tone: 'ingest', dir: 'row', children: [
-            { type: 'item', id: 'u-agg', title: 'exposure', sub: 'group + currency', icon: 'chart' },
-            { type: 'item', id: 'u-lim', title: '+ its limit', sub: 'same two keys', icon: 'shield' },
-            { type: 'item', id: 'u-out', title: '3 columns', sub: 'below', icon: 'gauge', tone: 'store' },
+            { type: 'item', id: 'u-agg', title: 'exposure', sub: 'per group, currency', icon: 'chart', stack: true },
+            { type: 'item', id: 'u-lim', title: '+ its limit', sub: 'same keys', icon: 'shield', stack: true },
+            { type: 'item', id: 'u-out', title: '3 columns', sub: 'below', icon: 'gauge', tone: 'store', stack: true },
           ],
         },
         {

@@ -21,10 +21,9 @@ export const goldCurrency: SceneModel = ideFrame({
       type: 'group', id: 'diagram', bare: true, children: [
         {
           type: 'group', id: 'how', title: 'fact → aggregate', icon: 'workflow', tone: 'ingest', children: [
-            { type: 'item', id: 'h-fact', title: 'fact_lc_exposure: one row per LC', icon: 'layers' },
+            { type: 'item', id: 'h-fact', title: 'fact_lc_exposure', sub: 'one row per LC', icon: 'layers' },
             { type: 'item', id: 'h-where', title: 'only rows with a group', sub: 'the unmapped LC: G3 raises it', icon: 'filter' },
-            { type: 'item', id: 'h-group', title: 'group by group and currency', sub: 'sum(exposure)', icon: 'boxes' },
-            { type: 'item', id: 'h-agg', title: `agg_group_exposure: ${t.length} rows`, sub: 'one per group and currency', icon: 'layers', tone: 'store' },
+            { type: 'item', id: 'h-agg', title: `agg_group_exposure: ${t.length} rows`, sub: 'sum(exposure) by group and currency', icon: 'layers', tone: 'store' },
           ],
         },
         {
@@ -42,8 +41,7 @@ export const goldCurrency: SceneModel = ideFrame({
   ],
   edges: [
     { from: 'h-fact', to: 'h-where' },
-    { from: 'h-where', to: 'h-group' },
-    { from: 'h-group', to: 'h-agg' },
+    { from: 'h-where', to: 'h-agg' },
   ],
 })
 

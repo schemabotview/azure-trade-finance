@@ -13,9 +13,9 @@ const bug = gold.split('\n')[lineOf(gold, '.where(F.col("status").isin("ISSUED",
 
 export const goldG4: SceneModel = ideFrame({
   tree: pipelineTree('pipeline/gates.py', ['session.py', 'bronze.py', 'versions.py', 'gates.py', 'quarantine.py', 'current.py', 'silver.py', 'lc.py', 'history.py', 'reference_tables.py', 'g3.py', 'joins.py', 'gold.py', 'fact.py', 'money.py', 'g4.py'], { fresh: ['pipeline/g4.py'] }),
-  editor: { file: 'pipeline/gates.py', code, show: [[lineOf(code, 'def g4'), lineOf(code, 'f"{facts[c]} vs {aggs.get(c)}") for c in sorted(facts)]')]] },
+  editor: { file: 'pipeline/gates.py', code, show: [[lineOf(code, 'def g4'), lineOf(code, 'def g4')], [lineOf(code, 'fact = ', lineOf(code, 'def g4')), lineOf(code, 'f"{facts[c]} vs {aggs.get(c)}") for c in sorted(facts)]')]] },
   session,
-  keep: ['$ python pipeline/gold.py', ['|   Contoso|     EUR', '+----------+'], ['$ python pipeline/g4.py', 'G4 FAIL']],
+  keep: ['$ python pipeline/gold.py', ['|   Contoso|     EUR', '| Woodgrove|'], ['$ python pipeline/g4.py', 'G4 FAIL']],
   side: [
     {
       type: 'group', id: 'diagram', bare: true, children: [
@@ -26,12 +26,12 @@ export const goldG4: SceneModel = ideFrame({
             { type: 'item', id: 'r-eq', title: 'must be equal, to the cent', sub: 'or Gold is not published', icon: 'check', tone: 'store', span: 'all', fill: true },
           ],
         },
-        { type: 'code', id: 'bug', filename: 'the planted bug, in pipeline/gold.py', lang: 'python', code: bug, tone: 'consume' },
+        { type: 'code', id: 'bug', filename: 'the planted bug, in pipeline/gold.py', lang: 'python', code: bug, tone: 'consume', wrap: true },
         {
-          type: 'group', id: 'then', title: 'On a FAIL', icon: 'lock', tone: 'consume', children: [
-            { type: 'item', id: 't-fail', title: 'G4 FAIL', sub: 'exit 1', icon: 'lock', tone: 'consume' },
-            { type: 'item', id: 't-hold', title: 'Gold is not published', sub: 'the morning report keeps', icon: 'archive' },
-            { type: 'item', id: 't-old', title: 'the last good answer', sub: 'until someone fixes gold.py', icon: 'clock' },
+          type: 'group', id: 'then', title: 'On a FAIL', icon: 'lock', tone: 'consume', dir: 'row', children: [
+            { type: 'item', id: 't-fail', title: 'G4 FAIL', sub: 'exit 1', icon: 'lock', tone: 'consume', stack: true },
+            { type: 'item', id: 't-hold', title: 'not published', sub: 'the report keeps', icon: 'archive', stack: true },
+            { type: 'item', id: 't-old', title: 'the last good', sub: 'until gold.py is fixed', icon: 'clock', stack: true },
           ],
         },
       ],
